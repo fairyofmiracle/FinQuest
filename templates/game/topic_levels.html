@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<a href="{% url 'dashboard' %}" class="btn btn-sm btn-secondary mb-3">← Назад</a>
+<h3>{{ topic.name }}</h3>
+{% for level in levels %}
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5>{{ level.title }}</h5>
+      <p class="text-muted">{{ level.get_difficulty_display }} • +{{ level.reward_points }} очков</p>
+      <a href="{% url 'level_play' level.id %}" class="btn btn-primary">Начать</a>
+    </div>
+  </div>
+{% empty %}
+  <p>Нет уровней.</p>
+{% endfor %}
+{% endblock %}

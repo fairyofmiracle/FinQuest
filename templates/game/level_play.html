@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<a href="{% url 'topic_levels' level.topic.id %}" class="btn btn-sm btn-secondary mb-3">← Назад</a>
+<h4>{{ level.title }}</h4>
+<p>{{ level.description|linebreaks }}</p>
+
+<form method="post">
+  {% csrf_token %}
+  {% for option in options %}
+    <div class="form-check mb-2">
+      <input class="form-check-input" type="radio" name="answer" value="{{ option.id }}" id="opt{{ option.id }}" required>
+      <label class="form-check-label" for="opt{{ option.id }}">{{ option.text }}</label>
+    </div>
+  {% endfor %}
+  <button type="submit" class="btn btn-success btn-lg mt-3">Проверить</button>
+</form>
+{% endblock %}

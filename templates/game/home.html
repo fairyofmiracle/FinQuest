@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="text-center mt-5">
+  <h1 class="display-5 fw-bold">FinQuest</h1>
+  <p class="lead mt-3">
+    Учись финансовой грамотности через короткие игровые уровни.<br>
+    Защищайся от мошенников, учишься копить и ставить цели — легко и с удовольствием!
+  </p>
+
+  <div class="mt-4">
+    <a href="{% url 'login' %}" class="btn btn-primary btn-lg me-3">Войти</a>
+    <a href="{% url 'register' %}" class="btn btn-outline-primary btn-lg">Зарегистрироваться</a>
+  </div>
+
+  <div class="mt-5 text-muted">
+    <small>FinQuest — твой гид в мире личных финансов</small>
+  </div>
+</div>
+{% endblock %}

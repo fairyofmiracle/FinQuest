@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Темы</h2>
+<div class="row">
+  {% for topic in topics %}
+    <div class="col-12 mb-3">
+      <a href="{% url 'topic_levels' topic.id %}" class="btn btn-outline-primary btn-lg">
+        {{ topic.name }}
+      </a>
+    </div>
+  {% empty %}
+    <p>Нет тем.</p>
+  {% endfor %}
+</div>
+{% endblock %}
