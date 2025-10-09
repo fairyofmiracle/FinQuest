@@ -9,18 +9,44 @@ def home(request):
         return dashboard(request)
     return render(request, 'game/home.html')
 
+
 @login_required
 def dashboard(request):
-    """Дашборд с темами — только для авторизованных"""
-    from .models import Topic
-    topics = Topic.objects.all()
+    user = request.user
+    topics = Topic.objects.prefetch_related('level_set').all()
+    for topic in topics:
+        total = topic.level_set.count()
+        completed = UserLevelProgress.objects.filter(
+            user=user,
+            level__topic=topic,
+            completed=True
+        ).count()
+        topic.progress = {
+            'completed': completed,
+            'total': total,
+            'percent': int(completed / total * 100) if total > 0 else 0
+        }
     return render(request, 'game/dashboard.html', {'topics': topics})
+
 
 @login_required
 def topic_levels(request, topic_id):
     topic = get_object_or_404(Topic, id=topic_id)
     levels = Level.objects.filter(topic=topic).order_by('order_in_topic')
-    return render(request, 'game/topic_levels.html', {'topic': topic, 'levels': levels})
+
+    # Добавляем прогресс пользователя к каждому уровню
+    for level in levels:
+        progress, created = UserLevelProgress.objects.get_or_create(
+            user=request.user,
+            level=level,
+            defaults={'completed': False, 'score': 0, 'attempts': 0}
+        )
+        level.user_progress = progress
+
+    return render(request, 'game/topic_levels.html', {
+        'topic': topic,
+        'levels': levels,
+    })
 
 @login_required
 def level_play(request, level_id):

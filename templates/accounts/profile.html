@@ -1,10 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<!-- templates/accounts/profile.html -->
+{% extends 'base.html' %}
+{% load static %}
 
-</body>
-</html>
+{% block title %}Мой профиль — FinQuest{% endblock %}
+
+{% block content %}
+<div class="text-center mb-4">
+  <div class="mb-3">
+    {% if user.avatar %}
+      <img src="{{ user.avatar.url }}" class="rounded-circle" width="80" height="80" alt="Аватар">
+    {% else %}
+      <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center" style="width:80px; height:80px; font-size:24px;">
+        {{ user.username|first|upper }}
+      </div>
+    {% endif %}
+  </div>
+  <h3>{{ user.get_full_name|default:user.username }}</h3>
+  <p class="text-muted">{{ user.get_level_title }} • Уровень {{ user.level_number }}</p>
+  <div class="d-flex justify-content-center gap-3 mb-3">
+    <span class="badge bg-primary">Очки: {{ user.points }}</span>
+    <span class="badge bg-warning text-dark">Монеты: {{ user.coins }} 🪙</span>
+  </div>
+</div>
+
+<!-- Прогресс по темам -->
+<h5>Прогресс по темам</h5>
+{% for topic in topics %}
+  <div class="card mb-2">
+    <div class="card-body py-2">
+      <div class="d-flex justify-content-between small">
+        <strong>{{ topic.name }}</strong>
+        <span>{{ topic.progress.completed }} / {{ topic.progress.total }}</span>
+      </div>
+      <div class="progress mt-1" style="height: 5px;">
+        <div class="progress-bar" style="width: {{ topic.progress.percent }}%;"></div>
+      </div>
+    </div>
+  </div>
+{% empty %}
+  <p class="text-muted">Нет тем.</p>
+{% endfor %}
+
+<!-- Достижения -->
+<h5 class="mt-4">Достижения</h5>
+{% if achievements %}
+  <div class="row">
+    {% for ua in achievements %}
+      <div class="col-6 col-md-4 mb-2">
+        <div class="card text-center small">
+          <div class="card-body p-2">
+            <div class="bg-light rounded-circle mx-auto mb-1" style="width:40px; height:40px;">🏅</div>
+            <small>{{ ua.achievement.name }}</small>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="text-muted">Нет достижений. Пройди первый уровень!</p>
+{% endif %}
+
+<div class="text-center mt-4">
+  <a href="{% url 'dashboard' %}" class="btn btn-outline-primary btn-sm me-2">Назад</a>
+  <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Выйти</a>
+</div>
+{% endblock %}

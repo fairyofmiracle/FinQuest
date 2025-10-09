@@ -1,16 +1,48 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
-<a href="{% url 'dashboard' %}" class="btn btn-sm btn-secondary mb-3">← Назад</a>
-<h3>{{ topic.name }}</h3>
-{% for level in levels %}
-  <div class="card mb-3">
-    <div class="card-body">
-      <h5>{{ level.title }}</h5>
-      <p class="text-muted">{{ level.get_difficulty_display }} • +{{ level.reward_points }} очков</p>
-      <a href="{% url 'level_play' level.id %}" class="btn btn-primary">Начать</a>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-secondary">← Назад</a>
+  <h3>{{ topic.name }}</h3>
+  <div></div>
+</div>
+
+{% if levels %}
+  {% for level in levels %}
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h5 class="mb-1">{{ level.title }}</h5>
+            <p class="text-muted small mb-2">{{ level.description|truncatewords:15 }}</p>
+
+            <!-- Сложность -->
+            <span class="badge bg-secondary me-2">
+              {% if level.difficulty == 1 %}⭐️ Легко
+              {% elif level.difficulty == 2 %}⭐️⭐️ Средне
+              {% else %}⭐️⭐️⭐️ Сложно{% endif %}
+            </span>
+
+            <!-- Награда -->
+            <span class="badge bg-success">+{{ level.reward_points }} очков</span>
+            <span class="badge bg-warning text-dark">+{{ level.reward_coins }} 🪙</span>
+          </div>
+
+          <!-- Статус и кнопка -->
+          <div class="text-end">
+            {% if level.user_progress.completed %}
+              <span class="text-success me-2">✅ Пройден</span>
+              <a href="{% url 'level_play' level.id %}" class="btn btn-outline-primary btn-sm">Повторить</a>
+            {% else %}
+              <a href="{% url 'level_play' level.id %}" class="btn btn-primary btn-sm">Начать</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-{% empty %}
-  <p>Нет уровней.</p>
-{% endfor %}
+  {% endfor %}
+{% else %}
+  <p class="text-muted">В этой теме пока нет уровней.</p>
+{% endif %}
 {% endblock %}
