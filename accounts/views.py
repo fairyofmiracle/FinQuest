@@ -5,12 +5,13 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.contrib.auth.decorators import login_required
-from .models import User  # твой кастомный User
-from game.models import Topic, UserLevelProgress
+from .models import User
+from game.models import Topic, UserLevelProgress, UserAchievement
 
 @login_required
 def profile(request):
     user = request.user
+
     topics = Topic.objects.prefetch_related('level_set').all()
     for topic in topics:
         total = topic.level_set.count()
@@ -24,8 +25,14 @@ def profile(request):
             'total': total,
             'percent': int(completed / total * 100) if total > 0 else 0
         }
+
+    achievements = UserAchievement.objects.filter(
+        user=user
+    ).select_related('achievement').order_by('-earned_at')[:6]
+
     return render(request, 'accounts/profile.html', {
         'topics': topics,
+        'achievements': achievements,
     })
 
 class RegisterView(CreateView):

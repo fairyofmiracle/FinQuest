@@ -8,9 +8,10 @@
 <div class="text-center mb-4">
   <div class="mb-3">
     {% if user.avatar %}
-      <img src="{{ user.avatar.url }}" class="rounded-circle" width="80" height="80" alt="Аватар">
+      <img src="{{ user.avatar.url }}" class="rounded-circle shadow" width="90" height="90" alt="Аватар">
     {% else %}
-      <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center" style="width:80px; height:80px; font-size:24px;">
+      <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow"
+           style="width:90px; height:90px; font-size:28px; font-weight: bold;">
         {{ user.username|first|upper }}
       </div>
     {% endif %}
@@ -18,22 +19,22 @@
   <h3>{{ user.get_full_name|default:user.username }}</h3>
   <p class="text-muted">{{ user.get_level_title }} • Уровень {{ user.level_number }}</p>
   <div class="d-flex justify-content-center gap-3 mb-3">
-    <span class="badge bg-primary">Очки: {{ user.points }}</span>
-    <span class="badge bg-warning text-dark">Монеты: {{ user.coins }} 🪙</span>
+    <span class="badge bg-primary rounded-pill px-3 py-2">Очки: {{ user.points }}</span>
+    <span class="badge bg-warning text-dark rounded-pill px-3 py-2">🪙 {{ user.coins }}</span>
   </div>
 </div>
 
 <!-- Прогресс по темам -->
-<h5>Прогресс по темам</h5>
+<h5 class="mb-3">Прогресс по темам</h5>
 {% for topic in topics %}
-  <div class="card mb-2">
+  <div class="card mb-3">
     <div class="card-body py-2">
       <div class="d-flex justify-content-between small">
         <strong>{{ topic.name }}</strong>
         <span>{{ topic.progress.completed }} / {{ topic.progress.total }}</span>
       </div>
-      <div class="progress mt-1" style="height: 5px;">
-        <div class="progress-bar" style="width: {{ topic.progress.percent }}%;"></div>
+      <div class="progress mt-1" style="height: 6px;">
+        <div class="progress-bar" role="progressbar" style="width: {{ topic.progress.percent }}%;"></div>
       </div>
     </div>
   </div>
@@ -42,15 +43,17 @@
 {% endfor %}
 
 <!-- Достижения -->
-<h5 class="mt-4">Достижения</h5>
+<h5 class="mt-4 mb-3">Достижения</h5>
 {% if achievements %}
-  <div class="row">
+  <div class="row g-2">
     {% for ua in achievements %}
-      <div class="col-6 col-md-4 mb-2">
-        <div class="card text-center small">
+      <div class="col-6 col-md-4">
+        <div class="card text-center small shadow-sm">
           <div class="card-body p-2">
-            <div class="bg-light rounded-circle mx-auto mb-1" style="width:40px; height:40px;">🏅</div>
-            <small>{{ ua.achievement.name }}</small>
+            <div class="bg-light rounded-circle mx-auto mb-1" style="width:40px; height:40px; line-height:40px;">
+              🏆
+            </div>
+            <small class="text-truncate d-block">{{ ua.achievement.name }}</small>
           </div>
         </div>
       </div>

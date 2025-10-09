@@ -56,3 +56,52 @@ class UserLevelProgress(models.Model):
 
     def __str__(self):
         return f"{self.user.username} — {self.level.title} ({'✓' if self.completed else '✗'})"
+
+class Achievement(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    description = models.TextField()
+    badge_image = models.ImageField(upload_to='badges/', blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+
+class UserAchievement(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    achievement = models.ForeignKey(Achievement, on_delete=models.CASCADE)
+    earned_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'achievement')
+        verbose_name = "Полученное достижение"
+        verbose_name_plural = "Полученные достижения"
+
+    def __str__(self):
+        return f"{self.user} — {self.achievement}"
+
+
+class Hint(models.Model):
+    level = models.ForeignKey(Level, on_delete=models.CASCADE)
+    text = models.TextField()
+    cost_coins = models.IntegerField(default=5)
+
+    def __str__(self):
+        return f"Подсказка для {self.level.title}"
+
+class Streak(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    current_streak = models.IntegerField(default=0)
+    last_activity = models.DateField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user.username} — {self.current_streak} дней"
+
+
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.CharField(max_length=200)
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Уведомление для {self.user}: {self.text}"
