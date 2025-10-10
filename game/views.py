@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Topic, Level, UserLevelProgress
+from django.shortcuts import redirect
+from django.urls import reverse
 
 def home(request):
     """Главная страница для всех (анонимных и залогиненных)"""
@@ -49,13 +51,19 @@ def topic_levels(request, topic_id):
     })
 
 @login_required
+@login_required
 def level_play(request, level_id):
     level = get_object_or_404(Level, id=level_id)
     options = level.options.all()
 
     if request.method == "POST":
         selected_option_id = request.POST.get("answer")
+        if not selected_option_id:
+            messages.error(request, "Выберите вариант ответа!")
+            return redirect('level_play', level_id=level.id)
+
         selected_option = get_object_or_404(level.options, id=selected_option_id)
+        is_correct = selected_option.is_correct
 
         progress, created = UserLevelProgress.objects.get_or_create(
             user=request.user,
@@ -64,24 +72,27 @@ def level_play(request, level_id):
         )
         progress.attempts += 1
 
-        if selected_option.is_correct:
-            if not progress.completed:  # начисляем только при первом прохождении
-                request.user.points += level.reward_points
-                request.user.coins += level.reward_coins
-                request.user.save()
-                progress.completed = True
-                progress.score = 100
-            else:
-                progress.score = 100
+        if is_correct and not progress.completed:
+            request.user.points += level.reward_points
+            request.user.coins += level.reward_coins
+            request.user.save()
+            progress.completed = True
+            progress.score = 100
+            messages.success(request, f"✅ Правильно! +{level.reward_points} очков, +{level.reward_coins} 🪙")
+        elif is_correct:
+            progress.score = 100
+            messages.success(request, "✅ Правильно!")
         else:
             progress.score = 0
+            messages.error(request, "❌ Неправильно! Подумай ещё.")
 
         progress.save()
+        return redirect('level_play', level_id=level.id)
 
-        # Перенаправляем на результат (пока просто на тему)
-        return redirect('topic_levels', topic_id=level.topic.id)
 
+    correct_option = level.options.filter(is_correct=True).first()
     return render(request, 'game/level_play.html', {
         'level': level,
-        'options': options
+        'options': options,
+        'correct_option': correct_option,
     })

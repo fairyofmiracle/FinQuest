@@ -39,5 +39,37 @@
     "model": "game.leveloption",
     "pk": 4,
     "fields": { "level": 1, "text": "Удалю письмо и забуду", "is_correct": false, "order": 4 }
+  },
+  {
+    "model": "game.topic",
+    "pk": 1,
+    "fields": {
+      "name": "Противодействие мошенничеству",
+      "description": "Научись распознавать фишинг, звонки и SMS-мошенников"
+    }
+  },
+  {
+    "model": "game.topic",
+    "pk": 2,
+    "fields": {
+      "name": "Накопления",
+      "description": "Как копить деньги и строить финансовую подушку"
+    }
+  },
+  {
+    "model": "game.topic",
+    "pk": 3,
+    "fields": {
+      "name": "Базовая безопасность",
+      "description": "Пароли, двухфакторная аутентификация, защита аккаунтов"
+    }
+  },
+  {
+    "model": "game.topic",
+    "pk": 4,
+    "fields": {
+      "name": "Финансовые цели",
+      "description": "Как ставить SMART-цели и достигать их"
+    }
   }
 ]

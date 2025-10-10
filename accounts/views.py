@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.contrib.auth.decorators import login_required
+from .forms import CustomUserCreationForm
 from .models import User
 from game.models import Topic, UserLevelProgress, UserAchievement
 
@@ -37,12 +38,12 @@ def profile(request):
 
 class RegisterView(CreateView):
     model = User
-    form_class = UserCreationForm
+    form_class = CustomUserCreationForm  # ← используй кастомную форму
     template_name = 'accounts/register.html'
-    success_url = reverse_lazy('dashboard')  # после регистрации — в дашборд
+    success_url = reverse_lazy('dashboard')
 
     def form_valid(self, form):
         user = form.save()
-        login(self.request, user)  # автоматический вход
+        login(self.request, user)
         messages.success(self.request, "Регистрация прошла успешно! Добро пожаловать в FinQuest!")
         return redirect(self.success_url)
