@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
 <a href="{% url 'topic_levels' level.topic.id %}" class="btn btn-sm btn-secondary mb-3">← Назад</a>
 <h4>{{ level.title }}</h4>
@@ -11,16 +13,17 @@
       <input class="form-check-input" type="radio" name="answer" value="{{ option.id }}" id="opt{{ option.id }}" required>
       <label class="form-check-label" for="opt{{ option.id }}">{{ option.text }}</label>
     </div>
+  {% empty %}
+    <p class="text-muted">Нет вариантов ответа.</p>
   {% endfor %}
-  <button type="submit" class="btn btn-success btn-lg mt-3">Проверить</button>
+  <button type="submit" class="btn btn-success btn-lg mt-3 w-100">Проверить</button>
 </form>
 
-<!-- templates/game/level_play.html -->
 {% if messages %}
   {% for message in messages %}
-    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show mt-3" role="alert">
       {{ message }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
   {% endfor %}
 {% endif %}
