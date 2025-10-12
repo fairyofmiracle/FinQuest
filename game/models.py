@@ -19,7 +19,14 @@ class Level(models.Model):
         ('scam', 'Противодействие мошенничеству'),
         ('goals', 'Финансовые цели'),
     ]
+    LEVEL_TYPE_CHOICES = [
+        ('quiz', 'Викторина'),
+        ('quest', 'Квест'),
+        ('simulation', 'Симуляция'),
+        ('sorting', 'Сортировка'),
+    ]
 
+    type = models.CharField(max_length=20, choices=LEVEL_TYPE_CHOICES, default='quiz')
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     description = models.TextField()  # введение перед уровнем
@@ -105,3 +112,12 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"Уведомление для {self.user}: {self.text}"
+
+class Article(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title

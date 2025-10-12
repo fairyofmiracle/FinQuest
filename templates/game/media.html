@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Медиа — FinQuest{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4>Статьи и советы</h4>
+  <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-secondary">← Назад</a>
+</div>
+
+{% for article in articles %}
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5>{{ article.title }}</h5>
+      <p class="text-muted small">{{ article.topic.name }} • {{ article.created_at|date:"d.m.Y" }}</p>
+      <p>{{ article.content|truncatewords:20 }}</p>
+      <a href="{% url 'article_detail' article.id %}" class="btn btn-outline-primary btn-sm">Читать</a>
+    </div>
+  </div>
+{% empty %}
+  <p class="text-muted">Нет статей.</p>
+{% endfor %}
+{% endblock %}

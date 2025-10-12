@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Topic, Level, UserLevelProgress
+from .models import Topic, Level, UserLevelProgress, Article
 from django.shortcuts import redirect
+from django.contrib import messages
 from django.urls import reverse
 
 def home(request):
@@ -10,7 +11,6 @@ def home(request):
         # Если уже вошёл — сразу на дашборд
         return dashboard(request)
     return render(request, 'game/home.html')
-
 
 @login_required
 def dashboard(request):
@@ -24,12 +24,21 @@ def dashboard(request):
             completed=True
         ).count()
         topic.progress = {
-            'completed': completed,
-            'total': total,
             'percent': int(completed / total * 100) if total > 0 else 0
         }
     return render(request, 'game/dashboard.html', {'topics': topics})
 
+
+@login_required
+def media(request):
+    articles = Article.objects.select_related('topic').order_by('-created_at')
+    return render(request, 'game/media.html', {'articles': articles})
+
+
+@login_required
+def article_detail(request, pk):
+    article = get_object_or_404(Article, pk=pk)
+    return render(request, 'game/article_detail.html', {'article': article})
 
 @login_required
 def topic_levels(request, topic_id):
@@ -51,11 +60,8 @@ def topic_levels(request, topic_id):
     })
 
 @login_required
-@login_required
 def level_play(request, level_id):
     level = get_object_or_404(Level, id=level_id)
-    options = level.options.all()
-
     if request.method == "POST":
         selected_option_id = request.POST.get("answer")
         if not selected_option_id:
@@ -78,21 +84,38 @@ def level_play(request, level_id):
             request.user.save()
             progress.completed = True
             progress.score = 100
-            messages.success(request, f"✅ Правильно! +{level.reward_points} очков, +{level.reward_coins} 🪙")
         elif is_correct:
             progress.score = 100
-            messages.success(request, "✅ Правильно!")
         else:
             progress.score = 0
-            messages.error(request, "❌ Неправильно! Подумай ещё.")
 
         progress.save()
-        return redirect('level_play', level_id=level.id)
 
+        # Перенаправляем на результат
+        return redirect('level_result', level_id=level.id)
 
-    correct_option = level.options.filter(is_correct=True).first()
+    # GET-запрос: показываем уровень
     return render(request, 'game/level_play.html', {
         'level': level,
-        'options': options,
+        'options': level.options.all(),
+    })
+
+
+@login_required
+def level_result(request, level_id):
+    level = get_object_or_404(Level, id=level_id)
+    progress = get_object_or_404(UserLevelProgress, user=request.user, level=level)
+    correct_option = level.options.filter(is_correct=True).first()
+
+    # Следующий уровень в теме
+    next_level = Level.objects.filter(
+        topic=level.topic,
+        order_in_topic__gt=level.order_in_topic
+    ).first()
+
+    return render(request, 'game/level_result.html', {
+        'level': level,
+        'progress': progress,
         'correct_option': correct_option,
+        'next_level': next_level,
     })

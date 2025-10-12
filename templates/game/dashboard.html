@@ -1,35 +1,54 @@
 {% extends 'base.html' %}
+{% block title %}FinQuest — Главная{% endblock %}
 
 {% block content %}
-<div class="text-center mb-4">
-  <h1 class="display-6 fw-bold">FinQuest</h1>
-  <p class="text-muted">Играй и учись финансовой грамотности!</p>
+<!-- Статус пользователя -->
+<div class="user-summary text-center mb-4">
+  <div class="mb-2">
+    {% if user.avatar %}
+      <img src="{{ user.avatar.url }}" class="rounded-circle shadow" width="70" height="70" alt="Аватар">
+    {% else %}
+      <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow"
+           style="width:70px; height:70px; font-size:24px; font-weight:bold;">
+        {{ user.username|first|upper }}
+      </div>
+    {% endif %}
+  </div>
+  <h5>{{ user.get_full_name|default:user.username }}</h5>
+  <p class="text-muted">{{ user.get_level_title }} • Уровень {{ user.level_number }}</p>
+  <div class="d-flex justify-content-center gap-3 mb-3">
+    <span class="badge bg-primary">Очки: {{ user.points }}</span>
+    <span class="badge bg-warning text-dark">🪙 {{ user.coins }}</span>
+  </div>
 </div>
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <h4>Темы</h4>
-  <a href="{% url 'profile' %}" class="btn btn-sm btn-outline-secondary">Профиль</a>
+<!-- Быстрый доступ -->
+<div class="quick-actions mb-4 text-center">
+  <a href="{% url 'media' %}" class="btn btn-outline-info btn-sm me-2">📚 Статьи</a>
+  <a href="{% url 'profile' %}" class="btn btn-outline-secondary btn-sm">👤 Профиль</a>
 </div>
 
+<!-- Темы -->
+<h5>Темы</h5>
 {% for topic in topics %}
   <a href="{% url 'topic_levels' topic.id %}" class="text-decoration-none">
     <div class="card mb-3">
-      <div class="card-body">
-        <h5 class="mb-1">{{ topic.name }}</h5>
-        <p class="text-muted small">{{ topic.description|truncatewords:8 }}</p>
-        <div class="d-flex justify-content-between small">
-          <span>{{ topic.progress.completed }} / {{ topic.progress.total }} уровней</span>
-          <span>{{ topic.progress.percent }}%</span>
+      <div class="card-body py-2">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h6 class="mb-1">{{ topic.name }}</h6>
+            <p class="text-muted small mb-0">{{ topic.description|truncatewords:6 }}</p>
+          </div>
+          <span class="badge bg-primary">{{ topic.progress.percent }}%</span>
         </div>
-        <div class="progress mt-2" style="height: 6px;">
-          <div class="progress-bar" style="width: {{ topic.progress.percent }}%;"></div>
+        <div class="progress mt-2" style="height: 5px;">
+          <div class="progress-bar" role="progressbar" style="width: {{ topic.progress.percent }}%;"></div>
         </div>
       </div>
     </div>
   </a>
 {% empty %}
-  <p class="text-muted">Нет тем
-  </p>
+  <p class="text-muted">Нет тем.</p>
 {% endfor %}
 
 <div class="text-center mt-4">
