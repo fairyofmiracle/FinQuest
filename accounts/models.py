@@ -6,6 +6,8 @@ class User(AbstractUser):
     points = models.IntegerField(default=0)
     coins = models.IntegerField(default=0)
     level_number = models.IntegerField(default=1)
+    notifications_enabled = models.BooleanField(default=True, verbose_name="Получать напоминания")
+
 
     groups = models.ManyToManyField(
         'auth.Group',

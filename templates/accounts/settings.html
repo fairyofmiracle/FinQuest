@@ -1,0 +1,56 @@
+<!-- templates/accounts/settings.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Настройки — FinQuest{% endblock %}
+
+{% block content %}
+<div class="text-center mb-4">
+  <h3>Настройки профиля</h3>
+</div>
+
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+
+  <!-- Аватар -->
+  <div class="mb-4">
+    <label class="form-label">Аватар</label>
+    <div class="d-flex justify-content-center mb-2">
+      {% if user.avatar %}
+        <img src="{{ user.avatar.url }}" class="rounded-circle" width="80" height="80" alt="Аватар">
+      {% else %}
+        <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center" style="width:80px; height:80px; font-size:24px;">
+          {{ user.username|first|upper }}
+        </div>
+      {% endif %}
+    </div>
+    <input type="file" name="avatar" class="form-control" accept="image/*">
+    {% if form.avatar.errors %}<div class="text-danger">{{ form.avatar.errors }}</div>{% endif %}
+  </div>
+
+  <!-- Уведомления -->
+  <div class="mb-4 form-check">
+    <input type="checkbox" class="form-check-input" id="notifications" name="notifications" {% if user.notifications_enabled %}checked{% endif %}>
+    <label class="form-check-label" for="notifications">Получать напоминания о прерванной серии</label>
+  </div>
+
+  <!-- Кнопки -->
+  <div class="d-grid gap-2">
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+    <a href="{% url 'profile' %}" class="btn btn-outline-secondary">Отмена</a>
+  </div>
+</form>
+
+<!-- Опционально: Сброс прогресса -->
+<div class="mt-5 text-center">
+  <button class="btn btn-sm btn-outline-danger" onclick="confirmReset()">Сбросить прогресс</button>
+</div>
+
+<script>
+function confirmReset() {
+  if (confirm("Вы уверены? Весь прогресс будет удалён!")) {
+    window.location.href = "{% url 'reset_progress' %}";
+  }
+}
+</script>
+{% endblock %}

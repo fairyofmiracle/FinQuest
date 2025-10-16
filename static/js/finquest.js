@@ -17,12 +17,18 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Поддержка "назад" на мобильных
-    const backButton = document.querySelector('[href$="/"]');
-    if (backButton && window.history.length > 2) {
-        backButton.addEventListener('click', function (e) {
-            e.preventDefault();
-            window.history.back();
+    // Поддержка "назад" на мобильных — перехватываем только явные ссылки с текстом "Назад" или стрелкой
+    const backLinks = Array.from(document.querySelectorAll('a'))
+        .filter((anchor) => {
+            const text = (anchor.textContent || '').trim();
+            return /^(←\s*)?Назад/.test(text) || text.startsWith('←') || anchor.dataset.back === 'true';
+        });
+    if (backLinks.length && window.history.length > 2) {
+        backLinks.forEach((anchor) => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                window.history.back();
+            });
         });
     }
 

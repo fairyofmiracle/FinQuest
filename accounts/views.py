@@ -53,3 +53,32 @@ class RegisterView(CreateView):
         login(self.request, user)
         messages.success(self.request, "Регистрация прошла успешно! Добро пожаловать в FinQuest!")
         return redirect(self.success_url)
+
+@login_required
+def settings_view(request):
+    if request.method == "POST":
+        # Обработка аватара
+        if 'avatar' in request.FILES:
+            request.user.avatar = request.FILES['avatar']
+
+        # Обработка уведомлений
+        request.user.notifications_enabled = 'notifications' in request.POST
+        request.user.save()
+        messages.success(request, "Настройки сохранены!")
+        return redirect('settings')
+
+    return render(request, 'accounts/settings.html')
+
+
+@login_required
+def reset_progress(request):
+    # Удаляем прогресс и достижения
+    UserLevelProgress.objects.filter(user=request.user).delete()
+    UserAchievement.objects.filter(user=request.user).delete()
+    # Сбрасываем очки и монеты
+    request.user.points = 0
+    request.user.coins = 0
+    request.user.level_number = 1
+    request.user.save()
+    messages.success(request, "Прогресс сброшен!")
+    return redirect('profile')

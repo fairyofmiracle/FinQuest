@@ -139,3 +139,5 @@ def update_streak(user):
         streak.current_streak = 1
     streak.last_activity = today
     streak.save()
+
+
