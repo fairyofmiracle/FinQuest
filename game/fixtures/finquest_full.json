@@ -1,0 +1,223 @@
+[
+  {
+    "model": "game.topic",
+    "pk": 1,
+    "fields": {
+      "name": "Противодействие мошенничеству",
+      "description": "Научись распознавать фишинг, звонки и SMS-мошенников"
+    }
+  },
+  {
+    "model": "game.topic",
+    "pk": 2,
+    "fields": {
+      "name": "Накопления",
+      "description": "Как копить деньги и строить финансовую подушку"
+    }
+  },
+  {
+    "model": "game.topic",
+    "pk": 3,
+    "fields": {
+      "name": "Базовая безопасность",
+      "description": "Пароли, двухфакторная аутентификация, защита аккаунтов"
+    }
+  },
+  {
+    "model": "game.topic",
+    "pk": 4,
+    "fields": {
+      "name": "Финансовые цели",
+      "description": "Как ставить SMART-цели и достигать их"
+    }
+  },
+
+  {
+    "model": "game.level",
+    "pk": 1,
+    "fields": {
+      "topic": 1,
+      "title": "Подозрительное письмо от банка",
+      "description": "Вы получили письмо от «вашего банка» со следующим текстом:\n«Ваш аккаунт заблокирован! Нажмите здесь, чтобы разблокировать.»\nЧто вы сделаете?",
+      "difficulty": 1,
+      "order_in_topic": 1,
+      "reward_points": 10,
+      "reward_coins": 5
+    }
+  },
+  {
+    "model": "game.leveloption",
+    "pk": 1,
+    "fields": { "level": 1, "text": "Перейду по ссылке — нужно срочно разблокировать!", "is_correct": false, "order": 1 }
+  },
+  {
+    "model": "game.leveloption",
+    "pk": 2,
+    "fields": { "level": 1, "text": "Позвоню в банк по официальному номеру с сайта", "is_correct": true, "order": 2 }
+  },
+  {
+    "model": "game.leveloption",
+    "pk": 3,
+    "fields": { "level": 1, "text": "Отвечу на письмо и спрошу, что случилось", "is_correct": false, "order": 3 }
+  },
+  {
+    "model": "game.leveloption",
+    "pk": 4,
+    "fields": { "level": 1, "text": "Удалю письмо и забуду", "is_correct": false, "order": 4 }
+  },
+  {
+    "model": "game.hint",
+    "pk": 1,
+    "fields": {
+      "level": 1,
+      "text": "Настоящий банк НИКОГДА не просит перейти по ссылке из письма для разблокировки.",
+      "cost_coins": 5
+    }
+  },
+
+  {
+    "model": "game.level",
+    "pk": 2,
+    "fields": {
+      "topic": 1,
+      "title": "Звонок от «сотрудника банка»",
+      "description": "Вам звонит человек и говорит:\n«Здравствуйте, это сотрудник банка. Мы обнаружили подозрительную операцию по вашей карте. Чтобы защитить ваши деньги, назовите, пожалуйста, код из SMS.»\nЧто вы сделаете?",
+      "difficulty": 2,
+      "order_in_topic": 2,
+      "reward_points": 12,
+      "reward_coins": 6
+    }
+  },
+  {
+    "model": "game.leveloption",
+    "pk": 5,
+    "fields": { "level": 2, "text": "Назову код — ведь это сотрудник банка!", "is_correct": false, "order": 1 }
+  },
+  {
+    "model": "game.leveloption",
+    "pk": 6,
+    "fields": { "level": 2, "text": "Спрошу его имя и номер отделения", "is_correct": false, "order": 2 }
+  },
+  {
+    "model": "game.leveloption",
+    "pk": 7,
+    "fields": { "level": 2, "text": "Скажу: «Я сам(а) перезвоню в банк по официальному номеру»", "is_correct": true, "order": 3 }
+  },
+  {
+    "model": "game.leveloption",
+    "pk": 8,
+    "fields": { "level": 2, "text": "Положу трубку и забуду", "is_correct": false, "order": 4 }
+  },
+  {
+    "model": "game.hint",
+    "pk": 2,
+    "fields": {
+      "level": 2,
+      "text": "Банк НИКОГДА не запрашивает коды из SMS по телефону — даже «сотрудник».",
+      "cost_coins": 6
+    }
+  },
+
+  {
+    "model": "game.level",
+    "pk": 3,
+    "fields": {
+      "topic": 1,
+      "title": "SMS с кодом подтверждения",
+      "description": "Вы получили SMS:\n«Код подтверждения: 123456. Не сообщайте его никому!»\nЧерез минуту звонит «сотрудник техподдержки» и говорит:\n«Мы проверяем вашу учётную запись. Пожалуйста, продиктуйте код из SMS для подтверждения личности.»\nЧто вы сделаете?",
+      "difficulty": 2,
+      "order_in_topic": 3,
+      "reward_points": 15,
+      "reward_coins": 7
+    }
+  },
+  {
+    "model": "game.leveloption",
+    "pk": 9,
+    "fields": { "level": 3, "text": "Продиктую код — это же техподдержка!", "is_correct": false, "order": 1 }
+  },
+  {
+    "model": "game.leveloption",
+    "pk": 10,
+    "fields": { "level": 3, "text": "Спрошу, откуда у них мой номер", "is_correct": false, "order": 2 }
+  },
+  {
+    "model": "game.leveloption",
+    "pk": 11,
+    "fields": { "level": 3, "text": "Откажусь и скажу, что коды никому не сообщаю", "is_correct": true, "order": 3 }
+  },
+  {
+    "model": "game.leveloption",
+    "pk": 12,
+    "fields": { "level": 3, "text": "Удалю SMS и не буду отвечать", "is_correct": false, "order": 4 }
+  },
+  {
+    "model": "game.hint",
+    "pk": 3,
+    "fields": {
+      "level": 3,
+      "text": "Код подтверждения — это ваш личный ключ. Его нельзя никому называть — даже «техподдержке».",
+      "cost_coins": 7
+    }
+  },
+
+  {
+    "model": "game.article",
+    "pk": 1,
+    "fields": {
+      "title": "Как распознать фишинг?",
+      "content": "Фишинг — это попытка украсть ваши данные через поддельные письма, сайты или звонки. Настоящий банк никогда не просит перейти по ссылке или назвать код из SMS. Всегда проверяйте источник!",
+      "topic": 1,
+      "created_at": "2025-10-12T10:00:00Z"
+    }
+  },
+  {
+    "model": "game.article",
+    "pk": 2,
+    "fields": {
+      "title": "Как копить, даже если мало зарабатываешь",
+      "content": "Начните с 1% от дохода. Используйте правило «сначала себе»: сразу после зарплаты переводите деньги на отдельный счёт. Даже маленькая сумма со временем превратится в подушку безопасности.",
+      "topic": 2,
+      "created_at": "2025-10-12T10:00:00Z"
+    }
+  },
+  {
+    "model": "game.article",
+    "pk": 3,
+    "fields": {
+      "title": "Как создать надёжный пароль",
+      "content": "Используйте менеджер паролей. Пароль должен быть длинным (12+ символов), уникальным для каждого сервиса и содержать буквы, цифры и символы. Включите двухфакторную аутентификацию везде, где можно.",
+      "topic": 3,
+      "created_at": "2025-10-12T10:00:00Z"
+    }
+  },
+  {
+    "model": "game.article",
+    "pk": 4,
+    "fields": {
+      "title": "SMART-цели в финансах",
+      "content": "SMART = Конкретная, Измеримая, Достижимая, Релевантная, Ограниченная по времени. Пример: «Накоплю 50 000 рублей за 6 месяцев, откладывая 8 300 рублей в месяц».",
+      "topic": 4,
+      "created_at": "2025-10-12T10:00:00Z"
+    }
+  },
+
+  {
+    "model": "game.achievement",
+    "pk": 1,
+    "fields": {
+      "name": "Анти-мошенник",
+      "description": "Пройдите все уровни по противодействию мошенничеству",
+      "badge_image": ""
+    }
+  },
+  {
+    "model": "game.achievement",
+    "pk": 2,
+    "fields": {
+      "name": "Новичок",
+      "description": "Пройдите первый уровень",
+      "badge_image": ""
+    }
+  }
+]

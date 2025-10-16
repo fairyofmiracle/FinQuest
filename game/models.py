@@ -121,3 +121,9 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
+
+class AvatarItem(models.Model):
+    name = models.CharField(max_length=50)
+    image = models.ImageField(upload_to='avatars/items/')
+    cost_coins = models.IntegerField(default=20)
+    is_default = models.BooleanField(default=False)

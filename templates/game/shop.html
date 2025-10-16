@@ -1,0 +1,7 @@
+{% for item in avatar_items %}
+  {% if user.coins >= item.cost_coins %}
+    <button onclick="buyAvatar({{ item.id }})">Купить за {{ item.cost_coins }} 🪙</button>
+  {% else %}
+    <span class="text-muted">Недостаточно монет</span>
+  {% endif %}
+{% endfor %}

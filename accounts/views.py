@@ -1,18 +1,17 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib import messages
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm
 from .models import User
 from game.models import Topic, UserLevelProgress, UserAchievement
 
+
 @login_required
 def profile(request):
     user = request.user
-
     topics = Topic.objects.prefetch_related('level_set').all()
     for topic in topics:
         total = topic.level_set.count()
@@ -34,13 +33,20 @@ def profile(request):
     return render(request, 'accounts/profile.html', {
         'topics': topics,
         'achievements': achievements,
+        # 'user': user  # необязательно — уже доступен в шаблоне
     })
+
 
 class RegisterView(CreateView):
     model = User
-    form_class = CustomUserCreationForm  # ← используй кастомную форму
+    form_class = CustomUserCreationForm
     template_name = 'accounts/register.html'
     success_url = reverse_lazy('dashboard')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['files'] = self.request.FILES
+        return kwargs
 
     def form_valid(self, form):
         user = form.save()

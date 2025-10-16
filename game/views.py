@@ -1,15 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Topic, Level, UserLevelProgress, Article
-from django.shortcuts import redirect
 from django.contrib import messages
-from django.urls import reverse
+from datetime import date, timedelta  # ← добавлен timedelta
+from .models import (
+    Topic, Level, UserLevelProgress, Article, Streak,
+    Achievement, UserAchievement  # ← добавлен UserAchievement
+)
 
 def home(request):
-    """Главная страница для всех (анонимных и залогиненных)"""
     if request.user.is_authenticated:
-        # Если уже вошёл — сразу на дашборд
-        return dashboard(request)
+        return redirect('dashboard')  # ← редирект
     return render(request, 'game/home.html')
 
 @login_required
@@ -28,12 +28,10 @@ def dashboard(request):
         }
     return render(request, 'game/dashboard.html', {'topics': topics})
 
-
 @login_required
 def media(request):
     articles = Article.objects.select_related('topic').order_by('-created_at')
     return render(request, 'game/media.html', {'articles': articles})
-
 
 @login_required
 def article_detail(request, pk):
@@ -44,16 +42,13 @@ def article_detail(request, pk):
 def topic_levels(request, topic_id):
     topic = get_object_or_404(Topic, id=topic_id)
     levels = Level.objects.filter(topic=topic).order_by('order_in_topic')
-
-    # Добавляем прогресс пользователя к каждому уровню
     for level in levels:
-        progress, created = UserLevelProgress.objects.get_or_create(
+        progress, _ = UserLevelProgress.objects.get_or_create(
             user=request.user,
             level=level,
             defaults={'completed': False, 'score': 0, 'attempts': 0}
         )
         level.user_progress = progress
-
     return render(request, 'game/topic_levels.html', {
         'topic': topic,
         'levels': levels,
@@ -71,7 +66,7 @@ def level_play(request, level_id):
         selected_option = get_object_or_404(level.options, id=selected_option_id)
         is_correct = selected_option.is_correct
 
-        progress, created = UserLevelProgress.objects.get_or_create(
+        progress, _ = UserLevelProgress.objects.get_or_create(
             user=request.user,
             level=level,
             defaults={'attempts': 0}
@@ -90,28 +85,26 @@ def level_play(request, level_id):
             progress.score = 0
 
         progress.save()
-
-        # Перенаправляем на результат
         return redirect('level_result', level_id=level.id)
 
-    # GET-запрос: показываем уровень
     return render(request, 'game/level_play.html', {
         'level': level,
         'options': level.options.all(),
     })
-
 
 @login_required
 def level_result(request, level_id):
     level = get_object_or_404(Level, id=level_id)
     progress = get_object_or_404(UserLevelProgress, user=request.user, level=level)
     correct_option = level.options.filter(is_correct=True).first()
-
-    # Следующий уровень в теме
     next_level = Level.objects.filter(
         topic=level.topic,
         order_in_topic__gt=level.order_in_topic
     ).first()
+
+    # 🔥 Вызываем систему серий и достижений
+    update_streak(request.user)
+    check_achievements(request.user)
 
     return render(request, 'game/level_result.html', {
         'level': level,
@@ -119,3 +112,30 @@ def level_result(request, level_id):
         'correct_option': correct_option,
         'next_level': next_level,
     })
+
+# --- Вспомогательные функции ---
+
+def check_achievements(user):
+    for topic in Topic.objects.all():
+        total = topic.level_set.count()
+        completed = UserLevelProgress.objects.filter(
+            user=user, level__topic=topic, completed=True
+        ).count()
+        if total > 0 and completed == total:
+            achievement, _ = Achievement.objects.get_or_create(
+                name=f"Мастер {topic.name}",
+                defaults={"description": f"Пройдены все уровни по теме «{topic.name}»"}
+            )
+            UserAchievement.objects.get_or_create(user=user, achievement=achievement)
+
+def update_streak(user):
+    streak, _ = Streak.objects.get_or_create(user=user)
+    today = date.today()
+    if streak.last_activity == today:
+        return
+    elif streak.last_activity == today - timedelta(days=1):
+        streak.current_streak += 1
+    else:
+        streak.current_streak = 1
+    streak.last_activity = today
+    streak.save()
