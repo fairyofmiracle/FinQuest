@@ -4,8 +4,9 @@ from django.contrib import messages
 from datetime import date, timedelta  # ← добавлен timedelta
 from .models import (
     Topic, Level, UserLevelProgress, Article, Streak,
-    Achievement, UserAchievement, Hint, Notification  # ← добавлен Notification
+    Achievement, UserAchievement, Hint, Notification, Leaderboard  # ← добавлен Leaderboard
 )
+from accounts.models import User  # ← добавлен импорт User
 
 def home(request):
     if request.user.is_authenticated:
@@ -31,7 +32,24 @@ def dashboard(request):
         topic.progress = {
             'percent': int(completed / total * 100) if total > 0 else 0
         }
-    return render(request, 'game/dashboard.html', {'topics': topics, 'unread_notifications': unread_notifications})
+    
+    # Проверяем, первый ли это вход пользователя
+    # Пользователь считается новым, если у него нет прогресса по уровням
+    has_progress = UserLevelProgress.objects.filter(user=user).exists()
+    is_first_visit = not has_progress
+    
+    # Добавляем данные о прогрессе пользователя
+    user.level_progress = user.get_level_progress()
+    user.achievements_count = user.get_achievements_count()
+    
+    # Обновляем рейтинг пользователя
+    update_leaderboard(user)
+    
+    return render(request, 'game/dashboard.html', {
+        'topics': topics, 
+        'unread_notifications': unread_notifications,
+        'is_first_visit': is_first_visit
+    })
 
 @login_required
 def media(request):
@@ -81,6 +99,11 @@ def level_play(request, level_id):
     # Подсказки: показываем, если куплена в этой сессии
     hint = Hint.objects.filter(level=level).first()
     session_key = f"hint_shown_{level.id}"
+    
+    # Проверяем, что пользователь действительно существует в базе
+    if not User.objects.filter(id=request.user.id).exists():
+        messages.error(request, "Ошибка аутентификации. Пожалуйста, войдите заново.")
+        return redirect('login')
 
     if request.method == "POST" and request.POST.get("action") == "buy_hint":
         if not hint:
@@ -99,13 +122,23 @@ def level_play(request, level_id):
         messages.success(request, f"Подсказка открыта (-{hint.cost_coins} 🪙)")
         return redirect('level_play', level_id=level.id)
     if request.method == "POST":
-        selected_option_id = request.POST.get("answer")
-        if not selected_option_id:
-            messages.error(request, "Выберите вариант ответа!")
-            return redirect('level_play', level_id=level.id)
-
-        selected_option = get_object_or_404(level.options, id=selected_option_id)
-        is_correct = selected_option.is_correct
+        # Обрабатываем разные типы уровней
+        is_correct = False
+        user_answer = None
+        
+        if level.type == 'quiz':
+            # Старая логика для квизов
+            selected_option_id = request.POST.get("answer")
+            if not selected_option_id:
+                messages.error(request, "Выберите вариант ответа!")
+                return redirect('level_play', level_id=level.id)
+            selected_option = get_object_or_404(level.options, id=selected_option_id)
+            is_correct = selected_option.is_correct
+            user_answer = selected_option.text
+            
+        elif level.type in ['scenario', 'calculation', 'matching', 'sorting', 'simulation']:
+            # Новая логика для других типов уровней
+            is_correct, user_answer = process_level_answer(level, request.POST)
 
         progress, _ = UserLevelProgress.objects.get_or_create(
             user=request.user,
@@ -198,6 +231,88 @@ def update_streak(user):
     streak.last_activity = today
     streak.save()
 
+def process_level_answer(level, post_data):
+    """Обрабатывает ответы для разных типов уровней"""
+    content = level.content
+    
+    if level.type == 'scenario':
+        # Обработка сценариев
+        selected_option = int(post_data.get('scenario_answer', 0))
+        correct_answer = content.get('correct_answer', 0)
+        return selected_option == correct_answer, f"Выбрано: {selected_option + 1}"
+    
+    elif level.type == 'calculation':
+        # Обработка расчетов
+        user_answer = float(post_data.get('calculation_answer', 0))
+        correct_answer = content.get('correct_answer', 0)
+        tolerance = content.get('tolerance', 0)
+        is_correct = abs(user_answer - correct_answer) <= tolerance
+        return is_correct, f"Ответ: {user_answer}"
+    
+    elif level.type == 'matching':
+        # Обработка сопоставления
+        matches = []
+        for key, value in post_data.items():
+            if key.startswith('match_'):
+                matches.append([int(key.split('_')[1]), int(value)])
+        correct_matches = content.get('correct_matches', [])
+        is_correct = sorted(matches) == sorted(correct_matches)
+        return is_correct, f"Сопоставлений: {len(matches)}"
+    
+    elif level.type == 'sorting':
+        # Обработка сортировки
+        order = []
+        for key, value in post_data.items():
+            if key.startswith('sort_'):
+                order.append(int(value))
+        correct_order = content.get('correct_order', [])
+        is_correct = order == correct_order
+        return is_correct, f"Порядок: {order}"
+    
+    elif level.type == 'simulation':
+        # Обработка симуляций
+        response_index = int(post_data.get('simulation_response', 0))
+        dialogue = content.get('dialogue', [])
+        if dialogue and response_index < len(dialogue[0].get('responses', [])):
+            response = dialogue[0]['responses'][response_index]
+            is_correct = response.get('result') == 'win'
+            return is_correct, response.get('message', '')
+    
+    return False, "Неизвестный тип уровня"
+
+def update_leaderboard(user):
+    """Обновляет рейтинг пользователя в турнирной таблице"""
+    # Получаем статистику пользователя
+    levels_completed = UserLevelProgress.objects.filter(user=user, completed=True).count()
+    achievements_count = UserAchievement.objects.filter(user=user).count()
+    
+    # Получаем текущую серию
+    try:
+        streak = Streak.objects.get(user=user)
+        streak_days = streak.current_streak
+    except Streak.DoesNotExist:
+        streak_days = 0
+    
+    # Создаем или обновляем запись в рейтинге
+    leaderboard_entry, created = Leaderboard.objects.get_or_create(
+        user=user,
+        defaults={
+            'total_points': user.points,
+            'total_coins': user.coins,
+            'levels_completed': levels_completed,
+            'achievements_count': achievements_count,
+            'streak_days': streak_days
+        }
+    )
+    
+    if not created:
+        # Обновляем существующую запись
+        leaderboard_entry.total_points = user.points
+        leaderboard_entry.total_coins = user.coins
+        leaderboard_entry.levels_completed = levels_completed
+        leaderboard_entry.achievements_count = achievements_count
+        leaderboard_entry.streak_days = streak_days
+        leaderboard_entry.save()
 
 @login_required
 def notifications_list(request):
@@ -205,7 +320,30 @@ def notifications_list(request):
     if request.method == 'POST' and request.POST.get('action') == 'mark_all_read':
         Notification.objects.filter(user=request.user, is_read=False).update(is_read=True)
         messages.success(request, "Уведомления отмечены как прочитанные")
-        return redirect('notifications')
+        return redirect('notifications_list')
     return render(request, 'game/notifications.html', {'notifications': notifications})
+
+@login_required
+def leaderboard(request):
+    """Турнирная таблица игроков"""
+    # Обновляем рейтинг текущего пользователя
+    update_leaderboard(request.user)
+    
+    # Получаем топ-20 игроков
+    top_players = Leaderboard.objects.select_related('user').all()[:20]
+    
+    # Получаем позицию текущего пользователя
+    try:
+        current_user_entry = Leaderboard.objects.get(user=request.user)
+        current_user_rank = current_user_entry.get_rank()
+    except Leaderboard.DoesNotExist:
+        current_user_entry = None
+        current_user_rank = None
+    
+    return render(request, 'game/leaderboard.html', {
+        'top_players': top_players,
+        'current_user_entry': current_user_entry,
+        'current_user_rank': current_user_rank
+    })
 
 

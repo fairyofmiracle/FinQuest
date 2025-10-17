@@ -3,10 +3,11 @@
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
-  <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-primary">🏠 Дашборд</a>
-  <h3>{{ topic.name }}</h3>
+  <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-primary">
+    <i class="fa-solid fa-home me-1"></i>Дашборд
+  </a>
+  <h3 class="section-title"><i class="fa-solid fa-book-open"></i> {{ topic.name }}</h3>
   <div></div>
-  
 </div>
 
 <img class="topic-cover" src="https://images.unsplash.com/photo-1545239351-1141bd82e8a6?q=80&w=1600&auto=format&fit=crop" alt="Topic" />
@@ -22,25 +23,29 @@
 
             <!-- Сложность -->
             <span class="badge bg-secondary me-2">
-              {% if level.difficulty == 1 %}⭐️ Легко
-              {% elif level.difficulty == 2 %}⭐️⭐️ Средне
-              {% else %}⭐️⭐️⭐️ Сложно{% endif %}
+              {% if level.difficulty == 1 %}<i class="fa-solid fa-star me-1"></i>Легко
+              {% elif level.difficulty == 2 %}<i class="fa-solid fa-star me-1"></i><i class="fa-solid fa-star me-1"></i>Средне
+              {% else %}<i class="fa-solid fa-star me-1"></i><i class="fa-solid fa-star me-1"></i><i class="fa-solid fa-star me-1"></i>Сложно{% endif %}
             </span>
 
             <!-- Награда -->
-            <span class="badge bg-success">+{{ level.reward_points }} очков</span>
-            <span class="badge bg-warning text-dark">+{{ level.reward_coins }} 🪙</span>
+            <span class="badge bg-success"><i class="fa-solid fa-star me-1"></i>+{{ level.reward_points }} очков</span>
+            <span class="badge bg-warning text-dark"><i class="fa-solid fa-coins me-1"></i>+{{ level.reward_coins }}</span>
           </div>
 
           <!-- Статус и кнопка -->
           <div class="text-end">
             {% if level.user_progress.completed %}
-              <span class="text-success me-2">✅ Пройден</span>
-              <div class="small text-muted">Лучшая попытка: {{ level.user_progress.best_score }}%</div>
-              <a href="{% url 'level_play' level.id %}" class="btn btn-outline-primary btn-sm">Повторить</a>
+              <span class="text-success me-2"><i class="fa-solid fa-check-circle me-1"></i>Пройден</span>
+              <div class="small text-muted"><i class="fa-solid fa-trophy me-1"></i>Лучшая попытка: {{ level.user_progress.best_score }}%</div>
+              <a href="{% url 'level_play' level.id %}" class="btn btn-outline-primary btn-sm">
+                <i class="fa-solid fa-redo me-1"></i>Повторить
+              </a>
             {% else %}
-              <div class="small text-muted mb-1">Лучшая попытка: {{ level.user_progress.best_score }}%</div>
-              <a href="{% url 'level_play' level.id %}" class="btn btn-primary btn-sm">Начать</a>
+              <div class="small text-muted mb-1"><i class="fa-solid fa-trophy me-1"></i>Лучшая попытка: {{ level.user_progress.best_score }}%</div>
+              <a href="{% url 'level_play' level.id %}" class="btn btn-primary btn-sm">
+                <i class="fa-solid fa-play me-1"></i>Начать
+              </a>
             {% endif %}
           </div>
         </div>

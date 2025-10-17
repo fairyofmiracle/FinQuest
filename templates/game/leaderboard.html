@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Турнирная таблица — FinQuest{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h4 class="section-title"><i class="fa-solid fa-trophy"></i> Турнирная таблица</h4>
+  <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-primary">
+    <i class="fa-solid fa-home me-1"></i>Дашборд
+  </a>
+</div>
+
+<!-- Статистика текущего пользователя -->
+{% if current_user_entry %}
+<div class="card mb-4">
+  <div class="card-body">
+    <div class="row align-items-center">
+      <div class="col-auto">
+        <div class="rank-badge rank-{{ current_user_rank|add:0 }}">
+          {% if current_user_rank <= 3 %}
+            <i class="fa-solid fa-medal"></i>
+          {% else %}
+            <span class="rank-number">{{ current_user_rank }}</span>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col">
+        <h5 class="mb-1">{{ current_user_entry.user.get_full_name|default:current_user_entry.user.username }}</h5>
+        <p class="text-muted small mb-0">Ваша позиция в рейтинге</p>
+      </div>
+      <div class="col-auto">
+        <div class="d-flex gap-3">
+          <div class="text-center">
+            <div class="fw-bold text-primary">{{ current_user_entry.total_points }}</div>
+            <small class="text-muted">Очки</small>
+          </div>
+          <div class="text-center">
+            <div class="fw-bold text-warning">{{ current_user_entry.levels_completed }}</div>
+            <small class="text-muted">Уровни</small>
+          </div>
+          <div class="text-center">
+            <div class="fw-bold text-success">{{ current_user_entry.achievements_count }}</div>
+            <small class="text-muted">Достижения</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<!-- Топ игроков -->
+<div class="card">
+  <div class="card-body">
+    <h5 class="mb-3"><i class="fa-solid fa-crown me-2"></i>Топ игроков</h5>
+    
+    {% if top_players %}
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th width="60">Ранг</th>
+              <th>Игрок</th>
+              <th class="text-center">Очки</th>
+              <th class="text-center">Уровни</th>
+              <th class="text-center">Достижения</th>
+              <th class="text-center">Серия</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for entry in top_players %}
+              <tr class="{% if entry.user == request.user %}table-primary{% endif %}">
+                <td>
+                  <div class="rank-badge rank-{{ forloop.counter }}">
+                    {% if forloop.counter <= 3 %}
+                      <i class="fa-solid fa-medal"></i>
+                    {% else %}
+                      <span class="rank-number">{{ forloop.counter }}</span>
+                    {% endif %}
+                  </div>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    {% if entry.user.avatar %}
+                      <img src="{{ entry.user.avatar.url }}" class="rounded-circle me-2" width="32" height="32" alt="Аватар">
+                    {% else %}
+                      <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" 
+                           style="width:32px; height:32px; font-size:14px; font-weight:bold;">
+                        {{ entry.user.username|first|upper }}
+                      </div>
+                    {% endif %}
+                    <div>
+                      <div class="fw-bold">{{ entry.user.get_full_name|default:entry.user.username }}</div>
+                      <small class="text-muted">{{ entry.user.get_level_title }}</small>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-center">
+                  <span class="badge bg-primary">{{ entry.total_points }}</span>
+                </td>
+                <td class="text-center">
+                  <span class="badge bg-success">{{ entry.levels_completed }}</span>
+                </td>
+                <td class="text-center">
+                  <span class="badge bg-warning text-dark">{{ entry.achievements_count }}</span>
+                </td>
+                <td class="text-center">
+                  <span class="badge bg-info">{{ entry.streak_days }} дней</span>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="text-center py-5">
+        <i class="fa-solid fa-trophy text-muted" style="font-size: 3rem;"></i>
+        <p class="text-muted mt-3">Пока нет игроков в рейтинге. Станьте первым!</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Информация о рейтинге -->
+<div class="card mt-4">
+  <div class="card-body">
+    <h6><i class="fa-solid fa-info-circle me-2"></i>Как работает рейтинг?</h6>
+    <div class="row">
+      <div class="col-md-6">
+        <ul class="list-unstyled">
+          <li><i class="fa-solid fa-star text-primary me-2"></i><strong>Очки</strong> - основной критерий рейтинга</li>
+          <li><i class="fa-solid fa-check-circle text-success me-2"></i><strong>Уровни</strong> - количество пройденных уровней</li>
+        </ul>
+      </div>
+      <div class="col-md-6">
+        <ul class="list-unstyled">
+          <li><i class="fa-solid fa-trophy text-warning me-2"></i><strong>Достижения</strong> - количество полученных наград</li>
+          <li><i class="fa-solid fa-fire text-danger me-2"></i><strong>Серия</strong> - текущая серия дней</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

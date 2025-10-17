@@ -3,33 +3,45 @@
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-3">
-  <a href="{% url 'topic_levels' level.topic.id %}" class="btn btn-sm btn-outline-secondary">← К теме</a>
-  <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-primary">🏠 Дашборд</a>
+  <a href="{% url 'topic_levels' level.topic.id %}" class="btn btn-sm btn-outline-secondary">
+    <i class="fa-solid fa-arrow-left me-1"></i>К теме
+  </a>
+  <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-primary">
+    <i class="fa-solid fa-home me-1"></i>Дашборд
+  </a>
   <div></div>
-  
 </div>
 <img class="hero-illustration mb-3" src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1600&auto=format&fit=crop" alt="Result" />
 <h4>{{ level.title }}</h4>
 
 {% if progress.score == 100 %}
-  <div class="alert alert-success">✅ Правильно!</div>
+  <div class="alert alert-success"><i class="fa-solid fa-check-circle me-2"></i>Правильно!</div>
 {% else %}
-  <div class="alert alert-danger">❌ Неправильно!</div>
+  <div class="alert alert-danger"><i class="fa-solid fa-times-circle me-2"></i>Неправильно!</div>
   <p><strong>Правильный ответ:</strong> {{ correct_option.text }}</p>
 {% endif %}
 
 {% if progress.completed and progress.score == 100 %}
-  <p class="text-success">+{{ level.reward_points }} очков, +{{ level.reward_coins }} 🪙</p>
+  <p class="text-success">
+    <i class="fa-solid fa-star me-1"></i>+{{ level.reward_points }} очков, 
+    <i class="fa-solid fa-coins me-1"></i>+{{ level.reward_coins }}
+  </p>
 {% endif %}
 
-<p class="text-muted">Лучшая попытка: {{ progress.best_score }}%</p>
+<p class="text-muted"><i class="fa-solid fa-trophy me-1"></i>Лучшая попытка: {{ progress.best_score }}%</p>
 
 <div class="mt-4">
   {% if next_level %}
-    <a href="{% url 'level_play' next_level.id %}" class="btn btn-success">Следующий уровень →</a>
+    <a href="{% url 'level_play' next_level.id %}" class="btn btn-success">
+      <i class="fa-solid fa-arrow-right me-1"></i>Следующий уровень
+    </a>
   {% else %}
-    <a href="{% url 'topic_levels' level.topic.id %}" class="btn btn-outline-primary">← К теме</a>
+    <a href="{% url 'topic_levels' level.topic.id %}" class="btn btn-outline-primary">
+      <i class="fa-solid fa-arrow-left me-1"></i>К теме
+    </a>
   {% endif %}
-  <a href="{% url 'level_play' level.id %}" class="btn btn-warning">Попробовать снова</a>
+  <a href="{% url 'level_play' level.id %}" class="btn btn-warning">
+    <i class="fa-solid fa-redo me-1"></i>Попробовать снова
+  </a>
 </div>
 {% endblock %}

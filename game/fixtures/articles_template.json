@@ -1,0 +1,7 @@
+[
+  {
+    "title": "💰 Название статьи",
+    "topic": "Накопления",
+    "content": "<div class=\"article-content\">\n  <div class=\"article-image\">\n    <img src=\"https://images.unsplash.com/photo-XXXXX?q=80&w=1200&auto=format&fit=crop\" alt=\"Описание\" class=\"img-fluid rounded mb-4\">\n  </div>\n  \n  <h3>Заголовок раздела</h3>\n  <p>Основной текст статьи...</p>\n  \n  <div class=\"tip-box\">\n    <strong>💡 Совет:</strong> Полезный совет\n  </div>\n  \n  <div class=\"warning-box\">\n    <strong>⚠️ Важно:</strong> Важное предупреждение\n  </div>\n  \n  <div class=\"success-box\">\n    <strong>✅ Помните:</strong> Полезная информация\n  </div>\n</div>"
+  }
+]

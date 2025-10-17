@@ -21,9 +21,12 @@ class Level(models.Model):
     ]
     LEVEL_TYPE_CHOICES = [
         ('quiz', 'Викторина'),
-        ('quest', 'Квест'),
-        ('simulation', 'Симуляция'),
+        ('scenario', 'Сценарий'),
+        ('calculation', 'Расчеты'),
+        ('matching', 'Сопоставление'),
         ('sorting', 'Сортировка'),
+        ('simulation', 'Симуляция'),
+        ('quest', 'Квест'),
     ]
 
     type = models.CharField(max_length=20, choices=LEVEL_TYPE_CHOICES, default='quiz')
@@ -34,6 +37,7 @@ class Level(models.Model):
     order_in_topic = models.PositiveIntegerField()  # порядок в теме
     reward_points = models.IntegerField(default=10)
     reward_coins = models.IntegerField(default=5)
+    content = models.JSONField(default=dict, blank=True)  # Для хранения данных уровня
 
     def __str__(self):
         return f"{self.topic.name} — {self.title}"
@@ -51,7 +55,7 @@ class LevelOption(models.Model):
         return self.text
 
 class UserLevelProgress(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
     level = models.ForeignKey(Level, on_delete=models.CASCADE)
     completed = models.BooleanField(default=False)
     score = models.IntegerField(null=True, blank=True)  # 0–100%
@@ -75,7 +79,7 @@ class Achievement(models.Model):
 
 
 class UserAchievement(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
     achievement = models.ForeignKey(Achievement, on_delete=models.CASCADE)
     earned_at = models.DateTimeField(auto_now_add=True)
 
@@ -106,7 +110,7 @@ class Streak(models.Model):
 
 
 class Notification(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
     text = models.CharField(max_length=200)
     is_read = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -128,3 +132,22 @@ class AvatarItem(models.Model):
     image = models.ImageField(upload_to='avatars/items/')
     cost_coins = models.IntegerField(default=20)
     is_default = models.BooleanField(default=False)
+
+class Leaderboard(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='leaderboard_entry')
+    total_points = models.IntegerField(default=0)
+    total_coins = models.IntegerField(default=0)
+    levels_completed = models.IntegerField(default=0)
+    achievements_count = models.IntegerField(default=0)
+    streak_days = models.IntegerField(default=0)
+    last_updated = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['-total_points', '-levels_completed', '-achievements_count']
+    
+    def __str__(self):
+        return f"{self.user.username} - {self.total_points} очков"
+    
+    def get_rank(self):
+        """Возвращает текущий ранг пользователя"""
+        return Leaderboard.objects.filter(total_points__gt=self.total_points).count() + 1

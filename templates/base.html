@@ -15,6 +15,7 @@
     .btn-lg { width: 100%; margin: 8px 0; }
   </style>
   <script src="{% static 'js/finquest.js' %}" defer></script>
+  <script src="{% static 'js/tutorial.js' %}" defer></script>
 </head>
 <body>
   <nav class="navbar navbar-dark bg-gradient">
@@ -24,7 +25,13 @@
       </a>
       {% if user.is_authenticated %}
         <div class="d-flex align-items-center gap-2">
-          <a href="{% url 'notifications' %}" class="btn btn-sm btn-outline-light">
+          <a href="{% url 'leaderboard' %}" class="btn btn-sm btn-outline-light">
+            <i class="fa-solid fa-trophy me-1"></i>Рейтинг
+          </a>
+          <a href="{% url 'media' %}" class="btn btn-sm btn-outline-light">
+            <i class="fa-solid fa-newspaper me-1"></i>Статьи
+          </a>
+          <a href="{% url 'notifications_list' %}" class="btn btn-sm btn-outline-light">
             <i class="fa-regular fa-bell me-1"></i>Уведомления
           </a>
           <a href="{% url 'profile' %}" class="btn btn-sm btn-outline-light">

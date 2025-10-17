@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="hero text-center">
+      <div class="mb-4">
+        <i class="fa-solid fa-heart text-danger" style="font-size: 4rem; animation: heartbeat 2s ease-in-out infinite;"></i>
+      </div>
+      
+      <h2 class="section-title mb-3">
+        <i class="fa-solid fa-hand-wave"></i> До свидания!
+      </h2>
+      
+      <p class="lead mb-4">Спасибо, что изучали финансы вместе с нами!</p>
+      
+      <div class="row text-center mb-4">
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <i class="fa-solid fa-trophy text-warning mb-3" style="font-size: 2rem;"></i>
+              <h5>Ваш прогресс сохранён</h5>
+              <p class="text-muted small">Все достижения и очки ждут вашего возвращения</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <i class="fa-solid fa-graduation-cap text-primary mb-3" style="font-size: 2rem;"></i>
+              <h5>Продолжайте учиться</h5>
+              <p class="text-muted small">Финансовая грамотность — путь к успеху</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <i class="fa-solid fa-star text-success mb-3" style="font-size: 2rem;"></i>
+              <h5>Возвращайтесь скорее!</h5>
+              <p class="text-muted small">Новые уровни и достижения ждут вас</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-4">
+        <a href="{% url 'login' %}" class="btn btn-primary btn-lg me-3">
+          <i class="fa-solid fa-sign-in-alt me-2"></i>Войти снова
+        </a>
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-primary btn-lg">
+          <i class="fa-solid fa-home me-2"></i>На главную
+        </a>
+      </div>
+      
+      <div class="mt-5">
+        <p class="text-muted">
+          <i class="fa-solid fa-quote-left me-2"></i>
+          "Инвестируйте в себя — это лучшая инвестиция, которую вы можете сделать"
+          <i class="fa-solid fa-quote-right ms-2"></i>
+        </p>
+        <small class="text-muted">— FinQuest Team</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.hand-wave {
+  animation: wave 2s ease-in-out infinite;
+}
+
+@keyframes wave {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(20deg); }
+  75% { transform: rotate(-10deg); }
+}
+</style>
+{% endblock %}

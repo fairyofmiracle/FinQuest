@@ -35,3 +35,21 @@ class User(AbstractUser):
             return "Эксперт"
         else:
             return "Мастер"
+    
+    def get_level_progress(self):
+        """Возвращает прогресс текущего уровня в процентах"""
+        if self.points < 50:
+            return int((self.points / 50) * 100)
+        elif self.points < 150:
+            return int(((self.points - 50) / 100) * 100)
+        elif self.points < 300:
+            return int(((self.points - 150) / 150) * 100)
+        elif self.points < 500:
+            return int(((self.points - 300) / 200) * 100)
+        else:
+            return 100
+    
+    def get_achievements_count(self):
+        """Возвращает количество полученных достижений"""
+        from game.models import UserAchievement
+        return UserAchievement.objects.filter(user=self).count()

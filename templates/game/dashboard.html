@@ -2,35 +2,48 @@
 {% block title %}FinQuest — Главная{% endblock %}
 
 {% block content %}
+{% if is_first_visit %}
+<div id="first-visit-trigger" style="display: none;"></div>
+{% endif %}
 <!-- Статус пользователя -->
-<div class="user-summary text-center mb-4">
-  <div class="mb-2">
-    {% if user.avatar %}
-      <img src="{{ user.avatar.url }}" class="rounded-circle shadow" width="70" height="70" alt="Аватар">
-    {% else %}
-      <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow"
-           style="width:70px; height:70px; font-size:24px; font-weight:bold;">
-        {{ user.username|first|upper }}
+<div class="user-card mb-4">
+  <div class="card">
+    <div class="card-body">
+      <div class="row align-items-center">
+        <div class="col-auto">
+          {% if user.avatar %}
+            <img src="{{ user.avatar.url }}" class="rounded-circle shadow" width="60" height="60" alt="Аватар">
+          {% else %}
+            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow"
+                 style="width:60px; height:60px; font-size:20px; font-weight:bold;">
+              {{ user.username|first|upper }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="col">
+          <h5 class="mb-1">{{ user.get_full_name|default:user.username }}</h5>
+          <div class="d-flex align-items-center mb-2">
+            <span class="text-muted small me-2">{{ user.get_level_title }} • Уровень {{ user.level_number }}</span>
+            <div class="progress flex-grow-1" style="height: 6px; max-width: 100px;">
+              <div class="progress-bar bg-gradient" role="progressbar" style="width: {{ user.level_progress }}%;"></div>
+            </div>
+          </div>
+          <div class="d-flex gap-2">
+            <span class="badge bg-primary"><i class="fa-solid fa-star me-1"></i>{{ user.points }}</span>
+            <span class="badge bg-warning text-dark"><i class="fa-solid fa-coins me-1"></i>{{ user.coins }}</span>
+            <span class="badge bg-success"><i class="fa-solid fa-trophy me-1"></i>{{ user.achievements_count }}</span>
+          </div>
+        </div>
+        <div class="col-auto">
+          <a href="{% url 'profile' %}" class="btn btn-outline-primary btn-sm">
+            <i class="fa-solid fa-cog me-1"></i>Настройки
+          </a>
+        </div>
       </div>
-    {% endif %}
-  </div>
-  <h5 class="section-title"><i class="fa-regular fa-user"></i> {{ user.get_full_name|default:user.username }}</h5>
-  <p class="text-muted">{{ user.get_level_title }} • Уровень {{ user.level_number }}</p>
-  <div class="d-flex justify-content-center gap-3 mb-3">
-    <span class="badge bg-primary"><i class="fa-solid fa-star me-1"></i>Очки: {{ user.points }}</span>
-    <span class="badge bg-warning text-dark"><i class="fa-solid fa-coins me-1"></i>{{ user.coins }}</span>
+    </div>
   </div>
 </div>
 
-<!-- Быстрый доступ -->
-<div class="quick-actions mb-4 text-center">
-  <a href="{% url 'media' %}" class="btn btn-outline-info btn-sm me-2">📚 Статьи</a>
-  <a href="{% url 'notifications' %}" class="btn btn-outline-warning btn-sm me-2">
-    🔔 Уведомления {% if unread_notifications and unread_notifications > 0 %}<span class="badge bg-danger">{{ unread_notifications }}</span>{% endif %}
-  </a>
-  <a href="{% url 'profile' %}" class="btn btn-outline-secondary btn-sm">👤 Профиль</a>
-  
-</div>
 
 <!-- Темы -->
 <h5 class="section-title"><i class="fa-solid fa-shield-halved"></i> Темы</h5>

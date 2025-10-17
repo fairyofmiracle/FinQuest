@@ -3,15 +3,33 @@
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-3">
-  <a href="{% url 'topic_levels' level.topic.id %}" class="btn btn-sm btn-outline-secondary">← К теме</a>
-  <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-primary">🏠 Дашборд</a>
+  <a href="{% url 'topic_levels' level.topic.id %}" class="btn btn-sm btn-outline-secondary">
+    <i class="fa-solid fa-arrow-left me-1"></i>К теме
+  </a>
+  <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-primary">
+    <i class="fa-solid fa-home me-1"></i>Дашборд
+  </a>
   <div></div>
-  
 </div>
-<img class="hero-illustration mb-3" src="https://images.unsplash.com/photo-1553729459-efe14ef6055d?q=80&w=1600&auto=format&fit=crop" alt="Quiz" />
-<h4>{{ level.title }}</h4>
-<p>{{ level.description|linebreaks }}</p>
 
+<!-- Заголовок уровня с иконкой типа -->
+<div class="level-header mb-4">
+  <div class="d-flex align-items-center mb-2">
+    <span class="level-type-badge me-3">
+      {% if level.type == 'quiz' %}📝
+      {% elif level.type == 'scenario' %}🎭
+      {% elif level.type == 'calculation' %}🧮
+      {% elif level.type == 'matching' %}🔗
+      {% elif level.type == 'sorting' %}📊
+      {% elif level.type == 'simulation' %}🎮
+      {% else %}❓{% endif %}
+    </span>
+    <h4 class="mb-0">{{ level.title }}</h4>
+  </div>
+  <p class="text-muted">{{ level.description|linebreaks }}</p>
+</div>
+
+<!-- Подсказки -->
 {% if hint %}
   {% if hint_shown %}
     <div class="alert alert-info">💡 {{ hint.text }}</div>
@@ -24,18 +42,214 @@
   {% endif %}
 {% endif %}
 
-<form method="post">
-  {% csrf_token %}
-  {% for option in options %}
-    <div class="form-check mb-2">
-      <input class="form-check-input" type="radio" name="answer" value="{{ option.id }}" id="opt{{ option.id }}" required>
-      <label class="form-check-label" for="opt{{ option.id }}">{{ option.text }}</label>
+<!-- Контент уровня в зависимости от типа -->
+{% if level.type == 'quiz' %}
+  <!-- Квиз (старый формат) -->
+  <form method="post">
+    {% csrf_token %}
+    {% for option in options %}
+      <div class="form-check mb-2">
+        <input class="form-check-input" type="radio" name="answer" value="{{ option.id }}" id="opt{{ option.id }}" required>
+        <label class="form-check-label" for="opt{{ option.id }}">{{ option.text }}</label>
+      </div>
+    {% empty %}
+      <p class="text-muted">Нет вариантов ответа.</p>
+    {% endfor %}
+    <button type="submit" class="btn btn-success btn-lg mt-3 w-100">
+      <i class="fa-solid fa-check me-2"></i>Проверить
+    </button>
+  </form>
+
+{% elif level.type == 'scenario' %}
+  <!-- Сценарий -->
+  <div class="scenario-level">
+    <div class="scenario-content mb-4">
+      <h5>{{ level.content.scenario }}</h5>
+      {% if level.content.situation %}
+        <div class="situation-info p-3 bg-light rounded mb-3">
+          <h6>Ситуация:</h6>
+          <ul class="mb-0">
+            <li>Текущая сумма: {{ level.content.situation.current_amount|floatformat:0 }} ₽</li>
+            <li>Целевая сумма: {{ level.content.situation.target_amount|floatformat:0 }} ₽</li>
+            <li>Срок: {{ level.content.situation.timeframe }} месяцев</li>
+          </ul>
+        </div>
+      {% endif %}
     </div>
-  {% empty %}
-    <p class="text-muted">Нет вариантов ответа.</p>
-  {% endfor %}
-  <button type="submit" class="btn btn-success btn-lg mt-3 w-100">Проверить</button>
-</form>
+    
+    <form method="post">
+      {% csrf_token %}
+      <h6>Выберите подходящий вариант:</h6>
+      {% for option in level.content.options %}
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="radio" name="scenario_answer" value="{{ forloop.counter0 }}" id="scenario{{ forloop.counter0 }}" required>
+          <label class="form-check-label" for="scenario{{ forloop.counter0 }}">
+            <div class="option-card p-3 border rounded">
+              <h6>{{ option.bank }}</h6>
+              <p class="mb-1"><strong>Ставка:</strong> {{ option.rate }}% годовых</p>
+              <p class="mb-1"><strong>Мин. сумма:</strong> {{ option.min_amount|floatformat:0 }} ₽</p>
+              <p class="mb-0 text-muted">{{ option.description }}</p>
+            </div>
+          </label>
+        </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-success btn-lg mt-3 w-100">
+        <i class="fa-solid fa-check me-2"></i>Выбрать
+      </button>
+    </form>
+  </div>
+
+{% elif level.type == 'calculation' %}
+  <!-- Расчеты -->
+  <div class="calculation-level">
+    <div class="calculation-content mb-4">
+      <h5>{{ level.content.task }}</h5>
+      {% if level.content.formula %}
+        <div class="formula-box p-3 bg-light rounded mb-3">
+          <h6>Формула:</h6>
+          <code>{{ level.content.formula }}</code>
+        </div>
+      {% endif %}
+      {% if level.content.given %}
+        <div class="given-data p-3 bg-info bg-opacity-10 rounded mb-3">
+          <h6>Дано:</h6>
+          <ul class="mb-0">
+            {% for key, value in level.content.given.items %}
+              <li><strong>{{ key }}:</strong> {{ value }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+      {% if level.content.steps %}
+        <div class="steps p-3 bg-warning bg-opacity-10 rounded mb-3">
+          <h6>Шаги решения:</h6>
+          <ol class="mb-0">
+            {% for step in level.content.steps %}
+              <li>{{ step }}</li>
+            {% endfor %}
+          </ol>
+        </div>
+      {% endif %}
+    </div>
+    
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="calculation_answer" class="form-label">Ваш ответ:</label>
+        <input type="number" class="form-control form-control-lg" id="calculation_answer" name="calculation_answer" step="0.01" required>
+        <div class="form-text">Введите числовой ответ (допустимая погрешность: ±{{ level.content.tolerance|floatformat:0 }})</div>
+      </div>
+      <button type="submit" class="btn btn-success btn-lg w-100">
+        <i class="fa-solid fa-calculator me-2"></i>Проверить расчет
+      </button>
+    </form>
+  </div>
+
+{% elif level.type == 'matching' %}
+  <!-- Сопоставление -->
+  <div class="matching-level">
+    <h5>{{ level.content.instruction }}</h5>
+    <form method="post">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-md-6">
+          <h6>Термины:</h6>
+          {% for item in level.content.items %}
+            <div class="matching-item p-2 border rounded mb-2" data-left="{{ forloop.counter0 }}">
+              {{ item.left }}
+            </div>
+          {% endfor %}
+        </div>
+        <div class="col-md-6">
+          <h6>Описания:</h6>
+          {% for item in level.content.items %}
+            <select name="match_{{ forloop.counter0 }}" class="form-select mb-2" required>
+              <option value="">Выберите описание</option>
+              {% for desc_item in level.content.items %}
+                <option value="{{ forloop.counter0 }}">{{ desc_item.right }}</option>
+              {% endfor %}
+            </select>
+          {% endfor %}
+        </div>
+      </div>
+      <button type="submit" class="btn btn-success btn-lg mt-3 w-100">
+        <i class="fa-solid fa-link me-2"></i>Проверить сопоставление
+      </button>
+    </form>
+  </div>
+
+{% elif level.type == 'sorting' %}
+  <!-- Сортировка -->
+  <div class="sorting-level">
+    <h5>{{ level.content.instruction }}</h5>
+    <form method="post">
+      {% csrf_token %}
+      <div class="sortable-list">
+        {% for item in level.content.items %}
+          <div class="sortable-item p-3 border rounded mb-2" data-order="{{ forloop.counter0 }}">
+            <div class="d-flex justify-content-between align-items-center">
+              <span>{{ item }}</span>
+              <select name="sort_{{ forloop.counter0 }}" class="form-select" style="width: auto;" required>
+                <option value="">Позиция</option>
+                {% for i in level.content.items %}
+                  <option value="{{ forloop.counter0 }}">{{ forloop.counter }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <button type="submit" class="btn btn-success btn-lg mt-3 w-100">
+        <i class="fa-solid fa-sort me-2"></i>Проверить порядок
+      </button>
+    </form>
+  </div>
+
+{% elif level.type == 'simulation' %}
+  <!-- Симуляция -->
+  <div class="simulation-level">
+    <div class="simulation-content mb-4">
+      <h5>{{ level.content.scenario }}</h5>
+      {% if level.content.dialogue %}
+        <div class="dialogue-box p-3 bg-light rounded mb-3">
+          {% for message in level.content.dialogue %}
+            <div class="message mb-3">
+              <div class="speaker text-primary fw-bold">{{ message.speaker }}:</div>
+              <div class="message-text">{{ message.text }}</div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+    
+    <form method="post">
+      {% csrf_token %}
+      <h6>Ваш ответ:</h6>
+      {% for dialogue in level.content.dialogue %}
+        {% for response in dialogue.responses %}
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="radio" name="simulation_response" value="{{ forloop.counter0 }}" id="sim{{ forloop.counter0 }}" required>
+            <label class="form-check-label" for="sim{{ forloop.counter0 }}">
+              <div class="response-card p-3 border rounded">
+                {{ response.text }}
+              </div>
+            </label>
+          </div>
+        {% endfor %}
+      {% endfor %}
+      <button type="submit" class="btn btn-success btn-lg mt-3 w-100">
+        <i class="fa-solid fa-play me-2"></i>Ответить
+      </button>
+    </form>
+  </div>
+
+{% else %}
+  <!-- Неизвестный тип уровня -->
+  <div class="alert alert-warning">
+    <h5>Неизвестный тип уровня</h5>
+    <p>Этот уровень имеет неизвестный тип: {{ level.type }}</p>
+  </div>
+{% endif %}
 
 {% if messages %}
   {% for message in messages %}

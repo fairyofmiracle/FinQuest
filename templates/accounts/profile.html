@@ -64,7 +64,11 @@
 {% endif %}
 
 <div class="text-center mt-4">
-  <a href="{% url 'settings' %}" class="btn btn-outline-secondary btn-sm me-2">Настройки</a>
-  <a href="{% url 'dashboard' %}" class="btn btn-outline-primary btn-sm">🏠 Дашборд</a>
+  <a href="{% url 'settings' %}" class="btn btn-outline-secondary btn-sm me-2">
+    <i class="fa-solid fa-cog me-1"></i>Настройки
+  </a>
+  <a href="{% url 'dashboard' %}" class="btn btn-outline-primary btn-sm">
+    <i class="fa-solid fa-home me-1"></i>Дашборд
+  </a>
 </div>
 {% endblock %}
