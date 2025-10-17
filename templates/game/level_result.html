@@ -2,7 +2,13 @@
 {% load static %}
 
 {% block content %}
-<a href="{% url 'topic_levels' level.topic.id %}" class="btn btn-sm btn-secondary mb-3">← Назад к теме</a>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <a href="{% url 'topic_levels' level.topic.id %}" class="btn btn-sm btn-outline-secondary">← К теме</a>
+  <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-primary">🏠 Дашборд</a>
+  <div></div>
+  
+</div>
+<img class="hero-illustration mb-3" src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1600&auto=format&fit=crop" alt="Result" />
 <h4>{{ level.title }}</h4>
 
 {% if progress.score == 100 %}
@@ -15,6 +21,8 @@
 {% if progress.completed and progress.score == 100 %}
   <p class="text-success">+{{ level.reward_points }} очков, +{{ level.reward_coins }} 🪙</p>
 {% endif %}
+
+<p class="text-muted">Лучшая попытка: {{ progress.best_score }}%</p>
 
 <div class="mt-4">
   {% if next_level %}

@@ -2,7 +2,12 @@
 {% block title %}{{ article.title }} — FinQuest{% endblock %}
 
 {% block content %}
-<a href="{% url 'media' %}" class="btn btn-sm btn-secondary mb-3">← Назад к статьям</a>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <a href="{% url 'media' %}" class="btn btn-sm btn-outline-secondary">← К статьям</a>
+  <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-primary">🏠 Дашборд</a>
+  <div></div>
+  
+</div>
 <h2>{{ article.title }}</h2>
 <p class="text-muted">{{ article.topic.name }} • {{ article.created_at|date:"d.m.Y" }}</p>
 <div class="mt-3">

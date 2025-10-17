@@ -3,10 +3,13 @@
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
-  <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-secondary">← Назад</a>
+  <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-primary">🏠 Дашборд</a>
   <h3>{{ topic.name }}</h3>
   <div></div>
+  
 </div>
+
+<img class="topic-cover" src="https://images.unsplash.com/photo-1545239351-1141bd82e8a6?q=80&w=1600&auto=format&fit=crop" alt="Topic" />
 
 {% if levels %}
   {% for level in levels %}
@@ -33,8 +36,10 @@
           <div class="text-end">
             {% if level.user_progress.completed %}
               <span class="text-success me-2">✅ Пройден</span>
+              <div class="small text-muted">Лучшая попытка: {{ level.user_progress.best_score }}%</div>
               <a href="{% url 'level_play' level.id %}" class="btn btn-outline-primary btn-sm">Повторить</a>
             {% else %}
+              <div class="small text-muted mb-1">Лучшая попытка: {{ level.user_progress.best_score }}%</div>
               <a href="{% url 'level_play' level.id %}" class="btn btn-primary btn-sm">Начать</a>
             {% endif %}
           </div>

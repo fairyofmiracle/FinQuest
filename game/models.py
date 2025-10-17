@@ -55,6 +55,7 @@ class UserLevelProgress(models.Model):
     level = models.ForeignKey(Level, on_delete=models.CASCADE)
     completed = models.BooleanField(default=False)
     score = models.IntegerField(null=True, blank=True)  # 0–100%
+    best_score = models.IntegerField(default=0)
     attempts = models.IntegerField(default=0)
     completed_at = models.DateTimeField(auto_now_add=True)
 

@@ -16,7 +16,7 @@
       </div>
     {% endif %}
   </div>
-  <h3>{{ user.get_full_name|default:user.username }}</h3>
+  <h3 class="section-title"><i class="fa-regular fa-user"></i> {{ user.get_full_name|default:user.username }}</h3>
   <p class="text-muted">{{ user.get_level_title }} • Уровень {{ user.level_number }}</p>
   <div class="d-flex justify-content-center gap-3 mb-3">
     <span class="badge bg-primary rounded-pill px-3 py-2">Очки: {{ user.points }}</span>
@@ -25,7 +25,7 @@
 </div>
 
 <!-- Прогресс по темам -->
-<h5 class="mb-3">Прогресс по темам</h5>
+<h5 class="mb-3 section-title"><i class="fa-solid fa-chart-line"></i> Прогресс по темам</h5>
 {% for topic in topics %}
   <div class="card mb-3">
     <div class="card-body py-2">
@@ -43,7 +43,7 @@
 {% endfor %}
 
 <!-- Достижения -->
-<h5 class="mt-4 mb-3">Достижения</h5>
+<h5 class="mt-4 mb-3 section-title"><i class="fa-solid fa-trophy"></i> Достижения</h5>
 {% if achievements %}
   <div class="row g-2">
     {% for ua in achievements %}
@@ -65,7 +65,6 @@
 
 <div class="text-center mt-4">
   <a href="{% url 'settings' %}" class="btn btn-outline-secondary btn-sm me-2">Настройки</a>
-  <a href="{% url 'dashboard' %}" class="btn btn-outline-primary btn-sm me-2">Назад</a>
-  <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Выйти</a>
+  <a href="{% url 'dashboard' %}" class="btn btn-outline-primary btn-sm">🏠 Дашборд</a>
 </div>
 {% endblock %}
