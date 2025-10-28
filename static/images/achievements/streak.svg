@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="streakGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f97316;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ea580c;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="streakGlow">
+      <stop offset="0%" style="stop-color:#f97316;stop-opacity:0.5" />
+      <stop offset="100%" style="stop-color:#f97316;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Glow -->
+  <circle cx="100" cy="100" r="85" fill="url(#streakGlow)"/>
+  
+  <!-- Main circle -->
+  <circle cx="100" cy="100" r="70" fill="url(#streakGrad)" opacity="0.9"/>
+  
+  <!-- Flame shape -->
+  <path d="M 100 140 Q 80 120 80 100 Q 80 80 100 60 Q 120 80 120 100 Q 120 120 100 140 Z" 
+        fill="#fbbf24" opacity="0.95"/>
+  <path d="M 100 130 Q 88 115 88 100 Q 88 85 100 70 Q 112 85 112 100 Q 112 115 100 130 Z" 
+        fill="#fef3c7" opacity="0.9"/>
+  <path d="M 100 120 Q 93 110 93 100 Q 93 90 100 80 Q 107 90 107 100 Q 107 110 100 120 Z" 
+        fill="white" opacity="0.8"/>
+  
+  <!-- Sparkles -->
+  <circle cx="75" cy="75" r="3" fill="white" opacity="0.9"/>
+  <circle cx="85" cy="65" r="2" fill="white" opacity="0.8"/>
+  <circle cx="125" cy="75" r="3" fill="white" opacity="0.9"/>
+  <circle cx="115" cy="65" r="2" fill="white" opacity="0.8"/>
+  
+  <!-- Number (streak days) -->
+  <circle cx="145" cy="55" r="18" fill="white" opacity="0.95"/>
+  <text x="145" y="62" font-family="Arial, sans-serif" font-size="18" fill="#f97316" text-anchor="middle" font-weight="bold">7</text>
+</svg>
+

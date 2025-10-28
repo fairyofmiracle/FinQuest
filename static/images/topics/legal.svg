@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="legalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a855f7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9333ea;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="90" fill="url(#legalGrad)" opacity="0.1"/>
+  
+  <!-- Scale base -->
+  <rect x="95" y="140" width="10" height="30" fill="url(#legalGrad)" opacity="0.9"/>
+  <rect x="75" y="165" width="50" height="8" rx="4" fill="url(#legalGrad)" opacity="0.9"/>
+  
+  <!-- Scale beam -->
+  <rect x="60" y="75" width="80" height="5" rx="2" fill="url(#legalGrad)" opacity="0.9"/>
+  
+  <!-- Scale center -->
+  <polygon points="100,80 95,95 105,95" fill="url(#legalGrad)" opacity="0.9"/>
+  <rect x="97" y="95" width="6" height="45" fill="url(#legalGrad)" opacity="0.9"/>
+  
+  <!-- Left pan -->
+  <line x1="70" y1="77" x2="70" y2="95" stroke="url(#legalGrad)" stroke-width="2" opacity="0.8"/>
+  <ellipse cx="70" cy="100" rx="20" ry="5" fill="url(#legalGrad)" opacity="0.7"/>
+  <path d="M 50 100 Q 50 105 70 105 Q 90 105 90 100" stroke="url(#legalGrad)" stroke-width="2" fill="none" opacity="0.8"/>
+  
+  <!-- Right pan -->
+  <line x1="130" y1="77" x2="130" y2="95" stroke="url(#legalGrad)" stroke-width="2" opacity="0.8"/>
+  <ellipse cx="130" cy="100" rx="20" ry="5" fill="url(#legalGrad)" opacity="0.7"/>
+  <path d="M 110 100 Q 110 105 130 105 Q 150 105 150 100" stroke="url(#legalGrad)" stroke-width="2" fill="none" opacity="0.8"/>
+  
+  <!-- Gavel -->
+  <rect x="145" y="130" width="30" height="8" rx="3" fill="#78716c" opacity="0.8" transform="rotate(45 160 134)"/>
+  <rect x="168" y="148" width="8" height="18" rx="2" fill="#78716c" opacity="0.8"/>
+  
+  <!-- Book -->
+  <rect x="25" y="145" width="35" height="25" rx="2" fill="url(#legalGrad)" opacity="0.8"/>
+  <rect x="25" y="145" width="5" height="25" fill="#a855f7" opacity="0.6"/>
+  <line x1="35" y1="152" x2="53" y2="152" stroke="white" stroke-width="1.5" opacity="0.6"/>
+  <line x1="35" y1="157" x2="50" y2="157" stroke="white" stroke-width="1.5" opacity="0.6"/>
+  <line x1="35" y1="162" x2="53" y2="162" stroke="white" stroke-width="1.5" opacity="0.6"/>
+</svg>
+

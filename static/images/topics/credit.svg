@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="creditGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f43f5e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#be123c;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="90" fill="url(#creditGrad)" opacity="0.1"/>
+  
+  <!-- Credit card -->
+  <rect x="30" y="70" width="140" height="90" rx="12" fill="url(#creditGrad)" opacity="0.9"/>
+  
+  <!-- Magnetic stripe -->
+  <rect x="30" y="95" width="140" height="20" fill="#1e293b" opacity="0.8"/>
+  
+  <!-- Chip -->
+  <rect x="45" y="120" width="30" height="25" rx="4" fill="#ffd700" opacity="0.9"/>
+  <rect x="50" y="125" width="20" height="15" rx="2" fill="#9a7b00" opacity="0.3"/>
+  
+  <!-- Card number dots -->
+  <circle cx="90" cy="135" r="2" fill="white" opacity="0.7"/>
+  <circle cx="98" cy="135" r="2" fill="white" opacity="0.7"/>
+  <circle cx="106" cy="135" r="2" fill="white" opacity="0.7"/>
+  <circle cx="114" cy="135" r="2" fill="white" opacity="0.7"/>
+  
+  <circle cx="125" cy="135" r="2" fill="white" opacity="0.7"/>
+  <circle cx="133" cy="135" r="2" fill="white" opacity="0.7"/>
+  <circle cx="141" cy="135" r="2" fill="white" opacity="0.7"/>
+  <circle cx="149" cy="135" r="2" fill="white" opacity="0.7"/>
+  
+  <!-- Contactless icon -->
+  <path d="M 120 80 Q 125 75 130 80" stroke="white" stroke-width="2" fill="none" opacity="0.7"/>
+  <path d="M 117 85 Q 125 77 133 85" stroke="white" stroke-width="2" fill="none" opacity="0.7"/>
+  <path d="M 114 90 Q 125 79 136 90" stroke="white" stroke-width="2" fill="none" opacity="0.7"/>
+  
+  <!-- Sparkle -->
+  <circle cx="155" cy="75" r="8" fill="white" opacity="0.6"/>
+  <circle cx="155" cy="75" r="3" fill="white" opacity="1"/>
+</svg>
+

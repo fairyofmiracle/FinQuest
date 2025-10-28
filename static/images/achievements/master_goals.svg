@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="goalsMasterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ec4899;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#db2777;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <circle cx="100" cy="100" r="85" fill="#ec4899" opacity="0.1"/>
+  <circle cx="100" cy="100" r="70" fill="url(#goalsMasterGrad)" opacity="0.9"/>
+  
+  <!-- Target circles with crown -->
+  <circle cx="100" cy="105" r="50" fill="none" stroke="white" stroke-width="2.5" opacity="0.3"/>
+  <circle cx="100" cy="105" r="38" fill="none" stroke="white" stroke-width="2.5" opacity="0.5"/>
+  <circle cx="100" cy="105" r="26" fill="none" stroke="white" stroke-width="2.5" opacity="0.7"/>
+  <circle cx="100" cy="105" r="14" fill="white" opacity="0.95"/>
+  
+  <!-- Arrow in center -->
+  <line x1="60" y1="65" x2="95" y2="100" stroke="#fbbf24" stroke-width="3.5" opacity="0.95"/>
+  <polygon points="95,100 87,102 89,94" fill="#fbbf24" opacity="0.95"/>
+  <polygon points="60,65 56,69 64,61" fill="#fbbf24" opacity="0.95"/>
+  
+  <!-- Crown on target -->
+  <path d="M 88 38 L 90 48 L 94 44 L 100 35 L 106 44 L 110 48 L 112 38 Z" fill="#fbbf24" opacity="0.95"/>
+  <rect x="87" y="48" width="26" height="5" rx="1" fill="#fbbf24" opacity="0.95"/>
+  <circle cx="94" cy="43" r="2" fill="#ef4444" opacity="0.9"/>
+  <circle cx="100" cy="40" r="2.5" fill="#3b82f6" opacity="0.9"/>
+  <circle cx="106" cy="43" r="2" fill="#10b981" opacity="0.9"/>
+  
+  <!-- Stars around -->
+  <polygon points="150,70 152,76 158,76 153,80 155,86 150,82 145,86 147,80 142,76 148,76" fill="#fbbf24" opacity="0.85"/>
+  <polygon points="160,130 162,134 166,134 163,137 164,141 160,138 156,141 157,137 154,134 158,134" fill="#fbbf24" opacity="0.75"/>
+  <polygon points="50,130 52,134 56,134 53,137 54,141 50,138 46,141 47,137 44,134 48,134" fill="#fbbf24" opacity="0.75"/>
+  
+  <!-- Trophy small -->
+  <path d="M 38 158 L 42 154 L 42 150 L 34 150 L 34 154 Z" fill="white" opacity="0.7"/>
+  <rect x="36" y="158" width="4" height="6" fill="white" opacity="0.7"/>
+  <rect x="34" y="164" width="8" height="2" fill="white" opacity="0.7"/>
+</svg>
+

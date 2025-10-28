@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="creditMasterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a855f7;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ec4899;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <circle cx="100" cy="100" r="85" fill="#a855f7" opacity="0.2"/>
+  <circle cx="100" cy="100" r="70" fill="url(#creditMasterGrad)" opacity="0.95"/>
+  
+  <!-- Credit card with diamond -->
+  <rect x="50" y="85" width="100" height="65" rx="8" fill="white" opacity="0.98"/>
+  <rect x="50" y="102" width="100" height="15" fill="#1e293b" opacity="0.7"/>
+  
+  <!-- Chip -->
+  <rect x="62" y="122" width="22" height="18" rx="3" fill="#fbbf24" opacity="0.9"/>
+  <rect x="66" y="126" width="14" height="10" rx="1" fill="#9a7b00" opacity="0.3"/>
+  
+  <!-- Card number dots -->
+  <circle cx="92" cy="133" r="1.5" fill="#666"/>
+  <circle cx="98" cy="133" r="1.5" fill="#666"/>
+  <circle cx="104" cy="133" r="1.5" fill="#666"/>
+  <circle cx="110" cy="133" r="1.5" fill="#666"/>
+  <circle cx="118" cy="133" r="1.5" fill="#666"/>
+  <circle cx="124" cy="133" r="1.5" fill="#666"/>
+  <circle cx="130" cy="133" r="1.5" fill="#666"/>
+  <circle cx="136" cy="133" r="1.5" fill="#666"/>
+  
+  <!-- Diamond above card -->
+  <polygon points="100,50 115,70 108,85 92,85 85,70" fill="#fef3c7" opacity="0.95" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.3))"/>
+  <polygon points="100,58 110,70 105,80 95,80 90,70" fill="white" opacity="0.7"/>
+  <line x1="100" y1="50" x2="100" y2="85" stroke="#a855f7" stroke-width="1" opacity="0.3"/>
+  <line x1="85" y1="70" x2="115" y2="70" stroke="#a855f7" stroke-width="1" opacity="0.3"/>
+  
+  <!-- Sparkles -->
+  <polygon points="40,90 42,94 46,94 43,97 44,101 40,98 36,101 37,97 34,94 38,94" fill="white" opacity="0.95"/>
+  <polygon points="160,110 162,114 166,114 163,117 164,121 160,118 156,121 157,117 154,114 158,114" fill="white" opacity="0.95"/>
+</svg>
+

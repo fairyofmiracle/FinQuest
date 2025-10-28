@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="estateMasterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f97316;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ea580c;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <circle cx="100" cy="100" r="85" fill="#f97316" opacity="0.1"/>
+  <circle cx="100" cy="100" r="70" fill="url(#estateMasterGrad)" opacity="0.9"/>
+  
+  <!-- House with crown -->
+  <rect x="60" y="105" width="80" height="50" fill="white" opacity="0.95"/>
+  <polygon points="100,65 50,105 150,105" fill="white" opacity="0.98"/>
+  
+  <!-- Chimney -->
+  <rect x="115" y="80" width="12" height="18" fill="#dc2626" opacity="0.8"/>
+  
+  <!-- Door -->
+  <rect x="90" y="125" width="20" height="30" rx="3" fill="#7c2d12" opacity="0.8"/>
+  <circle cx="106" cy="140" r="2" fill="#fbbf24"/>
+  
+  <!-- Windows -->
+  <rect x="68" y="118" width="15" height="15" rx="2" fill="#7dd3fc" opacity="0.75"/>
+  <line x1="75.5" y1="118" x2="75.5" y2="133" stroke="#0369a1" stroke-width="1.5" opacity="0.5"/>
+  <line x1="68" y1="125.5" x2="83" y2="125.5" stroke="#0369a1" stroke-width="1.5" opacity="0.5"/>
+  
+  <rect x="117" y="118" width="15" height="15" rx="2" fill="#7dd3fc" opacity="0.75"/>
+  <line x1="124.5" y1="118" x2="124.5" y2="133" stroke="#0369a1" stroke-width="1.5" opacity="0.5"/>
+  <line x1="117" y1="125.5" x2="132" y2="125.5" stroke="#0369a1" stroke-width="1.5" opacity="0.5"/>
+  
+  <!-- Crown on roof -->
+  <path d="M 88 43 L 90 54 L 94 50 L 100 41 L 106 50 L 110 54 L 112 43 Z" fill="#fbbf24" opacity="0.95"/>
+  <rect x="87" y="54" width="26" height="5" rx="1" fill="#fbbf24" opacity="0.95"/>
+  <circle cx="94" cy="49" r="2" fill="#ef4444" opacity="0.9"/>
+  <circle cx="100" cy="46" r="2" fill="#3b82f6" opacity="0.9"/>
+  <circle cx="106" cy="49" r="2" fill="#10b981" opacity="0.9"/>
+  
+  <!-- Key icon -->
+  <circle cx="150" cy="140" r="10" fill="#fbbf24" opacity="0.9"/>
+  <circle cx="150" cy="140" r="4" fill="white" opacity="0.5"/>
+  <rect x="144" y="145" width="3" height="10" fill="#fbbf24" opacity="0.9"/>
+  <rect x="144" y="152" width="6" height="2" fill="#fbbf24" opacity="0.9"/>
+</svg>
+

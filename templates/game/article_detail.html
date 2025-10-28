@@ -16,9 +16,10 @@
 
 <div class="card">
   <div class="card-body">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <div class="d-flex align-items-center">
-        <span class="badge bg-primary me-2">{{ article.topic.name }}</span>
+    <!-- Заголовок и действия -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div class="d-flex align-items-center gap-2">
+        <span class="badge bg-primary">{{ article.topic.name }}</span>
         <span class="text-muted small">{{ article.created_at|date:"d.m.Y" }}</span>
       </div>
       <div class="article-actions">
@@ -28,11 +29,392 @@
       </div>
     </div>
     
+    <!-- Метаданные статьи -->
+    <div class="article-meta mb-4">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="meta-card">
+            <div class="meta-icon">
+              <i class="fa-solid fa-clock"></i>
+            </div>
+            <div class="meta-content">
+              <div class="meta-label">Время чтения</div>
+              <div class="meta-value">{{ article.reading_time|default:"5 минут" }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="meta-card">
+            <div class="meta-icon difficulty-{{ article.difficulty }}">
+              <i class="fa-solid fa-signal"></i>
+            </div>
+            <div class="meta-content">
+              <div class="meta-label">Сложность</div>
+              <div class="meta-value">
+                {% if article.difficulty == 'beginner' %}Начальный
+                {% elif article.difficulty == 'intermediate' %}Средний
+                {% elif article.difficulty == 'advanced' %}Продвинутый
+                {% else %}Начальный{% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="meta-card">
+            <div class="meta-icon">
+              <i class="fa-solid fa-user-circle"></i>
+            </div>
+            <div class="meta-content">
+              <div class="meta-label">Автор</div>
+              <div class="meta-value">{{ article.author|default:"FinQuest Team" }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Содержание статьи -->
     <div class="article-content">
       {{ article.content|safe }}
     </div>
+    
+    <!-- Рекомендованные статьи -->
+    {% if related_articles %}
+    <div class="related-articles mt-5">
+      <h4 class="related-title">
+        <i class="fa-solid fa-book-open me-2"></i>Рекомендуем прочитать
+      </h4>
+      <div class="row g-3">
+        {% for related in related_articles %}
+        <div class="col-md-6">
+          <a href="{% url 'article_detail' related.id %}" class="related-article-card">
+            <div class="related-icon">
+              <i class="fa-solid fa-newspaper"></i>
+            </div>
+            <div class="related-content">
+              <h5 class="related-article-title">{{ related.title }}</h5>
+              <p class="related-article-summary">{{ related.summary }}</p>
+              <div class="related-meta">
+                <span><i class="fa-solid fa-clock me-1"></i>{{ related.reading_time|default:"5 мин" }}</span>
+                <span class="ms-2 difficulty-badge difficulty-{{ related.difficulty }}">
+                  {% if related.difficulty == 'beginner' %}Начальный
+                  {% elif related.difficulty == 'intermediate' %}Средний
+                  {% else %}Продвинутый{% endif %}
+                </span>
+              </div>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
   </div>
 </div>
+
+<style>
+/* Метаданные статьи */
+.article-meta {
+  margin-bottom: 2rem;
+}
+
+.meta-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.meta-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.meta-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  color: white;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.meta-icon.difficulty-beginner {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.meta-icon.difficulty-intermediate {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+.meta-icon.difficulty-advanced {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.meta-content {
+  flex: 1;
+}
+
+.meta-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #6b7280;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.25rem;
+}
+
+.meta-value {
+  font-size: 1rem;
+  color: #1f2937;
+  font-weight: 700;
+}
+
+/* Теги */
+.article-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.tag-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 20px;
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.tag-badge:hover {
+  border-color: #667eea;
+  color: #667eea;
+  transform: translateY(-1px);
+}
+
+.tag-badge i {
+  font-size: 0.75rem;
+}
+
+/* Рекомендованные статьи */
+.related-articles {
+  padding-top: 2rem;
+  border-top: 2px solid #e5e7eb;
+}
+
+.related-title {
+  color: #1f2937;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.related-title i {
+  color: #667eea;
+}
+
+.related-article-card {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 16px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.related-article-card:hover {
+  border-color: #667eea;
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+  transform: translateY(-4px);
+}
+
+.related-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  color: white;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.related-content {
+  flex: 1;
+}
+
+.related-article-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.related-article-summary {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+}
+
+.related-meta {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  display: flex;
+  align-items: center;
+}
+
+.difficulty-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+.difficulty-badge.difficulty-beginner {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.difficulty-badge.difficulty-intermediate {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.difficulty-badge.difficulty-advanced {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Контент статьи */
+.article-content {
+  line-height: 1.8;
+  font-size: 1.05rem;
+}
+
+.article-content h2 {
+  color: #6f42c1;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1.75rem;
+}
+
+.article-content h3 {
+  color: #764ba2;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.4rem;
+}
+
+.article-content .info-box {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin: 1.5rem 0;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.article-content .info-box h4 {
+  color: #fbbf24;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.article-content .tip-box {
+  background: #f0fdf4;
+  border-left: 4px solid #10b981;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}
+
+.article-content .warning-box {
+  background: #fef3c7;
+  border-left: 4px solid #f59e0b;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}
+
+.article-content .chart-container {
+  background: #f8f9fa;
+  padding: 2rem;
+  border-radius: 12px;
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.article-content ul, .article-content ol {
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
+
+.article-content li {
+  margin: 0.5rem 0;
+}
+
+.article-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.article-content table th {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.75rem;
+  text-align: left;
+  font-weight: 600;
+}
+
+.article-content table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.article-content table tr:hover {
+  background: #f9fafb;
+}
+
+.article-content .highlight {
+  background: linear-gradient(120deg, #fbbf24 0%, #f59e0b 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+</style>
 
 <script>
 function shareArticle() {
@@ -43,7 +425,6 @@ function shareArticle() {
       url: window.location.href
     });
   } else {
-    // Fallback для браузеров без поддержки Web Share API
     navigator.clipboard.writeText(window.location.href).then(function() {
       alert('Ссылка скопирована в буфер обмена!');
     });

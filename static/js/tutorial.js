@@ -4,28 +4,52 @@ class FinQuestTutorial {
         this.currentStep = 0;
         this.steps = [
             {
-                target: '.navbar-brand',
-                title: '🏠 Главная навигация',
-                content: 'Это логотип FinQuest. Нажмите на него, чтобы вернуться на главную страницу.',
+                target: '.user-card',
+                title: '👋 Добро пожаловать!',
+                content: 'Это ваша карточка профиля. Здесь отображается ваш аватар, имя и текущий статус в игре.',
                 position: 'bottom'
             },
             {
-                target: '.user-card .card',
-                title: '👤 Ваш профиль',
-                content: 'Здесь вы видите свой аватар, имя, текущий уровень и прогресс, а также очки, монеты и достижения.',
+                target: '.badge.bg-primary',
+                title: '⭐ Очки опыта',
+                content: 'Очки начисляются за прохождение уровней. Чем сложнее уровень и выше результат, тем больше очков!',
                 position: 'bottom'
             },
             {
-                target: '.section-title',
-                title: '📚 Темы обучения',
-                content: 'Здесь представлены все темы: накопления, безопасность, противодействие мошенничеству и финансовые цели.',
+                target: '.badge.bg-warning',
+                title: '🪙 Монеты',
+                content: 'Монеты можно тратить на подсказки во время прохождения уровней. Зарабатывайте их, выполняя задания!',
                 position: 'bottom'
             },
             {
-                target: '.card:first-of-type',
-                title: '🎮 Выберите тему',
-                content: 'Нажмите на любую карточку темы, чтобы увидеть доступные уровни. Начните с первой темы!',
+                target: '.badge.bg-success',
+                title: '🏆 Достижения',
+                content: 'Получайте достижения за различные успехи: прохождение тем, серии дней обучения и особые задания!',
+                position: 'bottom'
+            },
+            {
+                target: '.main-category-card:first-child',
+                title: '📚 Категории обучения',
+                content: 'Выберите категорию для изучения. Начните с "Основы финансов" — там самые важные базовые темы!',
                 position: 'right'
+            },
+            {
+                target: '.category-stats',
+                title: '📊 Прогресс обучения',
+                content: 'Здесь видно, сколько уровней вы уже прошли в каждой категории. Стремитесь к 100%!',
+                position: 'top'
+            },
+            {
+                target: 'a[href*="notifications"]',
+                title: '🔔 Уведомления',
+                content: 'Здесь появятся уведомления о новых достижениях, наградах и важных событиях.',
+                position: 'bottom'
+            },
+            {
+                target: 'a[href*="profile"]',
+                title: '⚙️ Профиль и настройки',
+                content: 'В профиле можно изменить аватар, посмотреть статистику и настроить приложение под себя.',
+                position: 'bottom'
             }
         ];
         this.isActive = false;
@@ -52,13 +76,38 @@ class FinQuestTutorial {
         modal.innerHTML = `
             <div class="welcome-content">
                 <div class="welcome-character">
-                    <i class="fa-solid fa-robot"></i>
+                    <div class="character-avatar-large">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
                 </div>
-                <h3>Добро пожаловать в FinQuest! 🎉</h3>
-                <p>Это приложение поможет вам изучить финансовую грамотность в игровой форме.</p>
-                <p>Давайте я покажу, как им пользоваться!</p>
-                <button class="btn btn-primary btn-lg" onclick="this.parentElement.parentElement.remove(); tutorialInstance.startTutorial();">
-                    <i class="fa-solid fa-play me-2"></i>Начать обучение
+                <h2 class="welcome-title">Добро пожаловать в FinQuest! 🎉</h2>
+                <div class="welcome-description">
+                    <p><strong>FinQuest</strong> — это увлекательное приложение для изучения финансовой грамотности!</p>
+                    <div class="welcome-features">
+                        <div class="feature-item">
+                            <i class="fa-solid fa-gamepad"></i>
+                            <span>Обучение в игровой форме</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fa-solid fa-trophy"></i>
+                            <span>Достижения и награды</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fa-solid fa-chart-line"></i>
+                            <span>Отслеживание прогресса</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fa-solid fa-brain"></i>
+                            <span>Практические навыки</span>
+                        </div>
+                    </div>
+                    <p class="mt-3">Давайте я покажу, как пользоваться приложением!</p>
+                </div>
+                <button class="btn btn-primary btn-lg welcome-btn" onclick="this.parentElement.parentElement.remove(); tutorialInstance.startTutorial();">
+                    <i class="fa-solid fa-rocket me-2"></i>Начать знакомство
+                </button>
+                <button class="btn btn-outline-secondary btn-sm mt-2" onclick="this.parentElement.parentElement.remove(); tutorialInstance.complete();">
+                    Пропустить
                 </button>
             </div>
         `;
@@ -74,19 +123,6 @@ class FinQuestTutorial {
     createOverlay() {
         this.overlay = document.createElement('div');
         this.overlay.className = 'tutorial-overlay';
-        this.overlay.innerHTML = `
-            <div class="tutorial-character">
-                <div class="character-avatar">
-                    <i class="fa-solid fa-robot"></i>
-                </div>
-                <div class="character-speech">
-                    <div class="speech-bubble">
-                        <div class="speech-content"></div>
-                        <div class="speech-arrow"></div>
-                    </div>
-                </div>
-            </div>
-        `;
         document.body.appendChild(this.overlay);
     }
 
@@ -98,7 +134,7 @@ class FinQuestTutorial {
                 <h4 class="guide-title"></h4>
                 <p class="guide-text"></p>
                 <div class="guide-navigation">
-                    <button class="btn btn-sm btn-outline-light" id="prevBtn" disabled>
+                    <button class="btn btn-outline-secondary btn-sm mt-2" id="prevBtn" disabled>
                         <i class="fa-solid fa-arrow-left"></i> Назад
                     </button>
                     <span class="guide-counter"></span>
@@ -107,7 +143,7 @@ class FinQuestTutorial {
                     </button>
                 </div>
                 <div class="guide-actions">
-                    <button class="btn btn-sm btn-outline-light" id="skipBtn">
+                    <button class="btn btn-outline-secondary btn-sm mt-2" id="skipBtn">
                         <i class="fa-solid fa-times"></i> Пропустить
                     </button>
                     <button class="btn btn-sm btn-success" id="completeBtn" style="display: none;">
@@ -150,17 +186,29 @@ class FinQuestTutorial {
         document.querySelector('.guide-text').textContent = step.content;
         document.querySelector('.guide-counter').textContent = `${stepIndex + 1} из ${this.steps.length}`;
 
-        // Update character speech
-        document.querySelector('.speech-content').textContent = step.content;
-
         // Update buttons
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
+        const skipBtn = document.getElementById('skipBtn');
         const completeBtn = document.getElementById('completeBtn');
 
         prevBtn.disabled = stepIndex === 0;
-        nextBtn.style.display = stepIndex === this.steps.length - 1 ? 'none' : 'inline-block';
-        completeBtn.style.display = stepIndex === this.steps.length - 1 ? 'inline-block' : 'none';
+        
+        if (stepIndex === this.steps.length - 1) {
+            // Последний шаг - скрываем все кнопки кроме "Готов начать обучение!"
+            nextBtn.style.display = 'none';
+            prevBtn.style.display = 'none';
+            skipBtn.style.display = 'none';
+            completeBtn.style.display = 'inline-block';
+            completeBtn.innerHTML = '<i class="fa-solid fa-check me-2"></i>Готов начать обучение!';
+            completeBtn.className = 'btn btn-success btn-lg';
+        } else {
+            // Обычные шаги - показываем все кнопки
+            nextBtn.style.display = 'inline-block';
+            prevBtn.style.display = 'inline-block';
+            skipBtn.style.display = 'inline-block';
+            completeBtn.style.display = 'none';
+        }
 
         // Position guide
         this.positionGuide(target, step.position);

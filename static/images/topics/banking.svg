@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bankGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6d28d9;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="90" fill="url(#bankGrad)" opacity="0.1"/>
+  
+  <!-- Bank building base -->
+  <rect x="40" y="160" width="120" height="15" fill="url(#bankGrad)" opacity="0.9"/>
+  
+  <!-- Bank columns -->
+  <rect x="50" y="90" width="15" height="70" fill="url(#bankGrad)" opacity="0.8"/>
+  <rect x="75" y="90" width="15" height="70" fill="url(#bankGrad)" opacity="0.8"/>
+  <rect x="100" y="90" width="15" height="70" fill="url(#bankGrad)" opacity="0.8"/>
+  <rect x="125" y="90" width="15" height="70" fill="url(#bankGrad)" opacity="0.8"/>
+  
+  <!-- Bank roof -->
+  <polygon points="100,50 40,90 160,90" fill="url(#bankGrad)" opacity="0.9"/>
+  
+  <!-- Door -->
+  <rect x="85" y="130" width="30" height="30" rx="4" fill="#1e293b" opacity="0.6"/>
+  
+  <!-- Dollar sign on top -->
+  <circle cx="100" cy="65" r="12" fill="#ffd700" opacity="0.9"/>
+  <text x="100" y="72" font-family="Arial, sans-serif" font-size="14" fill="white" text-anchor="middle" font-weight="bold">₽</text>
+</svg>
+

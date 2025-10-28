@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="privacyMasterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4f46e5;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <circle cx="100" cy="100" r="85" fill="#6366f1" opacity="0.1"/>
+  <circle cx="100" cy="100" r="70" fill="url(#privacyMasterGrad)" opacity="0.9"/>
+  
+  <!-- Shield with lock and crown -->
+  <path d="M 100 55 L 138 69 L 138 105 Q 138 138 100 153 Q 62 138 62 105 L 62 69 Z" 
+        fill="white" opacity="0.98"/>
+  
+  <!-- Lock body -->
+  <rect x="88" y="105" width="24" height="28" rx="3" fill="#6366f1" opacity="0.95"/>
+  
+  <!-- Lock shackle -->
+  <path d="M 90 105 L 90 96 Q 90 88 100 88 Q 110 88 110 96 L 110 105" 
+        stroke="#6366f1" stroke-width="5" fill="none" opacity="0.95"/>
+  
+  <!-- Keyhole -->
+  <circle cx="100" cy="115" r="3" fill="white" opacity="0.95"/>
+  <rect x="98" y="115" width="4" height="10" fill="white" opacity="0.95"/>
+  
+  <!-- Crown on shield -->
+  <path d="M 88 33 L 90 43 L 94 39 L 100 30 L 106 39 L 110 43 L 112 33 Z" fill="#fbbf24" opacity="0.95"/>
+  <rect x="87" y="43" width="26" height="5" rx="1" fill="#fbbf24" opacity="0.95"/>
+  <circle cx="94" cy="38" r="2" fill="#ef4444" opacity="0.9"/>
+  <circle cx="100" cy="35" r="2.5" fill="#3b82f6" opacity="0.9"/>
+  <circle cx="106" cy="38" r="2" fill="#10b981" opacity="0.9"/>
+  
+  <!-- Data symbols around -->
+  <text x="50" y="85" font-family="monospace" font-size="10" fill="white" opacity="0.5">01</text>
+  <text x="143" y="90" font-family="monospace" font-size="10" fill="white" opacity="0.5">10</text>
+  <text x="48" y="125" font-family="monospace" font-size="10" fill="white" opacity="0.5">11</text>
+  <text x="145" y="130" font-family="monospace" font-size="10" fill="white" opacity="0.5">00</text>
+  
+  <!-- Check mark badge -->
+  <circle cx="125" cy="58" r="10" fill="#10b981" opacity="0.9"/>
+  <polyline points="121,58 124,61 129,56" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+

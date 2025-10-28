@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="retireGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="90" fill="url(#retireGrad)" opacity="0.1"/>
+  
+  <!-- Calendar -->
+  <rect x="50" y="60" width="100" height="90" rx="8" fill="url(#retireGrad)" opacity="0.9"/>
+  <rect x="50" y="60" width="100" height="20" rx="8" fill="url(#retireGrad)" opacity="1"/>
+  
+  <!-- Calendar rings -->
+  <circle cx="70" cy="55" r="4" fill="#7c3aed" opacity="0.8"/>
+  <circle cx="100" cy="55" r="4" fill="#7c3aed" opacity="0.8"/>
+  <circle cx="130" cy="55" r="4" fill="#7c3aed" opacity="0.8"/>
+  
+  <!-- Calendar grid -->
+  <line x1="65" y1="95" x2="65" y2="140" stroke="white" stroke-width="1.5" opacity="0.3"/>
+  <line x1="85" y1="95" x2="85" y2="140" stroke="white" stroke-width="1.5" opacity="0.3"/>
+  <line x1="105" y1="95" x2="105" y2="140" stroke="white" stroke-width="1.5" opacity="0.3"/>
+  <line x1="125" y1="95" x2="125" y2="140" stroke="white" stroke-width="1.5" opacity="0.3"/>
+  
+  <line x1="50" y1="105" x2="150" y2="105" stroke="white" stroke-width="1.5" opacity="0.3"/>
+  <line x1="50" y1="120" x2="150" y2="120" stroke="white" stroke-width="1.5" opacity="0.3"/>
+  <line x1="50" y1="135" x2="150" y2="135" stroke="white" stroke-width="1.5" opacity="0.3"/>
+  
+  <!-- Beach umbrella -->
+  <line x1="155" y1="120" x2="155" y2="160" stroke="#f59e0b" stroke-width="3"/>
+  <path d="M 145 120 Q 155 110 165 120" fill="#ef4444" opacity="0.8"/>
+  <path d="M 145 120 Q 155 113 165 120" fill="#dc2626" opacity="0.6"/>
+  
+  <!-- Sun -->
+  <circle cx="165" cy="85" r="12" fill="#fbbf24" opacity="0.9"/>
+  <line x1="165" y1="70" x2="165" y2="75" stroke="#fbbf24" stroke-width="2" opacity="0.7"/>
+  <line x1="180" y1="85" x2="175" y2="85" stroke="#fbbf24" stroke-width="2" opacity="0.7"/>
+  <line x1="174" y1="74" x2="171" y2="77" stroke="#fbbf24" stroke-width="2" opacity="0.7"/>
+  <line x1="174" y1="96" x2="171" y2="93" stroke="#fbbf24" stroke-width="2" opacity="0.7"/>
+</svg>
+

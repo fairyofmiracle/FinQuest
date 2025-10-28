@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="pointsGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="pointsGlow">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:0.5" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Glow -->
+  <circle cx="100" cy="100" r="85" fill="url(#pointsGlow)"/>
+  
+  <!-- Main circle -->
+  <circle cx="100" cy="100" r="70" fill="url(#pointsGrad)" opacity="0.9"/>
+  
+  <!-- Star -->
+  <polygon points="100,50 108,78 138,78 114,96 122,124 100,106 78,124 86,96 62,78 92,78" 
+           fill="#fbbf24" opacity="0.95"/>
+  <polygon points="100,60 106,80 126,80 110,92 116,112 100,100 84,112 90,92 74,80 94,80" 
+           fill="#fef3c7" opacity="0.9"/>
+  
+  <!-- Orbiting small stars -->
+  <circle cx="60" cy="100" r="8" fill="white" opacity="0.9"/>
+  <polygon points="60,95 61,98 64,98 62,100 63,103 60,101 57,103 58,100 56,98 59,98" fill="#8b5cf6"/>
+  
+  <circle cx="140" cy="100" r="8" fill="white" opacity="0.9"/>
+  <polygon points="140,95 141,98 144,98 142,100 143,103 140,101 137,103 138,100 136,98 139,98" fill="#8b5cf6"/>
+  
+  <circle cx="100" cy="60" r="6" fill="white" opacity="0.85"/>
+  <polygon points="100,57 101,59 103,59 102,60 102,62 100,61 98,62 98,60 97,59 99,59" fill="#8b5cf6"/>
+  
+  <!-- Plus symbol -->
+  <circle cx="145" cy="140" r="12" fill="white" opacity="0.95"/>
+  <text x="145" y="148" font-family="Arial, sans-serif" font-size="18" fill="#8b5cf6" text-anchor="middle" font-weight="bold">+</text>
+</svg>
+

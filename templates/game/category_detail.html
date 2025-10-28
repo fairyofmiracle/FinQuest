@@ -14,12 +14,13 @@
 
 <!-- Описание категории -->
 <div class="hero mb-4">
-  <div class="text-center">
+  <div class="hero-overlay"></div>
+  <div class="hero-content text-center">
     <div class="main-category-icon mb-3">
       <i class="fa-solid {{ category.icon }}"></i>
     </div>
     <h2 class="mb-3">{{ category.name }}</h2>
-    <p class="lead text-muted">{{ category.description }}</p>
+    <p class="lead">{{ category.description }}</p>
   </div>
 </div>
 
@@ -60,11 +61,47 @@
 {% endif %}
 
 <style>
+.hero {
+  position: relative;
+  background-image: url("{% static 'подкатегории.jpg' %}");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 20px;
+  overflow: hidden;
+  min-height: 120px; /* Компактная высота для баннера */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.5) 50%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 3rem 2rem;
+}
+
 .main-category-icon {
   font-size: 4rem;
-  color: var(--game-primary);
+  color: #ffffff;
   margin-bottom: 1.5rem;
   text-align: center;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
 }
 
 .hero h2 {
@@ -75,7 +112,7 @@
 }
 
 .hero .lead {
-  color: #e5e7eb;
+  color: #ffffff;
   text-shadow: 0 1px 4px rgba(0,0,0,0.6);
   font-size: 1.2rem;
 }
@@ -86,7 +123,7 @@
 }
 
 .dark-theme .hero .lead {
-  color: #d1d5db;
+  color: #ffffff;
   text-shadow: 0 1px 4px rgba(0,0,0,0.6);
 }
 </style>

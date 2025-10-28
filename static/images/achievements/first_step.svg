@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="firstStepGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="glowGrad">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:0.5" />
+      <stop offset="100%" style="stop-color:#10b981;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Glow effect -->
+  <circle cx="100" cy="100" r="85" fill="url(#glowGrad)"/>
+  
+  <!-- Main circle -->
+  <circle cx="100" cy="100" r="70" fill="url(#firstStepGrad)" opacity="0.9"/>
+  <circle cx="100" cy="100" r="65" fill="none" stroke="#10b981" stroke-width="2" opacity="0.5"/>
+  
+  <!-- Footprint -->
+  <ellipse cx="90" cy="95" rx="15" ry="20" fill="white" opacity="0.95"/>
+  <ellipse cx="83" cy="75" rx="6" ry="8" fill="white" opacity="0.95"/>
+  <ellipse cx="93" cy="72" rx="6" ry="8" fill="white" opacity="0.95"/>
+  <ellipse cx="103" cy="72" rx="6" ry="8" fill="white" opacity="0.95"/>
+  <ellipse cx="112" cy="75" rx="6" ry="8" fill="white" opacity="0.95"/>
+  
+  <!-- Path line -->
+  <path d="M 65 120 Q 75 115 85 115 Q 95 115 105 120 Q 115 125 125 125" 
+        stroke="white" stroke-width="3" fill="none" stroke-dasharray="5,5" opacity="0.7"/>
+  
+  <!-- Star sparkles -->
+  <polygon points="40,40 42,46 48,46 43,50 45,56 40,52 35,56 37,50 32,46 38,46" fill="#fbbf24" opacity="0.9"/>
+  <polygon points="160,50 162,54 166,54 163,57 164,61 160,58 156,61 157,57 154,54 158,54" fill="#fbbf24" opacity="0.8"/>
+  <polygon points="150,140 152,144 156,144 153,147 154,151 150,148 146,151 147,147 144,144 148,144" fill="#fbbf24" opacity="0.8"/>
+</svg>
+

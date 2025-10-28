@@ -14,7 +14,7 @@
       <!-- Информация об аватарке -->
       <div class="alert alert-info mb-4">
         <i class="fa-solid fa-info-circle me-2"></i>
-        <strong>Бонус:</strong> При регистрации вам автоматически будет установлена аватарка! 
+        При регистрации вам автоматически будет установлена аватарка! 
         Вы сможете изменить её в настройках профиля.
       </div>
       
@@ -91,4 +91,16 @@
   background-color: #fff !important;
 }
 </style>
+
+<script>
+// Очищаем localStorage при регистрации нового пользователя
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', function() {
+            localStorage.removeItem('finquest_tutorial_completed');
+        });
+    }
+});
+</script>
 {% endblock %}

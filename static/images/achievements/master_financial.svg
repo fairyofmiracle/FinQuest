@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="finMasterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d97706;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <circle cx="100" cy="100" r="85" fill="#fbbf24" opacity="0.2"/>
+  <circle cx="100" cy="100" r="70" fill="url(#finMasterGrad)" opacity="0.95"/>
+  
+  <!-- Large trophy with diamond crown -->
+  <rect x="85" y="145" width="30" height="7" rx="3" fill="white" opacity="0.98"/>
+  <rect x="90" y="133" width="20" height="14" rx="2" fill="white" opacity="0.98"/>
+  <rect x="94" y="115" width="12" height="20" rx="2" fill="white" opacity="0.98"/>
+  
+  <!-- Trophy cup -->
+  <path d="M 72 80 L 76 115 L 124 115 L 128 80 Z" fill="white" opacity="0.98"/>
+  <ellipse cx="100" cy="80" rx="28" ry="7" fill="#fbbf24" opacity="0.3"/>
+  
+  <!-- Trophy handles -->
+  <path d="M 72 84 Q 58 84 58 94 Q 58 104 67 104" stroke="white" stroke-width="5" fill="none" opacity="0.98"/>
+  <path d="M 128 84 Q 142 84 142 94 Q 142 104 133 104" stroke="white" stroke-width="5" fill="none" opacity="0.98"/>
+  
+  <!-- Trophy highlights -->
+  <ellipse cx="88" cy="92" rx="7" ry="13" fill="white" opacity="0.25"/>
+  
+  <!-- Diamond crown on trophy -->
+  <polygon points="100,35 120,58 113,75 87,75 80,58" fill="#fef3c7" opacity="0.98" filter="drop-shadow(0 4px 8px rgba(0,0,0,0.3))"/>
+  <polygon points="100,45 115,58 110,70 90,70 85,58" fill="white" opacity="0.7"/>
+  <polygon points="100,52 108,58 105,65 95,65 92,58" fill="white" opacity="0.5"/>
+  
+  <!-- Diamond facets -->
+  <line x1="100" y1="35" x2="100" y2="75" stroke="#fbbf24" stroke-width="1" opacity="0.3"/>
+  <line x1="80" y1="58" x2="120" y2="58" stroke="#fbbf24" stroke-width="1" opacity="0.3"/>
+  <line x1="87" y1="75" x2="100" y2="35" stroke="#fbbf24" stroke-width="1" opacity="0.3"/>
+  <line x1="113" y1="75" x2="100" y2="35" stroke="#fbbf24" stroke-width="1" opacity="0.3"/>
+  
+  <!-- Stars around -->
+  <polygon points="45,70 48,78 56,78 50,83 52,91 45,86 38,91 40,83 34,78 42,78" fill="white" opacity="0.95"/>
+  <polygon points="155,70 158,78 166,78 160,83 162,91 155,86 148,91 150,83 144,78 152,78" fill="white" opacity="0.95"/>
+  <polygon points="100,155 102,159 106,159 103,162 104,166 100,163 96,166 97,162 94,159 98,159" fill="white" opacity="0.9"/>
+  
+  <!-- Shine rays from diamond -->
+  <line x1="100" y1="55" x2="65" y2="50" stroke="white" stroke-width="2" opacity="0.4"/>
+  <line x1="100" y1="55" x2="135" y2="50" stroke="white" stroke-width="2" opacity="0.4"/>
+  <line x1="100" y1="55" x2="70" y2="75" stroke="white" stroke-width="2" opacity="0.3"/>
+  <line x1="100" y1="55" x2="130" y2="75" stroke="white" stroke-width="2" opacity="0.3"/>
+</svg>
+

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="basicsGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2563eb;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <circle cx="100" cy="100" r="85" fill="#3b82f6" opacity="0.1"/>
+  <circle cx="100" cy="100" r="70" fill="url(#basicsGrad)" opacity="0.9"/>
+  
+  <!-- Closed book -->
+  <rect x="65" y="80" width="70" height="50" rx="4" fill="white" opacity="0.95"/>
+  <rect x="65" y="80" width="8" height="50" fill="#3b82f6" opacity="0.6"/>
+  
+  <!-- "ABC" on book -->
+  <text x="105" y="110" font-family="Arial, sans-serif" font-size="22" fill="#3b82f6" text-anchor="middle" font-weight="bold">ABC</text>
+  
+  <!-- Star badge -->
+  <polygon points="100,60 105,70 116,70 108,77 111,88 100,81 89,88 92,77 84,70 95,70" fill="#fbbf24" opacity="0.95"/>
+  
+  <!-- Sparkles -->
+  <polygon points="50,100 52,104 56,104 53,107 54,111 50,108 46,111 47,107 44,104 48,104" fill="white" opacity="0.85"/>
+  <polygon points="150,100 152,104 156,104 153,107 154,111 150,108 146,111 147,107 144,104 148,104" fill="white" opacity="0.85"/>
+</svg>
+

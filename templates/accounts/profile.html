@@ -110,7 +110,10 @@
                     <div class="achievement-front">
                     <div class="achievement-icon mb-2 achievement-icon-{{ achievement_data.achievement.rarity }}">
                       {% if achievement_data.earned %}
-                        <i class="fa-solid {{ achievement_data.achievement.icon }}"></i>
+                        {% load static %}
+                        <img src="{% static 'images/achievements/' %}{% if 'Первый шаг' in achievement_data.achievement.name %}first_step{% elif 'Открыть финансовую грамотность' in achievement_data.achievement.name %}unlock_literacy{% elif 'основных знаний' in achievement_data.achievement.name %}master_basics{% elif 'базовых навыков' in achievement_data.achievement.name %}master_skills{% elif 'бюджетирования' in achievement_data.achievement.name %}master_budget{% elif 'сбережений' in achievement_data.achievement.name %}master_savings{% elif 'кредитов' in achievement_data.achievement.name %}master_credit{% elif 'банковских услуг' in achievement_data.achievement.name %}master_banking{% elif 'акционерия' in achievement_data.achievement.name or 'Акци' in achievement_data.achievement.name %}master_stocks{% elif 'долговых инструментов' in achievement_data.achievement.name or 'Облигаци' in achievement_data.achievement.name %}master_bonds{% elif 'недвижимости' in achievement_data.achievement.name %}master_realestate{% elif 'криптовалют' in achievement_data.achievement.name %}master_crypto{% elif 'пенсион' in achievement_data.achievement.name %}master_retirement{% elif 'налог' in achievement_data.achievement.name %}master_taxes{% elif 'страхов' in achievement_data.achievement.name %}master_insurance{% elif 'целей' in achievement_data.achievement.name or 'постановки' in achievement_data.achievement.name %}master_goals{% elif 'мошенн' in achievement_data.achievement.name %}master_fraud{% elif 'информационной безопасности' in achievement_data.achievement.name or 'данных' in achievement_data.achievement.name %}master_privacy{% elif 'юридической' in achievement_data.achievement.name %}master_legal{% elif 'риск' in achievement_data.achievement.name %}master_risks{% elif 'планирования' in achievement_data.achievement.name %}master_planning{% elif 'финансовой безопасности' in achievement_data.achievement.name %}master_security{% elif 'финансовой грамотности' in achievement_data.achievement.name %}master_financial{% elif achievement_data.achievement.category == 'streak' %}streak{% elif achievement_data.achievement.category == 'points' %}points{% elif achievement_data.achievement.category == 'coins' %}coins{% elif achievement_data.achievement.rarity == 'legendary' %}legendary{% else %}trophy{% endif %}.svg" 
+                             alt="{{ achievement_data.achievement.name }}" 
+                             class="achievement-svg" />
                       {% else %}
                         <i class="fa-solid fa-lock"></i>
                       {% endif %}
@@ -301,6 +304,26 @@
 .achievement-icon {
     font-size: 2.5rem; /* Увеличиваем размер иконки */
     margin-bottom: 12px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 12px;
+}
+
+.achievement-svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
+    transition: all 0.3s ease;
+}
+
+.achievement-card:hover .achievement-svg {
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.25));
+    transform: scale(1.05);
 }
 
 .achievement-name {
@@ -524,7 +547,11 @@ function showAchievementDetails(card) {
     const achievementName = card.querySelector('.achievement-name').textContent;
     const achievementRarity = card.querySelector('.achievement-rarity').textContent;
     const achievementDate = card.querySelector('.achievement-date');
-    const achievementIcon = card.querySelector('.achievement-icon i').className;
+    // Получаем иконку (SVG или Font Awesome)
+    const achievementIconElement = card.querySelector('.achievement-icon img');
+    const achievementIconHTML = achievementIconElement ? 
+      `<img src="${achievementIconElement.src}" alt="Achievement" style="width: 80px; height: 80px;">` : 
+      `<i class="${card.querySelector('.achievement-icon i')?.className || 'fa-solid fa-trophy'}"></i>`;
     
     // Получаем описание с обратной стороны карточки
     const achievementBack = card.querySelector('.achievement-back');
@@ -534,7 +561,7 @@ function showAchievementDetails(card) {
     const popupContent = `
         <div class="achievement-detail">
             <div class="achievement-detail-icon">
-                <i class="${achievementIcon}"></i>
+                ${achievementIconHTML}
             </div>
             <h3 class="achievement-detail-name">${achievementName}</h3>
             <div class="achievement-detail-rarity">

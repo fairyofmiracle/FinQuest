@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="trophyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="trophyGlow">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:0.5" />
+      <stop offset="100%" style="stop-color:#fbbf24;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Glow -->
+  <circle cx="100" cy="100" r="85" fill="url(#trophyGlow)"/>
+  
+  <!-- Main circle -->
+  <circle cx="100" cy="100" r="70" fill="url(#trophyGrad)" opacity="0.9"/>
+  
+  <!-- Trophy base -->
+  <rect x="80" y="140" width="40" height="8" rx="4" fill="#fef3c7" opacity="0.95"/>
+  <rect x="85" y="130" width="30" height="12" rx="2" fill="#fef3c7" opacity="0.95"/>
+  
+  <!-- Trophy stem -->
+  <rect x="92" y="110" width="16" height="22" rx="2" fill="#fef3c7" opacity="0.95"/>
+  
+  <!-- Trophy cup -->
+  <path d="M 70 70 L 75 110 L 125 110 L 130 70 Z" fill="#fef3c7" opacity="0.95"/>
+  <ellipse cx="100" cy="70" rx="30" ry="8" fill="#fbbf24" opacity="0.3"/>
+  
+  <!-- Trophy handles -->
+  <path d="M 70 75 Q 55 75 55 85 Q 55 95 65 95" stroke="#fef3c7" stroke-width="6" fill="none" opacity="0.95"/>
+  <path d="M 130 75 Q 145 75 145 85 Q 145 95 135 95" stroke="#fef3c7" stroke-width="6" fill="none" opacity="0.95"/>
+  
+  <!-- Trophy highlights -->
+  <ellipse cx="90" cy="85" rx="8" ry="15" fill="white" opacity="0.3"/>
+  
+  <!-- Star on trophy -->
+  <polygon points="100,80 103,88 111,88 105,93 107,101 100,96 93,101 95,93 89,88 97,88" fill="#f59e0b" opacity="0.8"/>
+  
+  <!-- Sparkles around -->
+  <polygon points="50,60 52,65 57,65 53,68 55,73 50,70 45,73 47,68 43,65 48,65" fill="white" opacity="0.9"/>
+  <polygon points="150,60 152,65 157,65 153,68 155,73 150,70 145,73 147,68 143,65 148,65" fill="white" opacity="0.9"/>
+  <polygon points="100,40 102,44 106,44 103,47 104,51 100,48 96,51 97,47 94,44 98,44" fill="white" opacity="0.85"/>
+</svg>
+

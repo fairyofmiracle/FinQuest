@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="risksMasterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f97316;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ea580c;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <circle cx="100" cy="100" r="85" fill="#f97316" opacity="0.1"/>
+  <circle cx="100" cy="100" r="70" fill="url(#risksMasterGrad)" opacity="0.9"/>
+  
+  <!-- Chart with crown -->
+  <rect x="40" y="65" width="120" height="85" rx="6" fill="white" opacity="0.15"/>
+  
+  <!-- Grid -->
+  <line x1="40" y1="88" x2="160" y2="88" stroke="white" stroke-width="1" opacity="0.2"/>
+  <line x1="40" y1="110" x2="160" y2="110" stroke="white" stroke-width="1" opacity="0.2"/>
+  <line x1="40" y1="132" x2="160" y2="132" stroke="white" stroke-width="1" opacity="0.2"/>
+  
+  <!-- Volatile graph line -->
+  <polyline points="45,120 62,105 78,118 95,88 112,100 128,75 145,95" 
+            fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.95"/>
+  
+  <!-- Fill under graph -->
+  <polygon points="45,120 62,105 78,118 95,88 112,100 128,75 145,95 145,150 45,150" 
+           fill="white" opacity="0.2"/>
+  
+  <!-- Data points -->
+  <circle cx="45" cy="120" r="4" fill="white" opacity="0.95"/>
+  <circle cx="62" cy="105" r="4" fill="white" opacity="0.95"/>
+  <circle cx="78" cy="118" r="4" fill="white" opacity="0.95"/>
+  <circle cx="95" cy="88" r="4" fill="white" opacity="0.95"/>
+  <circle cx="112" cy="100" r="4" fill="white" opacity="0.95"/>
+  <circle cx="128" cy="75" r="4" fill="white" opacity="0.95"/>
+  <circle cx="145" cy="95" r="4" fill="white" opacity="0.95"/>
+  
+  <!-- Crown -->
+  <path d="M 88 43 L 90 53 L 94 49 L 100 40 L 106 49 L 110 53 L 112 43 Z" fill="#fbbf24" opacity="0.95"/>
+  <rect x="87" y="53" width="26" height="5" rx="1" fill="#fbbf24" opacity="0.95"/>
+  <circle cx="94" cy="48" r="2" fill="#ef4444" opacity="0.9"/>
+  <circle cx="100" cy="45" r="2.5" fill="#3b82f6" opacity="0.9"/>
+  <circle cx="106" cy="48" r="2" fill="#10b981" opacity="0.9"/>
+  
+  <!-- Warning triangle -->
+  <polygon points="160,50 168,63 152,63" fill="#fbbf24" opacity="0.95"/>
+  <line x1="160" y1="54" x2="160" y2="58" stroke="#7c2d12" stroke-width="2"/>
+  <circle cx="160" cy="61" r="1.5" fill="#7c2d12"/>
+</svg>
+

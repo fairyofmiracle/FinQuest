@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="cryptoMasterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d97706;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <circle cx="100" cy="100" r="85" fill="#f59e0b" opacity="0.1"/>
+  <circle cx="100" cy="100" r="70" fill="url(#cryptoMasterGrad)" opacity="0.9"/>
+  
+  <!-- Bitcoin coin with crown -->
+  <circle cx="100" cy="105" r="42" fill="white" opacity="0.98"/>
+  <circle cx="100" cy="105" r="38" fill="none" stroke="#f59e0b" stroke-width="2" opacity="0.5"/>
+  
+  <!-- Bitcoin B symbol -->
+  <path d="M 88 85 L 88 125 M 96 85 L 96 125 M 88 85 L 108 85 Q 116 85 116 95 Q 116 105 108 105 L 88 105 M 88 105 L 110 105 Q 118 105 118 115 Q 118 125 110 125 L 88 125" 
+        stroke="#f59e0b" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+  
+  <!-- Vertical lines through B -->
+  <line x1="92" y1="81" x2="92" y2="129" stroke="#f59e0b" stroke-width="2.5" opacity="0.9"/>
+  
+  <!-- Crown -->
+  <path d="M 85 55 L 87 65 L 92 61 L 100 52 L 108 61 L 113 65 L 115 55 Z" fill="#fbbf24" opacity="0.95"/>
+  <rect x="84" y="65" width="32" height="6" rx="1" fill="#fbbf24" opacity="0.95"/>
+  <circle cx="92" cy="60" r="2" fill="#ef4444" opacity="0.9"/>
+  <circle cx="100" cy="57" r="2.5" fill="#3b82f6" opacity="0.9"/>
+  <circle cx="108" cy="60" r="2" fill="#10b981" opacity="0.9"/>
+  
+  <!-- Network nodes -->
+  <circle cx="50" cy="135" r="12" fill="#f59e0b" opacity="0.3"/>
+  <text x="50" y="140" font-family="Arial, sans-serif" font-size="10" fill="white" text-anchor="middle" font-weight="bold">Ξ</text>
+  
+  <circle cx="150" cy="85" r="14" fill="#f59e0b" opacity="0.3"/>
+  <text x="150" y="91" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="middle" font-weight="bold">₿</text>
+  
+  <!-- Connection lines -->
+  <line x1="58" y1="105" x2="80" y2="125" stroke="#f59e0b" stroke-width="1.5" opacity="0.25" stroke-dasharray="3,3"/>
+  <line x1="142" y1="95" x2="120" y2="105" stroke="#f59e0b" stroke-width="1.5" opacity="0.25" stroke-dasharray="3,3"/>
+</svg>
+

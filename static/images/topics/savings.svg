@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="savingsGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#38bdf8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0284c7;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="90" fill="url(#savingsGrad)" opacity="0.1"/>
+  
+  <!-- Piggy bank body -->
+  <ellipse cx="100" cy="110" rx="55" ry="45" fill="url(#savingsGrad)" opacity="0.9"/>
+  
+  <!-- Piggy bank head -->
+  <ellipse cx="140" cy="100" rx="20" ry="18" fill="url(#savingsGrad)" opacity="0.9"/>
+  
+  <!-- Ear -->
+  <ellipse cx="145" cy="85" rx="8" ry="12" fill="url(#savingsGrad)" opacity="0.8"/>
+  
+  <!-- Eye -->
+  <circle cx="145" cy="95" r="3" fill="white"/>
+  
+  <!-- Snout -->
+  <ellipse cx="155" cy="105" rx="10" ry="8" fill="#38bdf8" opacity="0.7"/>
+  <circle cx="152" cy="103" r="2" fill="white" opacity="0.6"/>
+  <circle cx="158" cy="103" r="2" fill="white" opacity="0.6"/>
+  
+  <!-- Legs -->
+  <rect x="70" y="145" width="12" height="20" rx="6" fill="url(#savingsGrad)" opacity="0.8"/>
+  <rect x="95" y="145" width="12" height="20" rx="6" fill="url(#savingsGrad)" opacity="0.8"/>
+  <rect x="120" y="145" width="12" height="20" rx="6" fill="url(#savingsGrad)" opacity="0.8"/>
+  
+  <!-- Coin slot -->
+  <rect x="90" y="80" width="20" height="4" rx="2" fill="white" opacity="0.8"/>
+  
+  <!-- Coin above -->
+  <circle cx="100" cy="60" r="12" fill="#ffd700" opacity="0.9"/>
+  <text x="100" y="65" font-family="Arial, sans-serif" font-size="10" fill="#9a7b00" text-anchor="middle" font-weight="bold">₽</text>
+  
+  <!-- Motion lines -->
+  <line x1="85" y1="65" x2="75" y2="60" stroke="#ffd700" stroke-width="2" opacity="0.5"/>
+  <line x1="115" y1="65" x2="125" y2="60" stroke="#ffd700" stroke-width="2" opacity="0.5"/>
+</svg>
+

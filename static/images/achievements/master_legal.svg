@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="legalMasterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a855f7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9333ea;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <circle cx="100" cy="100" r="85" fill="#a855f7" opacity="0.1"/>
+  <circle cx="100" cy="100" r="70" fill="url(#legalMasterGrad)" opacity="0.9"/>
+  
+  <!-- Scale base with crown -->
+  <rect x="95" y="142" width="10" height="24" fill="white" opacity="0.95"/>
+  <rect x="80" y="163" width="40" height="7" rx="3" fill="white" opacity="0.95"/>
+  
+  <!-- Scale beam -->
+  <rect x="65" y="83" width="70" height="4" rx="2" fill="white" opacity="0.95"/>
+  
+  <!-- Scale center -->
+  <polygon points="100,87 96,98 104,98" fill="white" opacity="0.95"/>
+  <rect x="98" y="98" width="4" height="44" fill="white" opacity="0.95"/>
+  
+  <!-- Left pan -->
+  <line x1="75" y1="85" x2="75" y2="100" stroke="white" stroke-width="2" opacity="0.9"/>
+  <ellipse cx="75" cy="104" rx="17" ry="4" fill="white" opacity="0.85"/>
+  <path d="M 58 104 Q 58 108 75 108 Q 92 108 92 104" stroke="white" stroke-width="2" fill="none" opacity="0.9"/>
+  
+  <!-- Right pan -->
+  <line x1="125" y1="85" x2="125" y2="100" stroke="white" stroke-width="2" opacity="0.9"/>
+  <ellipse cx="125" cy="104" rx="17" ry="4" fill="white" opacity="0.85"/>
+  <path d="M 108 104 Q 108 108 125 108 Q 142 108 142 104" stroke="white" stroke-width="2" fill="none" opacity="0.9"/>
+  
+  <!-- Crown -->
+  <path d="M 88 61 L 90 71 L 94 67 L 100 58 L 106 67 L 110 71 L 112 61 Z" fill="#fbbf24" opacity="0.95"/>
+  <rect x="87" y="71" width="26" height="5" rx="1" fill="#fbbf24" opacity="0.95"/>
+  <circle cx="94" cy="66" r="2" fill="#ef4444" opacity="0.9"/>
+  <circle cx="100" cy="63" r="2.5" fill="#3b82f6" opacity="0.9"/>
+  <circle cx="106" cy="66" r="2" fill="#10b981" opacity="0.9"/>
+  
+  <!-- Gavel -->
+  <rect x="140" y="135" width="24" height="7" rx="2" fill="#78716c" opacity="0.85" transform="rotate(45 152 138.5)"/>
+  <rect x="160" y="150" width="6" height="15" rx="2" fill="#78716c" opacity="0.85"/>
+  
+  <!-- Book -->
+  <rect x="32" y="145" width="28" height="20" rx="2" fill="white" opacity="0.85"/>
+  <rect x="32" y="145" width="4" height="20" fill="#a855f7" opacity="0.6"/>
+  <line x1="40" y1="151" x2="54" y2="151" stroke="#a855f7" stroke-width="1.2" opacity="0.5"/>
+  <line x1="40" y1="156" x2="52" y2="156" stroke="#a855f7" stroke-width="1.2" opacity="0.5"/>
+  <line x1="40" y1="161" x2="54" y2="161" stroke="#a855f7" stroke-width="1.2" opacity="0.5"/>
+</svg>
+

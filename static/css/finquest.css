@@ -139,7 +139,6 @@ body::before {
   font-size: 0.875rem;
   position: relative;
   overflow: hidden;
-  border: 2px solid transparent;
 }
 
 .btn::before {
@@ -160,10 +159,6 @@ body::before {
 .btn-primary {
   background: linear-gradient(45deg, #6366f1, #8b5cf6, #ec4899);
   background-size: 200% 200%;
-  border: 2px solid rgba(255,255,255,0.3);
-  box-shadow: 
-    0 6px 20px rgba(99, 102, 241, 0.4),
-    inset 0 1px 0 rgba(255,255,255,0.2);
   animation: gradientShift 3s ease infinite;
 }
 
@@ -173,11 +168,7 @@ body::before {
 }
 
 .btn-primary:hover {
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 
-    0 8px 25px rgba(99, 102, 241, 0.6),
-    0 0 30px rgba(139, 92, 246, 0.4),
-    inset 0 1px 0 rgba(255,255,255,0.3);
+  transform: translateY(-2px);
 }
 
 .btn-success {
@@ -204,7 +195,6 @@ body::before {
 
 .btn-outline-primary {
   color: var(--game-primary);
-  border: 2px solid var(--game-primary);
   background: rgba(255,255,255,0.8);
   backdrop-filter: blur(5px);
   font-weight: 600;
@@ -233,6 +223,14 @@ body::before {
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(255,255,255,0.3);
   text-shadow: none;
+}
+
+.btn-warning {
+  color: white !important;
+}
+
+.btn-warning:hover {
+  color: white !important;
 }
 
 .topic-cover {
@@ -524,7 +522,6 @@ body::before {
 
 .dark-theme .gaming-navbar {
   background: linear-gradient(135deg, rgba(15, 15, 35, 0.98) 0%, rgba(26, 26, 62, 0.98) 50%, rgba(45, 27, 105, 0.98) 100%) !important;
-  border-bottom: 2px solid rgba(99, 102, 241, 0.6);
   box-shadow: none !important;
 }
 
@@ -917,7 +914,6 @@ body::before {
 
 .guide-actions .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
 }
 
 @keyframes tutorialPulse {
@@ -952,42 +948,119 @@ body::before {
 }
 
 .welcome-content {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding: 40px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 24px;
+  padding: 48px;
   text-align: center;
-  max-width: 500px;
+  max-width: 600px;
   margin: 20px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-  border: 2px solid var(--game-primary);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  color: white;
   animation: slideUp 0.3s ease;
 }
 
-.welcome-character {
-  width: 100px;
-  height: 100px;
-  background: linear-gradient(45deg, var(--game-primary), var(--game-secondary));
-  border-radius: 50%;
+.welcome-title {
+  color: white;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.welcome-description {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 24px 0;
+  backdrop-filter: blur(10px);
+}
+
+.welcome-description p {
+  color: white;
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.welcome-features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.feature-item {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 3rem;
+  gap: 12px;
+  transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.feature-item i {
+  font-size: 1.5rem;
+  color: #fbbf24;
+}
+
+.feature-item span {
   color: white;
-  margin: 0 auto 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.welcome-character {
+  margin-bottom: 24px;
+}
+
+.character-avatar-large {
+  width: 100px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+  color: #fbbf24;
   animation: tutorialBounce 2s ease-in-out infinite;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.welcome-btn {
+  margin-top: 16px;
+  padding: 14px 32px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background: white;
+  color: #667eea;
+  border: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.welcome-btn:hover {
+  background: #fbbf24;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 .welcome-content h3 {
-  color: var(--game-primary);
+  color: white;
   font-weight: 700;
   margin-bottom: 20px;
   font-size: 1.8rem;
 }
 
 .welcome-content p {
-  color: var(--game-dark);
+  color: white;
   margin-bottom: 15px;
   line-height: 1.6;
   font-size: 1.1rem;
@@ -1012,7 +1085,6 @@ body::before {
 /* Дополнительные кнопки */
 .btn-outline-secondary {
   color: #6c757d;
-  border: 2px solid #6c757d;
   background: rgba(255,255,255,0.8);
   backdrop-filter: blur(5px);
   font-weight: 600;

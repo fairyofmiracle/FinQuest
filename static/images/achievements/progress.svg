@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="progressGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1d4ed8;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="progressGlow">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.5" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Glow -->
+  <circle cx="100" cy="100" r="85" fill="url(#progressGlow)"/>
+  
+  <!-- Main circle -->
+  <circle cx="100" cy="100" r="70" fill="url(#progressGrad)" opacity="0.9"/>
+  
+  <!-- Progress bars -->
+  <rect x="60" y="80" width="80" height="8" rx="4" fill="white" opacity="0.3"/>
+  <rect x="60" y="80" width="70" height="8" rx="4" fill="white" opacity="0.95"/>
+  
+  <rect x="60" y="100" width="80" height="8" rx="4" fill="white" opacity="0.3"/>
+  <rect x="60" y="100" width="50" height="8" rx="4" fill="white" opacity="0.95"/>
+  
+  <rect x="60" y="120" width="80" height="8" rx="4" fill="white" opacity="0.3"/>
+  <rect x="60" y="120" width="30" height="8" rx="4" fill="white" opacity="0.95"/>
+  
+  <!-- Check mark -->
+  <circle cx="150" cy="84" r="8" fill="#10b981" opacity="0.9"/>
+  <polyline points="147,84 149,86 153,82" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+  
+  <!-- Arrow up -->
+  <polygon points="100,50 110,65 105,65 105,75 95,75 95,65 90,65" fill="#fbbf24" opacity="0.95"/>
+</svg>
+

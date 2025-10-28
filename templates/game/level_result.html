@@ -6,10 +6,10 @@
   <a href="{% url 'topic_levels' level.topic.id %}" class="btn btn-sm btn-outline-secondary">
     <i class="fa-solid fa-arrow-left me-1"></i>К теме
   </a>
+  <div></div>
   <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-primary">
     <i class="fa-solid fa-home me-1"></i>Дашборд
   </a>
-  <div></div>
 </div>
 
 <div class="row">
@@ -105,7 +105,7 @@
     {% if progress.completed and progress.score >= 80 %}
       <div class="alert alert-success mt-3">
         <i class="fa-solid fa-star me-1"></i>+{{ level.reward_points }} очков, 
-        <i class="fa-solid fa-coins me-1"></i>+<span style="color: white;">{{ level.reward_coins }} монет</span>
+        <i class="fa-solid fa-coins me-1"></i>+{{ level.reward_coins }} монет</span>
       </div>
     {% endif %}
 
@@ -193,13 +193,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 showAchievement(achievement);
                 currentAchievementIndex++;
                 
-                // Показываем следующее достижение через 3 секунды
-                setTimeout(showNextAchievement, 3000);
+                // Показываем следующее достижение через 1.5 секунды
+                setTimeout(showNextAchievement, 1500);
             }
         }
         
-        // Начинаем показ достижений через 1 секунду
-        setTimeout(showNextAchievement, 1000);
+        // Начинаем показ достижений через 300 мс
+        setTimeout(showNextAchievement, 300);
     }
 });
 
@@ -208,47 +208,60 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     // Функция для показа модала повышения уровня
     function showLevelUpModal() {
-        const levelUpModal = new bootstrap.Modal(document.getElementById('levelUpModal'), {
-            backdrop: true,  // Можно закрыть кликом вне модала
-            keyboard: true   // Можно закрыть клавишей ESC
+        // Очищаем все старые модалы и backdrop'ы
+        const oldBackdrops = document.querySelectorAll('.modal-backdrop');
+        oldBackdrops.forEach(backdrop => backdrop.remove());
+        
+        document.body.classList.remove('modal-open');
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+        
+        const modalElement = document.getElementById('levelUpModal');
+        if (!modalElement) return;
+        
+        const levelUpModal = new bootstrap.Modal(modalElement, {
+            backdrop: false,
+            keyboard: true
         });
+        
         levelUpModal.show();
         
-        // Убеждаемся, что кнопки работают
-        document.getElementById('levelUpModal').addEventListener('hidden.bs.modal', function() {
-            // Убираем все backdrop'ы, если они остались
+        // Обработчик закрытия модала
+        modalElement.addEventListener('hidden.bs.modal', function() {
             const backdrops = document.querySelectorAll('.modal-backdrop');
             backdrops.forEach(backdrop => backdrop.remove());
             document.body.classList.remove('modal-open');
             document.body.style.overflow = '';
             document.body.style.paddingRight = '';
-        });
+        }, { once: true });
     }
     
     // Если есть достижения, показываем уровень ПОСЛЕ всех достижений
     {% if new_achievements %}
     // Ждем, пока все достижения будут показаны
-    // Каждое достижение показывается 3 секунды между показами
+    // Каждое достижение показывается 1.5 секунды между показами
     const achievementsCount = {{ new_achievements|length }};
-    const totalAchievementsTime = (achievementsCount * 3000) + 2000; // 3 сек между достижениями + 2 сек на показ последнего
+    const totalAchievementsTime = (achievementsCount * 1500) + 500;
     
-    // Убеждаемся, что все модалы достижений закрыты перед показом уровня
     setTimeout(function() {
-        // Закрываем все открытые модалы достижений
         const achievementModals = document.querySelectorAll('.modal.show');
         achievementModals.forEach(modal => {
             const bsModal = bootstrap.Modal.getInstance(modal);
-            if (bsModal) {
-                bsModal.hide();
-            }
+            if (bsModal) bsModal.hide();
         });
         
-        // Ждем немного, чтобы закрытие завершилось
-        setTimeout(showLevelUpModal, 300);
+        const allBackdrops = document.querySelectorAll('.modal-backdrop');
+        allBackdrops.forEach(backdrop => backdrop.remove());
+        
+        document.body.classList.remove('modal-open');
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+        
+        setTimeout(showLevelUpModal, 100);
     }, totalAchievementsTime);
     {% else %}
-    // Если нет достижений, показываем сразу через 500ms
-    setTimeout(showLevelUpModal, 500);
+    // Показываем сразу без задержки
+    showLevelUpModal();
     {% endif %}
 });
 {% endif %}
@@ -256,49 +269,48 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <!-- Модальное окно повышения уровня -->
 {% if level_up_data %}
-<div class="modal fade" id="levelUpModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="levelUpModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="false" data-bs-keyboard="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content" style="border: 3px solid #ffd700; box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);">
+    <div class="modal-content" style="border: 3px solid #ffd700; box-shadow: 0 0 30px rgba(255, 215, 0, 0.5); border-radius: 20px;">
       <!-- Кнопка закрытия -->
-      <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-2" data-bs-dismiss="modal" aria-label="Закрыть" style="z-index: 1; opacity: 0.7; font-size: 0.7rem; width: 18px; height: 18px; transition: all 0.2s ease;"></button>
+      <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Закрыть" style="z-index: 1055; opacity: 0.8; font-size: 0.8rem; width: 20px; height: 20px; transition: all 0.2s ease;"></button>
       
-      <div class="modal-body text-center p-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
-        <div class="level-up-animation mb-4">
-          <i class="fa-solid fa-trophy" style="font-size: 80px; animation: bounce 1s infinite;"></i>
-        </div>
-        <h2 class="mb-3" style="font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+      <div class="modal-body text-center p-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 20px;">
+        <h4 class="mb-2" style="font-weight: 700; font-size: 1.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
           🎉 Поздравляем!
-        </h2>
-        <h4 class="mb-4">Вы повысили уровень!</h4>
+        </h4>
+        <p class="mb-3" style="font-size: 1.1rem;">Вы повысили уровень!</p>
         
-        <div class="level-info mb-4">
+        <div class="mb-3">
           <div class="d-flex justify-content-center align-items-center gap-3">
-            <div class="old-level" style="font-size: 48px; opacity: 0.6;">
+            <div style="font-size: 48px; color: rgba(255, 255, 255, 0.5); font-weight: 900;">
               {{ level_up_data.old_level }}
             </div>
-            <i class="fa-solid fa-arrow-right" style="font-size: 32px;"></i>
-            <div class="new-level" style="font-size: 64px; font-weight: 900; text-shadow: 3px 3px 6px rgba(0,0,0,0.4);">
+            <i class="fa-solid fa-arrow-right" style="font-size: 28px; color: #fbbf24;"></i>
+            <div style="font-size: 64px; color: #fbbf24; font-weight: 900; text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">
               {{ level_up_data.new_level }}
             </div>
           </div>
-          <h5 class="mt-3" style="font-weight: 600;">{{ level_up_data.level_title }}</h5>
+          <div class="mt-2 mb-3" style="display: inline-block; background: rgba(255, 255, 255, 0.15); padding: 8px 18px; border-radius: 50px; backdrop-filter: blur(10px);">
+            <span style="color: #fbbf24; font-weight: 600; font-size: 1rem;">{{ level_up_data.level_title }}</span>
+          </div>
         </div>
         
         <div class="avatar-border-preview mb-4 p-3" style="background: rgba(255,255,255,0.1); border-radius: 15px;">
           <p class="mb-3"><small>Ваша новая рамка аватара:</small></p>
           <div class="d-flex justify-content-center">
-            <div class="avatar-preview {{ user.get_avatar_border_class }}" style="width: 100px; height: 100px; border-radius: 50%; display: flex; align-items: center; justify-content-center; background: linear-gradient(45deg, #667eea, #764ba2);">
-              {% if user.avatar %}
-                <img src="{{ user.avatar.url }}" alt="Avatar" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover;">
+            <div class="{{ level_up_data.new_border_class }}" style="width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.2);">
+              {% if user.get_avatar_display %}
+                <img src="{{ user.get_avatar_display }}" alt="Avatar" style="width: 68px; height: 68px; border-radius: 50%; object-fit: cover;">
               {% else %}
-                <i class="fa-solid fa-user" style="font-size: 50px; color: white;"></i>
+                <i class="fa-solid fa-user" style="font-size: 32px; color: white;"></i>
               {% endif %}
             </div>
           </div>
         </div>
         
-        <button type="button" class="btn btn-light btn-lg px-5" data-bs-dismiss="modal" style="border-radius: 50px; font-weight: 600;">
-          <i class="fa-solid fa-check me-2"></i>Отлично!
+        <button type="button" class="btn btn-light btn-lg" data-bs-dismiss="modal" style="border-radius: 50px; font-weight: 600; padding: 10px 28px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);">
+          <i class="fa-solid fa-check me-2"></i>Ура! 🎉
         </button>
       </div>
     </div>

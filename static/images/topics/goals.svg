@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="goalsGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ec4899;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#db2777;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="90" fill="url(#goalsGrad)" opacity="0.1"/>
+  
+  <!-- Target circles -->
+  <circle cx="100" cy="100" r="60" fill="none" stroke="url(#goalsGrad)" stroke-width="3" opacity="0.3"/>
+  <circle cx="100" cy="100" r="45" fill="none" stroke="url(#goalsGrad)" stroke-width="3" opacity="0.5"/>
+  <circle cx="100" cy="100" r="30" fill="none" stroke="url(#goalsGrad)" stroke-width="3" opacity="0.7"/>
+  <circle cx="100" cy="100" r="15" fill="url(#goalsGrad)" opacity="0.9"/>
+  
+  <!-- Arrow -->
+  <line x1="50" y1="50" x2="95" y2="95" stroke="#fbbf24" stroke-width="4" opacity="0.9"/>
+  <polygon points="95,95 85,98 88,88" fill="#fbbf24" opacity="0.9"/>
+  <polygon points="50,50 45,55 55,45" fill="#fbbf24" opacity="0.9"/>
+  
+  <!-- Stars around -->
+  <polygon points="155,60 157,66 163,66 158,70 160,76 155,72 150,76 152,70 147,66 153,66" fill="#fbbf24" opacity="0.8"/>
+  <polygon points="165,130 167,134 171,134 168,137 169,141 165,138 161,141 162,137 159,134 163,134" fill="#fbbf24" opacity="0.7"/>
+  <polygon points="45,125 47,129 51,129 48,132 49,136 45,133 41,136 42,132 39,129 43,129" fill="#fbbf24" opacity="0.7"/>
+  
+  <!-- Trophy -->
+  <path d="M 30 155 L 35 150 L 35 145 L 25 145 L 25 150 Z" fill="url(#goalsGrad)" opacity="0.7"/>
+  <rect x="27" y="155" width="6" height="8" fill="url(#goalsGrad)" opacity="0.7"/>
+  <rect x="25" y="163" width="10" height="3" fill="url(#goalsGrad)" opacity="0.7"/>
+</svg>
+

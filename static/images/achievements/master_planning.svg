@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="planMasterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a855f7;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ec4899;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <circle cx="100" cy="100" r="85" fill="#a855f7" opacity="0.2"/>
+  <circle cx="100" cy="100" r="70" fill="url(#planMasterGrad)" opacity="0.95"/>
+  
+  <!-- Clipboard/Plan with crown -->
+  <rect x="65" y="70" width="70" height="80" rx="5" fill="white" opacity="0.98"/>
+  
+  <!-- Clip at top -->
+  <rect x="92" y="62" width="16" height="14" rx="3" fill="#a855f7" opacity="0.6"/>
+  <rect x="95" y="65" width="10" height="8" rx="2" fill="white" opacity="0.7"/>
+  
+  <!-- Checklist items -->
+  <circle cx="75" cy="90" r="5" fill="#10b981" opacity="0.9"/>
+  <polyline points="73,90 75,92 78,89" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <line x1="85" y1="90" x2="125" y2="90" stroke="#cbd5e1" stroke-width="2" opacity="0.5"/>
+  
+  <circle cx="75" cy="108" r="5" fill="#10b981" opacity="0.9"/>
+  <polyline points="73,108 75,110 78,107" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <line x1="85" y1="108" x2="125" y2="108" stroke="#cbd5e1" stroke-width="2" opacity="0.5"/>
+  
+  <circle cx="75" cy="126" r="5" fill="#e5e7eb" opacity="0.5"/>
+  <line x1="85" y1="126" x2="125" y2="126" stroke="#cbd5e1" stroke-width="2" opacity="0.5"/>
+  
+  <circle cx="75" cy="140" r="5" fill="#e5e7eb" opacity="0.5"/>
+  <line x1="85" y1="140" x2="120" y2="140" stroke="#cbd5e1" stroke-width="2" opacity="0.5"/>
+  
+  <!-- Diamond crown on top -->
+  <polygon points="100,28 110,43 106,55 94,55 90,43" fill="#fef3c7" opacity="0.95" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.3))"/>
+  <polygon points="100,35 107,43 104,50 96,50 93,43" fill="white" opacity="0.7"/>
+  <line x1="100" y1="28" x2="100" y2="55" stroke="#a855f7" stroke-width="1" opacity="0.3"/>
+  <line x1="90" y1="43" x2="110" y2="43" stroke="#a855f7" stroke-width="1" opacity="0.3"/>
+  
+  <!-- Lightbulb for ideas -->
+  <circle cx="145" cy="130" r="12" fill="#fbbf24" opacity="0.9"/>
+  <rect x="141" y="140" width="8" height="4" rx="1" fill="#78716c" opacity="0.7"/>
+  <rect x="142" y="144" width="6" height="2" rx="1" fill="#78716c" opacity="0.7"/>
+  <circle cx="145" cy="130" r="7" fill="white" opacity="0.3"/>
+  
+  <!-- Sparkles -->
+  <polygon points="50,100 52,104 56,104 53,107 54,111 50,108 46,111 47,107 44,104 48,104" fill="white" opacity="0.85"/>
+  <polygon points="145,75 147,79 151,79 148,82 149,86 145,83 141,86 142,82 139,79 143,79" fill="white" opacity="0.85"/>
+</svg>
+

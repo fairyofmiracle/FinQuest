@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="coinsGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d97706;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="coinsGlow">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:0.5" />
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Glow -->
+  <circle cx="100" cy="100" r="85" fill="url(#coinsGlow)"/>
+  
+  <!-- Main circle -->
+  <circle cx="100" cy="100" r="70" fill="url(#coinsGrad)" opacity="0.9"/>
+  
+  <!-- Stack of coins -->
+  <!-- Coin 1 (back) -->
+  <ellipse cx="85" cy="110" rx="25" ry="8" fill="#9a7b00" opacity="0.6"/>
+  <ellipse cx="85" cy="108" rx="25" ry="8" fill="#fbbf24" opacity="0.9"/>
+  <ellipse cx="85" cy="108" rx="20" ry="6" fill="#fef3c7" opacity="0.5"/>
+  <text x="85" y="112" font-family="Arial, sans-serif" font-size="10" fill="#9a7b00" text-anchor="middle" font-weight="bold">₽</text>
+  
+  <!-- Coin 2 (middle) -->
+  <ellipse cx="100" cy="95" rx="28" ry="9" fill="#9a7b00" opacity="0.6"/>
+  <ellipse cx="100" cy="93" rx="28" ry="9" fill="#fbbf24" opacity="0.95"/>
+  <ellipse cx="100" cy="93" rx="23" ry="7" fill="#fef3c7" opacity="0.5"/>
+  <text x="100" y="98" font-family="Arial, sans-serif" font-size="12" fill="#9a7b00" text-anchor="middle" font-weight="bold">₽</text>
+  
+  <!-- Coin 3 (front) -->
+  <ellipse cx="115" cy="82" rx="30" ry="10" fill="#9a7b00" opacity="0.6"/>
+  <ellipse cx="115" cy="80" rx="30" ry="10" fill="#fbbf24" opacity="1"/>
+  <ellipse cx="115" cy="80" rx="25" ry="8" fill="#fef3c7" opacity="0.5"/>
+  <circle cx="115" cy="80" r="18" fill="none" stroke="#9a7b00" stroke-width="1.5" opacity="0.6"/>
+  <text x="115" y="86" font-family="Arial, sans-serif" font-size="14" fill="#9a7b00" text-anchor="middle" font-weight="bold">₽</text>
+  
+  <!-- Sparkles -->
+  <polygon points="65,70 67,74 71,74 68,77 69,81 65,78 61,81 62,77 59,74 63,74" fill="white" opacity="0.9"/>
+  <polygon points="145,100 147,103 150,103 148,105 149,108 145,106 141,108 142,105 140,103 143,103" fill="white" opacity="0.85"/>
+</svg>
+

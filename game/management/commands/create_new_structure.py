@@ -1254,19 +1254,19 @@ class Command(BaseCommand):
                 # Берем только уникальные вопросы без повторения
                 unique_count = min(count, len(templates))
                 for i in range(unique_count):
-                questions.append(templates[i])
+                    questions.append(templates[i])
             else:
-            # Если подкатегория не найдена, используем базовые вопросы
-            questions.append({
-                'question': f'Вопрос по теме {subcategory_name}',
-                'type': 'single',
-                'options': [
-                    {'text': 'Вариант 1', 'correct': True},
-                    {'text': 'Вариант 2', 'correct': False},
-                    {'text': 'Вариант 3', 'correct': False},
-                    {'text': 'Вариант 4', 'correct': False}
-                ],
-                'hint': 'Изучите тему подробнее'
-            })
+                # Если подкатегория не найдена, используем базовые вопросы
+                questions.append({
+                    'question': f'Вопрос по теме {subcategory_name}',
+                    'type': 'single',
+                    'options': [
+                        {'text': 'Вариант 1', 'correct': True},
+                        {'text': 'Вариант 2', 'correct': False},
+                        {'text': 'Вариант 3', 'correct': False},
+                        {'text': 'Вариант 4', 'correct': False}
+                    ],
+                    'hint': 'Изучите тему подробнее'
+                })
         
         return {'questions': questions}

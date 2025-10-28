@@ -140,3 +140,23 @@
 </div>
 
 {% endblock %}
+
+{% block extra_js %}
+{% load static %}
+<!-- tutorial.js уже подключен в base.html -->
+<script>
+// Инициализация туториала для новых пользователей
+document.addEventListener('DOMContentLoaded', function() {
+    const firstVisitTrigger = document.getElementById('first-visit-trigger');
+    
+    if (firstVisitTrigger) {
+        const tutorialCompleted = localStorage.getItem('finquest_tutorial_completed');
+        
+        if (!tutorialCompleted && typeof FinQuestTutorial !== 'undefined') {
+            window.tutorialInstance = new FinQuestTutorial();
+            tutorialInstance.start();
+        }
+    }
+});
+</script>
+{% endblock %}

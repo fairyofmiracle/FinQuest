@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="savingsMasterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <circle cx="100" cy="100" r="85" fill="#10b981" opacity="0.1"/>
+  <circle cx="100" cy="100" r="70" fill="url(#savingsMasterGrad)" opacity="0.9"/>
+  
+  <!-- Piggy bank with crown -->
+  <ellipse cx="100" cy="105" rx="40" ry="32" fill="white" opacity="0.95"/>
+  <ellipse cx="130" cy="100" rx="15" ry="13" fill="white" opacity="0.95"/>
+  <ellipse cx="135" cy="92" rx="6" ry="9" fill="white" opacity="0.9"/>
+  <circle cx="135" cy="96" r="2" fill="#10b981"/>
+  <ellipse cx="142" cy="102" rx="8" ry="6" fill="#ffc0cb" opacity="0.8"/>
+  <circle cx="140" cy="100" r="1.5" fill="white" opacity="0.7"/>
+  <circle cx="144" cy="100" r="1.5" fill="white" opacity="0.7"/>
+  
+  <!-- Crown -->
+  <path d="M 85 65 L 88 78 L 92 73 L 100 63 L 108 73 L 112 78 L 115 65 Z" fill="#fbbf24" opacity="0.95"/>
+  <rect x="84" y="78" width="32" height="6" rx="1" fill="#fbbf24" opacity="0.95"/>
+  
+  <!-- Coin slot -->
+  <rect x="93" y="82" width="14" height="3" rx="1" fill="#10b981" opacity="0.6"/>
+  
+  <!-- Floating coin -->
+  <circle cx="100" cy="50" r="10" fill="#ffd700" opacity="0.95"/>
+  <text x="100" y="55" font-family="Arial, sans-serif" font-size="9" fill="#9a7b00" text-anchor="middle" font-weight="bold">₽</text>
+  
+  <!-- Legs -->
+  <rect x="75" y="132" width="8" height="12" rx="4" fill="white" opacity="0.9"/>
+  <rect x="92" y="132" width="8" height="12" rx="4" fill="white" opacity="0.9"/>
+  <rect x="108" y="132" width="8" height="12" rx="4" fill="white" opacity="0.9"/>
+</svg>
+

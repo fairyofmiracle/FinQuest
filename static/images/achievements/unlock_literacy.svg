@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="unlockGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="unlockGlow">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:0.5" />
+      <stop offset="100%" style="stop-color:#fbbf24;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+  
+  <circle cx="100" cy="100" r="85" fill="url(#unlockGlow)"/>
+  <circle cx="100" cy="100" r="70" fill="url(#unlockGrad)" opacity="0.9"/>
+  
+  <!-- Open book -->
+  <path d="M 60 100 L 60 130 Q 60 135 65 135 L 97 135 L 97 105 Q 80 108 60 100 Z" fill="white" opacity="0.95"/>
+  <path d="M 140 100 L 140 130 Q 140 135 135 135 L 103 135 L 103 105 Q 120 108 140 100 Z" fill="white" opacity="0.95"/>
+  <path d="M 60 100 Q 80 92 100 95 Q 120 92 140 100" stroke="white" stroke-width="3" fill="none" opacity="0.9"/>
+  
+  <!-- Book lines -->
+  <line x1="70" y1="110" x2="90" y2="110" stroke="#f59e0b" stroke-width="1.5" opacity="0.5"/>
+  <line x1="70" y1="118" x2="90" y2="118" stroke="#f59e0b" stroke-width="1.5" opacity="0.5"/>
+  <line x1="70" y1="126" x2="85" y2="126" stroke="#f59e0b" stroke-width="1.5" opacity="0.5"/>
+  <line x1="110" y1="110" x2="130" y2="110" stroke="#f59e0b" stroke-width="1.5" opacity="0.5"/>
+  <line x1="110" y1="118" x2="130" y2="118" stroke="#f59e0b" stroke-width="1.5" opacity="0.5"/>
+  <line x1="110" y1="126" x2="125" y2="126" stroke="#f59e0b" stroke-width="1.5" opacity="0.5"/>
+  
+  <!-- Unlocked padlock above -->
+  <rect x="85" y="65" width="30" height="20" rx="3" fill="#10b981" opacity="0.9"/>
+  <circle cx="100" cy="75" r="4" fill="white" opacity="0.9"/>
+  <path d="M 88 65 L 88 55 Q 88 45 100 45 Q 112 45 112 55 L 112 60" stroke="#10b981" stroke-width="4" fill="none" opacity="0.9"/>
+  
+  <!-- Sparkles -->
+  <polygon points="50,60 52,65 57,65 53,68 55,73 50,70 45,73 47,68 43,65 48,65" fill="white" opacity="0.9"/>
+  <polygon points="150,70 152,74 156,74 153,77 154,81 150,78 146,81 147,77 144,74 148,74" fill="white" opacity="0.85"/>
+</svg>
+

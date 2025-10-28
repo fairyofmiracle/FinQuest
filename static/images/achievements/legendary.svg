@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="legendGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a855f7;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ec4899;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="legendGlow">
+      <stop offset="0%" style="stop-color:#a855f7;stop-opacity:0.7" />
+      <stop offset="100%" style="stop-color:#a855f7;stop-opacity:0" />
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Outer glow -->
+  <circle cx="100" cy="100" r="90" fill="url(#legendGlow)"/>
+  
+  <!-- Main circle -->
+  <circle cx="100" cy="100" r="70" fill="url(#legendGrad)" opacity="0.95"/>
+  
+  <!-- Diamond shape -->
+  <polygon points="100,40 130,80 120,120 80,120 70,80" fill="white" opacity="0.95" filter="url(#glow)"/>
+  <polygon points="100,50 120,80 112,110 88,110 80,80" fill="#fef3c7" opacity="0.7"/>
+  <polygon points="100,60 110,80 105,100 95,100 90,80" fill="white" opacity="0.5"/>
+  
+  <!-- Diamond facets -->
+  <line x1="100" y1="40" x2="100" y2="120" stroke="#a855f7" stroke-width="1" opacity="0.3"/>
+  <line x1="70" y1="80" x2="130" y2="80" stroke="#a855f7" stroke-width="1" opacity="0.3"/>
+  <line x1="80" y1="120" x2="100" y2="40" stroke="#a855f7" stroke-width="1" opacity="0.3"/>
+  <line x1="120" y1="120" x2="100" y2="40" stroke="#a855f7" stroke-width="1" opacity="0.3"/>
+  
+  <!-- Light rays -->
+  <line x1="100" y1="100" x2="60" y2="60" stroke="white" stroke-width="2" opacity="0.4"/>
+  <line x1="100" y1="100" x2="140" y2="60" stroke="white" stroke-width="2" opacity="0.4"/>
+  <line x1="100" y1="100" x2="60" y2="140" stroke="white" stroke-width="2" opacity="0.3"/>
+  <line x1="100" y1="100" x2="140" y2="140" stroke="white" stroke-width="2" opacity="0.3"/>
+  
+  <!-- Sparkle stars -->
+  <polygon points="40,40 42,46 48,46 43,50 45,56 40,52 35,56 37,50 32,46 38,46" fill="white" opacity="0.95"/>
+  <polygon points="160,40 162,46 168,46 163,50 165,56 160,52 155,56 157,50 152,46 158,46" fill="white" opacity="0.95"/>
+  <polygon points="40,160 42,164 46,164 43,167 44,171 40,168 36,171 37,167 34,164 38,164" fill="white" opacity="0.9"/>
+  <polygon points="160,160 162,164 166,164 163,167 164,171 160,168 156,171 157,167 154,164 158,164" fill="white" opacity="0.9"/>
+  
+  <!-- Small circles sparkle -->
+  <circle cx="50" cy="100" r="3" fill="white" opacity="0.9"/>
+  <circle cx="150" cy="100" r="3" fill="white" opacity="0.9"/>
+  <circle cx="100" cy="30" r="3" fill="white" opacity="0.85"/>
+</svg>
+

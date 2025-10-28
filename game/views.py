@@ -76,8 +76,11 @@ def category_detail(request, category_slug):
     
     return render(request, 'game/category_detail.html', context)
 
-@login_required
 def dashboard(request):
+    # Если пользователь не авторизован, показываем landing page
+    if not request.user.is_authenticated:
+        return render(request, 'game/landing.html')
+    
     user = request.user
     # Оптимизация: один запрос для всех данных
     topics = Topic.objects.prefetch_related('level_set').all()
@@ -97,9 +100,10 @@ def dashboard(request):
         }
     
     # Проверяем, первый ли это вход пользователя
-    # Пользователь считается новым, если у него нет прогресса по уровням
-    has_progress = UserLevelProgress.objects.filter(user=user).exists()
-    is_first_visit = not has_progress
+    # Пользователь считается новым, если у него нет ЗАВЕРШЕННЫХ уровней
+    # (не просто started, а completed)
+    has_completed_levels = UserLevelProgress.objects.filter(user=user, completed=True).exists()
+    is_first_visit = not has_completed_levels
     
     # Добавляем данные о прогрессе пользователя
     user.level_progress = user.get_level_progress()
@@ -147,7 +151,16 @@ def media(request):
 @login_required
 def article_detail(request, pk):
     article = get_object_or_404(Article, pk=pk)
-    return render(request, 'game/article_detail.html', {'article': article})
+    
+    # Получаем связанные статьи (из той же темы, но не текущую)
+    related_articles = Article.objects.filter(
+        topic=article.topic
+    ).exclude(pk=pk).order_by('?')[:4]  # Случайный порядок, максимум 4
+    
+    return render(request, 'game/article_detail.html', {
+        'article': article,
+        'related_articles': related_articles
+    })
 
 @login_required
 def topic_levels(request, topic_id):
@@ -419,10 +432,20 @@ def level_play(request, level_id):
                             
                             # Проверяем повышение уровня
                             if new_level > old_level:
+                                # Определяем новую рамку аватара на основе уровня
+                                new_border = 'novice'
+                                if new_level >= 7: new_border = 'legend'
+                                elif new_level >= 6: new_border = 'master'
+                                elif new_level >= 5: new_border = 'expert'
+                                elif new_level >= 4: new_border = 'advanced'
+                                elif new_level >= 3: new_border = 'intermediate'
+                                elif new_level >= 2: new_border = 'beginner'
+                                
                                 request.session['level_up'] = {
                                     'old_level': old_level,
                                     'new_level': new_level,
-                                    'level_title': request.user.get_level_title()
+                                    'level_title': request.user.get_level_title(),
+                                    'new_border_class': f'avatar-border-{new_border}'
                                 }
                                 request.session.modified = True
                             
@@ -517,10 +540,20 @@ def level_play(request, level_id):
                 
                 # Проверяем повышение уровня
                 if new_level > old_level:
+                    # Определяем новую рамку аватара на основе уровня
+                    new_border = 'novice'
+                    if new_level >= 7: new_border = 'legend'
+                    elif new_level >= 6: new_border = 'master'
+                    elif new_level >= 5: new_border = 'expert'
+                    elif new_level >= 4: new_border = 'advanced'
+                    elif new_level >= 3: new_border = 'intermediate'
+                    elif new_level >= 2: new_border = 'beginner'
+                    
                     request.session['level_up'] = {
                         'old_level': old_level,
                         'new_level': new_level,
-                        'level_title': request.user.get_level_title()
+                        'level_title': request.user.get_level_title(),
+                        'new_border_class': f'avatar-border-{new_border}'
                     }
                     request.session.modified = True
                 progress.completed = True
@@ -648,6 +681,7 @@ def level_result(request, level_id):
         'quiz_results': quiz_results,
         'new_achievements': json.dumps(new_achievements),
         'level_up_data': level_up_data,
+        'level_up_data_json': json.dumps(level_up_data) if level_up_data else 'null',
     })
 
 # --- Вспомогательные функции ---
