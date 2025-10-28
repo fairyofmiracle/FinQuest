@@ -3,38 +3,192 @@
 {% block title %}Уведомления — FinQuest{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <h4 class="section-title"><i class="fa-regular fa-bell"></i> Уведомления</h4>
-  <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-primary">
-    <i class="fa-solid fa-home me-1"></i>Дашборд
-  </a>
-</div>
-
-<img class="hero-illustration mb-3" src="https://images.unsplash.com/photo-1545987796-200677ee1011?q=80&w=1600&auto=format&fit=crop" alt="Notifications" />
-
-<form method="post" class="mb-3">
-  {% csrf_token %}
-  <input type="hidden" name="action" value="mark_all_read">
-  <button type="submit" class="btn btn-sm btn-outline-primary">
-    <i class="fa-solid fa-check-double me-1"></i>Отметить все как прочитанные
-  </button>
-</form>
-
-{% if notifications %}
-  <div class="list-group">
-    {% for n in notifications %}
-      <div class="list-group-item d-flex justify-content-between align-items-center">
-        <div>
-          {% if not n.is_read %}<span class="badge bg-danger me-2">Непр.</span>{% endif %}
-          {{ n.text }}
+<div class="container-fluid">
+  <!-- Заголовок страницы -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card gaming-header-card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h2 class="page-title mb-1">
+                <i class="fa-regular fa-bell me-2"></i>Уведомления
+              </h2>
+              <p class="text-muted mb-0">Все важные события и достижения</p>
+            </div>
+            <div class="d-flex gap-2">
+              <form method="post" style="display: inline;">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="mark_all_read">
+                <button type="submit" class="btn btn-outline-primary btn-sm">
+                  <i class="fa-solid fa-check-double me-1"></i>Отметить все
+                </button>
+              </form>
+              <form method="post" style="display: inline;">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="delete_all">
+                <button type="submit" class="btn btn-outline-danger btn-sm" 
+                        onclick="return confirm('Удалить все уведомления? Это действие нельзя отменить!')">
+                  <i class="fa-solid fa-trash me-1"></i>Удалить все
+                </button>
+              </form>
+              <a href="{% url 'dashboard' %}" class="btn btn-primary btn-sm">
+                <i class="fa-solid fa-home me-1"></i>Дашборд
+              </a>
+            </div>
+          </div>
         </div>
-        <small class="text-muted">{{ n.created_at|date:'d.m.Y H:i' }}</small>
       </div>
-    {% endfor %}
+    </div>
   </div>
-{% else %}
-  <p class="text-muted">Уведомлений нет.</p>
-{% endif %}
+
+  <!-- Уведомления -->
+  <div class="row">
+    <div class="col-12">
+      {% if notifications %}
+        <!-- Пагинация сверху -->
+        {% if notifications.has_other_pages %}
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="pagination-info">
+              <span class="text-muted">
+                Показано {{ notifications.start_index }}-{{ notifications.end_index }} 
+                из {{ notifications.paginator.count }} уведомлений
+              </span>
+            </div>
+            <nav>
+              <ul class="pagination pagination-sm mb-0">
+                {% if notifications.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page=1">&laquo;&laquo;</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ notifications.previous_page_number }}">&laquo;</a>
+                  </li>
+                {% endif %}
+                
+                {% for num in notifications.paginator.page_range %}
+                  {% if notifications.number == num %}
+                    <li class="page-item active">
+                      <span class="page-link">{{ num }}</span>
+                    </li>
+                  {% elif num > notifications.number|add:'-3' and num < notifications.number|add:'3' %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+                
+                {% if notifications.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ notifications.next_page_number }}">&raquo;</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ notifications.paginator.num_pages }}">&raquo;&raquo;</a>
+                  </li>
+                {% endif %}
+              </ul>
+            </nav>
+          </div>
+        {% endif %}
+        
+        <div class="notifications-container">
+          {% for notification in notifications %}
+            <div class="notification-item {% if not notification.is_read %}notification-unread{% endif %}">
+              <div class="notification-content">
+                <div class="notification-header">
+                  <div class="notification-icon">
+                    {% if 'достижение' in notification.text.lower %}
+                      <i class="fa-solid fa-trophy text-warning"></i>
+                    {% elif 'уровень' in notification.text.lower %}
+                      <i class="fa-solid fa-star text-primary"></i>
+                    {% elif 'монеты' in notification.text.lower or 'очки' in notification.text.lower %}
+                      <i class="fa-solid fa-coins text-success"></i>
+                    {% elif 'серия' in notification.text.lower %}
+                      <i class="fa-solid fa-fire text-danger"></i>
+                    {% else %}
+                      <i class="fa-solid fa-info-circle text-info"></i>
+                    {% endif %}
+                  </div>
+                  <div class="notification-status">
+                    {% if not notification.is_read %}
+                      <span class="badge bg-danger pulse-badge">Новое</span>
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="notification-body">
+                  <p class="notification-text">{{ notification.text }}</p>
+                  <div class="notification-meta">
+                    <span class="notification-time">
+                      <i class="fa-solid fa-clock me-1"></i>
+                      {{ notification.created_at|date:'d.m.Y в H:i' }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        
+        <!-- Пагинация снизу -->
+        {% if notifications.has_other_pages %}
+          <div class="d-flex justify-content-center mt-4">
+            <nav>
+              <ul class="pagination pagination-sm mb-0">
+                {% if notifications.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page=1">&laquo;&laquo;</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ notifications.previous_page_number }}">&laquo;</a>
+                  </li>
+                {% endif %}
+                
+                {% for num in notifications.paginator.page_range %}
+                  {% if notifications.number == num %}
+                    <li class="page-item active">
+                      <span class="page-link">{{ num }}</span>
+                    </li>
+                  {% elif num > notifications.number|add:'-3' and num < notifications.number|add:'3' %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+                
+                {% if notifications.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ notifications.next_page_number }}">&raquo;</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ notifications.paginator.num_pages }}">&raquo;&raquo;</a>
+                  </li>
+                {% endif %}
+              </ul>
+            </nav>
+          </div>
+        {% endif %}
+      {% else %}
+        <div class="empty-notifications">
+          <div class="card gaming-empty-card">
+            <div class="card-body text-center py-5">
+              <div class="empty-icon mb-3">
+                <i class="fa-regular fa-bell-slash"></i>
+              </div>
+              <h4 class="empty-title mb-2">Нет уведомлений</h4>
+              <p class="empty-text text-muted mb-4">
+                Пока у вас нет новых уведомлений.<br>
+                Пройдите уровни и заработайте достижения!
+              </p>
+              <a href="{% url 'dashboard' %}" class="btn btn-primary">
+                <i class="fa-solid fa-play me-2"></i>Начать обучение
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 

@@ -1,0 +1,472 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <a href="{% url 'topic_levels' level.topic.id %}" class="btn btn-sm btn-outline-secondary">
+    <i class="fa-solid fa-arrow-left me-1"></i>К теме
+  </a>
+  <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-primary">
+    <i class="fa-solid fa-home me-1"></i>Дашборд
+  </a>
+  <div></div>
+</div>
+
+<!-- Заголовок уровня -->
+<div class="level-header mb-4">
+  <div class="card border-0 shadow-sm">
+    <div class="card-body">
+      <div class="d-flex align-items-center mb-3">
+        <div class="level-type-icon me-3">
+          {% if level.type == 'quiz' %}📝
+          {% elif level.type == 'test' %}📋
+          {% elif level.type == 'quest' %}🗺️
+          {% elif level.type == 'story' %}📖
+          {% elif level.type == 'puzzle' %}🧩
+          {% elif level.type == 'scenario' %}🎭
+          {% elif level.type == 'calculation' %}🧮
+          {% elif level.type == 'simulation' %}🎮
+          {% else %}❓{% endif %}
+        </div>
+        <div>
+          <h4 class="mb-1">{{ level.title }}</h4>
+          <div class="d-flex gap-2">
+            <span class="badge bg-primary">{{ level.get_type_display }}</span>
+            <span class="badge bg-secondary">
+              {% if level.difficulty == 1 %}<i class="fa-solid fa-star me-1"></i>Легко
+              {% elif level.difficulty == 2 %}<i class="fa-solid fa-star me-1"></i><i class="fa-solid fa-star me-1"></i>Средне
+              {% elif level.difficulty == 3 %}<i class="fa-solid fa-star me-1"></i><i class="fa-solid fa-star me-1"></i><i class="fa-solid fa-star me-1"></i>Сложно{% endif %}
+            </span>
+          </div>
+        </div>
+      </div>
+      <p class="text-muted mb-0">{{ level.description|linebreaks }}</p>
+    </div>
+  </div>
+</div>
+
+<!-- Прогресс-бар -->
+<div class="progress mb-4" style="height: 8px;">
+  <div class="progress-bar" role="progressbar" style="width: 0%" id="progressBar"></div>
+</div>
+
+<!-- Содержимое уровня -->
+<div class="level-content">
+  <form method="post" id="levelForm">
+    {% csrf_token %}
+    
+    <!-- Викторина с множественными вопросами -->
+    {% if level.type == 'quiz' %}
+      <div class="quiz-container">
+        {% for question_num in level.options.values_list.question_number.distinct %}
+          <div class="question-block mb-4" data-question="{{ question_num }}">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="mb-0">Вопрос {{ question_num }}</h5>
+              </div>
+              <div class="card-body">
+                <div class="question-text mb-3">
+                  {% if level.content.questions %}
+                    {% for question in level.content.questions %}
+                      {% if forloop.counter == question_num %}
+                        <p class="lead">{{ question.text }}</p>
+                      {% endif %}
+                    {% endfor %}
+                  {% else %}
+                    <p class="lead">Вопрос не найден</p>
+                  {% endif %}
+                </div>
+                
+                <div class="quiz-options">
+                  {% for option in level.options.all %}
+                    {% if option.question_number == question_num %}
+                      <div class="form-check mb-3">
+                        <input class="form-check-input" type="radio" name="answer_{{ question_num }}" value="{{ option.id }}" id="option_{{ option.id }}">
+                        <label class="form-check-label" for="option_{{ option.id }}">
+                          {{ option.text }}
+                        </label>
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+                
+                <div class="hint-section mt-3" style="display: none;">
+                  <div class="alert alert-info">
+                    <i class="fa-solid fa-lightbulb me-2"></i>
+                    <strong>Подсказка:</strong>
+                    <span class="hint-text">
+                      {% if level.content.questions %}
+                        {% for question in level.content.questions %}
+                          {% if forloop.counter == question_num %}
+                            {{ question.hint }}
+                          {% endif %}
+                        {% endfor %}
+                      {% endif %}
+                    </span>
+                  </div>
+                </div>
+                
+                <button type="button" class="btn btn-outline-secondary btn-sm show-hint-btn">
+                  <i class="fa-solid fa-lightbulb me-1"></i>Показать подсказку
+                </button>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    
+    <!-- Тест с множественными вопросами -->
+    {% elif level.type == 'test' %}
+      <div class="test-container">
+        {% for question_num in level.options.values_list.question_number.distinct %}
+          <div class="question-block mb-4" data-question="{{ question_num }}">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="mb-0">Вопрос {{ question_num }}</h5>
+              </div>
+              <div class="card-body">
+                <div class="question-text mb-3">
+                  {% if level.content.questions %}
+                    {% for question in level.content.questions %}
+                      {% if forloop.counter == question_num %}
+                        <p class="lead">{{ question.text }}</p>
+                      {% endif %}
+                    {% endfor %}
+                  {% else %}
+                    <p class="lead">Вопрос не найден</p>
+                  {% endif %}
+                </div>
+                
+                <div class="test-options">
+                  {% for option in level.options.all %}
+                    {% if option.question_number == question_num %}
+                      <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" name="answer_{{ question_num }}" value="{{ option.id }}" id="option_{{ option.id }}">
+                        <label class="form-check-label" for="option_{{ option.id }}">
+                          {{ option.text }}
+                        </label>
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+                
+                <div class="hint-section mt-3" style="display: none;">
+                  <div class="alert alert-info">
+                    <i class="fa-solid fa-lightbulb me-2"></i>
+                    <strong>Подсказка:</strong>
+                    <span class="hint-text">
+                      {% if level.content.questions %}
+                        {% for question in level.content.questions %}
+                          {% if forloop.counter == question_num %}
+                            {{ question.hint }}
+                          {% endif %}
+                        {% endfor %}
+                      {% endif %}
+                    </span>
+                  </div>
+                </div>
+                
+                <button type="button" class="btn btn-outline-secondary btn-sm show-hint-btn">
+                  <i class="fa-solid fa-lightbulb me-1"></i>Показать подсказку
+                </button>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    
+    <!-- Расчеты -->
+    {% elif level.type == 'calculation' %}
+      <div class="calculation-container">
+        {% for question_data in level.content.questions %}
+          <div class="question-block mb-4">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="mb-0">Задача {{ forloop.counter }}</h5>
+              </div>
+              <div class="card-body">
+                <div class="question-text mb-3">
+                  <p class="lead">{{ question_data.question }}</p>
+                </div>
+                
+                <div class="calculation-input">
+                  <div class="mb-3">
+                    <label for="calculation_answer_{{ forloop.counter }}" class="form-label">Ваш ответ:</label>
+                    <input type="number" class="form-control" name="calculation_answer_{{ forloop.counter }}" id="calculation_answer_{{ forloop.counter }}" step="0.01" required>
+                  </div>
+                </div>
+                
+                <div class="hint-section mt-3" style="display: none;">
+                  <div class="alert alert-info">
+                    <i class="fa-solid fa-lightbulb me-2"></i>
+                    <strong>Подсказка:</strong>
+                    <span class="hint-text">{{ question_data.hint }}</span>
+                  </div>
+                </div>
+                
+                <button type="button" class="btn btn-outline-secondary btn-sm show-hint-btn">
+                  <i class="fa-solid fa-lightbulb me-1"></i>Показать подсказку
+                </button>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    
+    <!-- Квест -->
+    {% elif level.type == 'quest' %}
+      <div class="quest-container">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">Интерактивный квест</h5>
+          </div>
+          <div class="card-body">
+            <div class="quest-content">
+              <div class="quest-description mb-4">
+                <p>{{ level.content.description }}</p>
+              </div>
+              
+              <div class="quest-steps">
+                {% for step_num, step_data in level.content.steps.items %}
+                  <div class="quest-step mb-4" data-step="{{ step_num }}">
+                    <div class="card">
+                      <div class="card-header">
+                        <h6 class="mb-0">Шаг {{ step_num }}</h6>
+                      </div>
+                      <div class="card-body">
+                        <p class="mb-3">{{ step_data.description }}</p>
+                        
+                        <div class="quest-options">
+                          {% for option in step_data.options %}
+                            <div class="form-check mb-3">
+                              <input class="form-check-input" type="radio" name="quest_answer_{{ step_num }}" value="{{ forloop.counter0 }}" id="quest_option_{{ step_num }}_{{ forloop.counter0 }}">
+                              <label class="form-check-label" for="quest_option_{{ step_num }}_{{ forloop.counter0 }}">
+                                {{ option.text }}
+                              </label>
+                            </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    <!-- Головоломка -->
+    {% elif level.type == 'puzzle' %}
+      <div class="puzzle-container">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">Головоломка</h5>
+          </div>
+          <div class="card-body">
+            <div class="puzzle-text mb-4">
+              <p class="lead">{{ level.content.puzzle_text }}</p>
+            </div>
+            
+            <div class="puzzle-input">
+              <div class="mb-3">
+                <label for="puzzle_answer" class="form-label">Ваш ответ:</label>
+                <input type="text" class="form-control" name="puzzle_answer" id="puzzle_answer" required>
+              </div>
+            </div>
+            
+            <div class="hint-section mt-3" style="display: none;">
+              <div class="alert alert-info">
+                <i class="fa-solid fa-lightbulb me-2"></i>
+                <strong>Подсказка:</strong>
+                <span class="hint-text">{{ level.content.hint }}</span>
+              </div>
+            </div>
+            
+            <button type="button" class="btn btn-outline-secondary btn-sm show-hint-btn">
+              <i class="fa-solid fa-lightbulb me-1"></i>Показать подсказку
+            </button>
+          </div>
+        </div>
+      </div>
+    
+    <!-- История с выбором -->
+    {% elif level.type == 'story' %}
+      <div class="story-container">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">История с выбором</h5>
+          </div>
+          <div class="card-body">
+            <div class="story-text mb-4">
+              <p class="lead">{{ level.content.story_text }}</p>
+            </div>
+            
+            <div class="story-questions">
+              {% for question in level.content.questions %}
+                <div class="question-block mb-4">
+                  <div class="card">
+                    <div class="card-header">
+                      <h6 class="mb-0">Вопрос {{ forloop.counter }}</h6>
+                    </div>
+                    <div class="card-body">
+                      <p class="mb-3">{{ question.question }}</p>
+                      
+                      <div class="story-options">
+                        {% for option in question.options %}
+                          <div class="form-check mb-3">
+                            <input class="form-check-input" type="radio" name="story_answer_{{ forloop.parentloop.counter }}" value="{{ forloop.counter0 }}" id="story_option_{{ forloop.parentloop.counter }}_{{ forloop.counter0 }}">
+                            <label class="form-check-label" for="story_option_{{ forloop.parentloop.counter }}_{{ forloop.counter0 }}">
+                              {{ option.text }}
+                            </label>
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    <!-- Сценарий -->
+    {% elif level.type == 'scenario' %}
+      <div class="scenario-container">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">Сценарий принятия решений</h5>
+          </div>
+          <div class="card-body">
+            <div class="scenario-text mb-4">
+              <p class="lead">{{ level.content.scenario_text }}</p>
+            </div>
+            
+            <div class="scenario-options">
+              {% for option in level.content.options %}
+                <div class="form-check mb-3">
+                  <input class="form-check-input" type="radio" name="scenario_answer" value="{{ forloop.counter0 }}" id="scenario_option_{{ forloop.counter0 }}">
+                  <label class="form-check-label" for="scenario_option_{{ forloop.counter0 }}">
+                    {{ option.text }}
+                  </label>
+                </div>
+              {% endfor %}
+            </div>
+            
+            <div class="hint-section mt-3" style="display: none;">
+              <div class="alert alert-info">
+                <i class="fa-solid fa-lightbulb me-2"></i>
+                <strong>Подсказка:</strong>
+                <span class="hint-text">{{ level.content.hint }}</span>
+              </div>
+            </div>
+            
+            <button type="button" class="btn btn-outline-secondary btn-sm show-hint-btn">
+              <i class="fa-solid fa-lightbulb me-1"></i>Показать подсказку
+            </button>
+          </div>
+        </div>
+      </div>
+    
+    <!-- Симуляция -->
+    {% elif level.type == 'simulation' %}
+      <div class="simulation-container">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">Симуляция</h5>
+          </div>
+          <div class="card-body">
+            <div class="simulation-content">
+              {% for scenario in level.content.scenarios %}
+                <div class="simulation-scenario mb-4">
+                  <div class="card">
+                    <div class="card-header">
+                      <h6 class="mb-0">{{ scenario.title }}</h6>
+                    </div>
+                    <div class="card-body">
+                      <p class="mb-3">{{ scenario.description }}</p>
+                      
+                      <div class="simulation-options">
+                        {% for option in scenario.options %}
+                          <div class="form-check mb-3">
+                            <input class="form-check-input" type="radio" name="simulation_answer_{{ forloop.parentloop.counter }}" value="{{ forloop.counter0 }}" id="simulation_option_{{ forloop.parentloop.counter }}_{{ forloop.counter0 }}">
+                            <label class="form-check-label" for="simulation_option_{{ forloop.parentloop.counter }}_{{ forloop.counter0 }}">
+                              {{ option.text }}
+                            </label>
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+    
+    <div class="text-center mt-4">
+      <button type="submit" class="btn btn-primary btn-lg">
+        <i class="fa-solid fa-check me-2"></i>Завершить уровень
+      </button>
+    </div>
+  </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Показ подсказок
+    document.querySelectorAll('.show-hint-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const hintSection = this.parentElement.querySelector('.hint-section');
+            if (hintSection.style.display === 'none') {
+                hintSection.style.display = 'block';
+                this.innerHTML = '<i class="fa-solid fa-eye-slash me-1"></i>Скрыть подсказку';
+            } else {
+                hintSection.style.display = 'none';
+                this.innerHTML = '<i class="fa-solid fa-lightbulb me-1"></i>Показать подсказку';
+            }
+        });
+    });
+    
+    // Обновление прогресс-бара
+    function updateProgress() {
+        const totalQuestions = document.querySelectorAll('.question-block').length;
+        const answeredQuestions = document.querySelectorAll('.question-block').length;
+        const progress = (answeredQuestions / totalQuestions) * 100;
+        document.getElementById('progressBar').style.width = progress + '%';
+    }
+    
+    // Отслеживание ответов
+    document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
+        input.addEventListener('change', updateProgress);
+    });
+});
+</script>
+
+<style>
+.question-block {
+    transition: all 0.3s ease;
+}
+
+.question-block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.quiz-options .form-check-input,
+.test-options .form-check-input {
+    transform: scale(1.2);
+}
+
+.hint-section {
+    transition: all 0.3s ease;
+}
+
+.level-type-icon {
+    font-size: 2rem;
+}
+</style>
+{% endblock %}

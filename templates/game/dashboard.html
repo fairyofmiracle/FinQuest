@@ -11,11 +11,11 @@
     <div class="card-body">
       <div class="row align-items-center">
         <div class="col-auto">
-          {% if user.avatar %}
-            <img src="{{ user.avatar.url }}" class="rounded-circle shadow" width="60" height="60" alt="Аватар">
+          {% if user.get_avatar_display %}
+            <img src="{{ user.get_avatar_display }}" class="shadow {{ user.get_avatar_border_class }}" width="80" height="80" alt="Аватар" style="border-radius: 16px; object-fit: cover;">
           {% else %}
-            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow"
-                 style="width:60px; height:60px; font-size:20px; font-weight:bold;">
+            <div class="bg-primary text-white d-flex align-items-center justify-content-center shadow {{ user.get_avatar_border_class }}"
+                 style="width:80px; height:80px; font-size:26px; font-weight:bold; border-radius: 16px;">
               {{ user.username|first|upper }}
             </div>
           {% endif %}
@@ -30,7 +30,7 @@
           </div>
           <div class="d-flex gap-2">
             <span class="badge bg-primary"><i class="fa-solid fa-star me-1"></i>{{ user.points }}</span>
-            <span class="badge bg-warning text-dark"><i class="fa-solid fa-coins me-1"></i>{{ user.coins }}</span>
+            <span class="badge bg-warning text-white"><i class="fa-solid fa-coins me-1"></i>{{ user.coins }}</span>
             <span class="badge bg-success"><i class="fa-solid fa-trophy me-1"></i>{{ user.achievements_count }}</span>
           </div>
         </div>
@@ -45,27 +45,98 @@
 </div>
 
 
-<!-- Темы -->
-<h5 class="section-title"><i class="fa-solid fa-shield-halved"></i> Темы</h5>
-{% for topic in topics %}
-  <a href="{% url 'topic_levels' topic.id %}" class="text-decoration-none">
-    <div class="card mb-3">
-      <div class="card-body py-2">
-        <div class="d-flex justify-content-between align-items-start">
-          <div>
-            <h6 class="mb-1">{{ topic.name }}</h6>
-            <p class="text-muted small mb-0">{{ topic.description|truncatewords:6 }}</p>
-          </div>
-          <span class="badge bg-primary">{{ topic.progress.percent }}%</span>
-        </div>
-        <div class="progress mt-2" style="height: 5px;">
-          <div class="progress-bar" role="progressbar" style="width: {{ topic.progress.percent }}%;"></div>
-        </div>
+<!-- Основные категории обучения -->
+<h5 class="mb-4 section-title"><i class="fa-solid fa-graduation-cap"></i> Категории обучения</h5>
+
+<!-- 4 основные категории в виде карточек -->
+<div class="row g-4 mb-5">
+  <!-- Основы финансов -->
+  <div class="col-lg-3 col-md-6">
+    <div class="main-category-card" onclick="location.href='{% url 'category_detail' 'basics' %}'">
+      <div class="main-category-icon">
+        <i class="fa-solid fa-piggy-bank"></i>
       </div>
+      <h3 class="main-category-title">{{ categories.basics.name }}</h3>
+      <p class="main-category-description">Изучите базовые принципы управления деньгами и начните свой путь к финансовой грамотности</p>
+      <div class="main-category-stats">
+        <div class="main-category-progress">
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: {{ categories.basics.progress_percent }}%;"></div>
+          </div>
+        </div>
+        <div class="main-category-percent">{{ categories.basics.progress_percent }}%</div>
+      </div>
+      <button class="main-category-button">
+        <i class="fa-solid fa-play me-2"></i>Изучать основы
+      </button>
     </div>
-  </a>
-{% empty %}
-  <p class="text-muted">Нет тем.</p>
-{% endfor %}
+  </div>
+
+  <!-- Безопасность -->
+  <div class="col-lg-3 col-md-6">
+    <div class="main-category-card" onclick="location.href='{% url 'category_detail' 'security' %}'">
+      <div class="main-category-icon">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+      <h3 class="main-category-title">{{ categories.security.name }}</h3>
+      <p class="main-category-description">Защитите себя от мошенников и финансовых рисков в цифровом мире</p>
+      <div class="main-category-stats">
+        <div class="main-category-progress">
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: {{ categories.security.progress_percent }}%;"></div>
+          </div>
+        </div>
+        <div class="main-category-percent">{{ categories.security.progress_percent }}%</div>
+      </div>
+      <button class="main-category-button">
+        <i class="fa-solid fa-shield me-2"></i>Защититься
+      </button>
+    </div>
+  </div>
+
+  <!-- Инвестиции -->
+  <div class="col-lg-3 col-md-6">
+    <div class="main-category-card" onclick="location.href='{% url 'category_detail' 'investments' %}'">
+      <div class="main-category-icon">
+        <i class="fa-solid fa-chart-line"></i>
+      </div>
+      <h3 class="main-category-title">{{ categories.investments.name }}</h3>
+      <p class="main-category-description">Научитесь приумножать свои сбережения и строить капитал</p>
+      <div class="main-category-stats">
+        <div class="main-category-progress">
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: {{ categories.investments.progress_percent }}%;"></div>
+          </div>
+        </div>
+        <div class="main-category-percent">{{ categories.investments.progress_percent }}%</div>
+      </div>
+      <button class="main-category-button">
+        <i class="fa-solid fa-chart-line me-2"></i>Инвестировать
+      </button>
+    </div>
+  </div>
+
+  <!-- Планирование -->
+  <div class="col-lg-3 col-md-6">
+    <div class="main-category-card" onclick="location.href='{% url 'category_detail' 'planning' %}'">
+      <div class="main-category-icon">
+        <i class="fa-solid fa-bullseye"></i>
+      </div>
+      <h3 class="main-category-title">{{ categories.planning.name }}</h3>
+      <p class="main-category-description">Достигайте своих финансовых целей с помощью правильного планирования</p>
+      <div class="main-category-stats">
+        <div class="main-category-progress">
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: {{ categories.planning.progress_percent }}%;"></div>
+          </div>
+        </div>
+        <div class="main-category-percent">{{ categories.planning.progress_percent }}%</div>
+      </div>
+      <button class="main-category-button">
+        <i class="fa-solid fa-bullseye me-2"></i>Планировать
+      </button>
+    </div>
+  </div>
+</div>
 
 {% endblock %}

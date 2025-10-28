@@ -1,0 +1,24 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fa709a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fee140;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" fill="url(#grad4)" rx="20"/>
+  <!-- Голова -->
+  <circle cx="100" cy="72" r="34" fill="white" opacity="0.95"/>
+  <!-- Корона/тиара -->
+  <path d="M 70 55 L 75 40 L 80 50 L 90 35 L 100 50 L 110 35 L 120 50 L 125 40 L 130 55 Z" fill="#fee140" opacity="0.9"/>
+  <!-- Глаза (звездочки) -->
+  <path d="M 88 70 L 90 74 L 94 74 L 91 77 L 92 81 L 88 78 L 84 81 L 85 77 L 82 74 L 86 74 Z" fill="#fa709a"/>
+  <path d="M 108 70 L 110 74 L 114 74 L 111 77 L 112 81 L 108 78 L 104 81 L 105 77 L 102 74 L 106 74 Z" fill="#fa709a"/>
+  <!-- Улыбка широкая -->
+  <path d="M 80 88 Q 100 98 120 88" stroke="#fa709a" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <!-- Тело -->
+  <path d="M 100 106 L 65 125 L 70 175 L 90 175 L 90 150 L 110 150 L 110 175 L 130 175 L 135 125 Z" fill="white" opacity="0.95"/>
+  <!-- Руки вверх (победа) -->
+  <rect x="45" y="115" width="15" height="45" rx="7" fill="white" opacity="0.95" transform="rotate(-30 52 115)"/>
+  <rect x="140" y="115" width="15" height="45" rx="7" fill="white" opacity="0.95" transform="rotate(30 148 115)"/>
+</svg>
+

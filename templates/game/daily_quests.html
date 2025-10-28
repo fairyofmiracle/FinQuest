@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block title %}Ежедневные задания — FinQuest{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4 class="section-title"><i class="fa-solid fa-calendar-day"></i> Ежедневные задания</h4>
+  <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-primary">
+    <i class="fa-solid fa-home me-1"></i>Дашборд
+  </a>
+</div>
+
+{% if user_quests %}
+  <div class="row g-3">
+    {% for quest_data in user_quests %}
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 {% if quest_data.is_completed %}border-success{% endif %}">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h6 class="card-title mb-0">{{ quest_data.quest.title }}</h6>
+              {% if quest_data.is_completed %}
+                <span class="badge bg-success"><i class="fa-solid fa-check me-1"></i>Выполнено</span>
+              {% endif %}
+            </div>
+            
+            <p class="text-muted small mb-3">{{ quest_data.quest.description }}</p>
+            
+            <!-- Прогресс -->
+            <div class="mb-3">
+              <div class="d-flex justify-content-between small mb-1">
+                <span>Прогресс</span>
+                <span>{{ quest_data.progress.current_progress|default:0 }} / {{ quest_data.quest.target_value }}</span>
+              </div>
+              <div class="progress" style="height: 8px;">
+                <div class="progress-bar {% if quest_data.is_completed %}bg-success{% else %}bg-primary{% endif %}" 
+                     role="progressbar" 
+                     style="width: {{ quest_data.progress_percent }}%;">
+                </div>
+              </div>
+            </div>
+            
+            <!-- Награды -->
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex gap-2">
+                {% if quest_data.quest.reward_coins > 0 %}
+                  <span class="badge bg-warning text-white">
+                    <i class="fa-solid fa-coins me-1"></i>{{ quest_data.quest.reward_coins }}
+                  </span>
+                {% endif %}
+                {% if quest_data.quest.reward_points > 0 %}
+                  <span class="badge bg-primary">
+                    <i class="fa-solid fa-star me-1"></i>{{ quest_data.quest.reward_points }}
+                  </span>
+                {% endif %}
+              </div>
+              
+              {% if quest_data.is_completed %}
+                <small class="text-success">
+                  <i class="fa-solid fa-check-circle me-1"></i>Награда получена
+                </small>
+              {% else %}
+                <small class="text-muted">
+                  {{ quest_data.progress_percent }}% выполнено
+                </small>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="text-center py-5">
+    <i class="fa-solid fa-calendar-day text-muted" style="font-size: 3rem;"></i>
+    <p class="text-muted mt-3">Ежедневные задания скоро появятся!</p>
+  </div>
+{% endif %}
+
+<div class="mt-4">
+  <div class="alert alert-info">
+    <i class="fa-solid fa-info-circle me-2"></i>
+    <strong>Информация:</strong> Ежедневные задания обновляются каждый день в полночь. 
+    Выполняйте их, чтобы получить дополнительные монеты и очки!
+  </div>
+</div>
+{% endblock %}

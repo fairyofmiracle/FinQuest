@@ -1,0 +1,218 @@
+[
+{
+  "model": "game.topic",
+  "pk": 1,
+  "fields": {
+    "name": "Накопления",
+    "description": "Изучаем основы накоплений и сбережений",
+    "icon": "fa-piggy-bank",
+    "main_category": "basics",
+    "order_in_category": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "game.topic",
+  "pk": 5,
+  "fields": {
+    "name": "Накопления и сбережения",
+    "description": "Изучите основы накопления и сбережения",
+    "icon": "fa-piggy-bank",
+    "main_category": "basics",
+    "order_in_category": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "game.topic",
+  "pk": 2,
+  "fields": {
+    "name": "Бюджетирование",
+    "description": "Учимся планировать и контролировать расходы",
+    "icon": "fa-chart-pie",
+    "main_category": "basics",
+    "order_in_category": 2,
+    "is_active": true
+  }
+},
+{
+  "model": "game.topic",
+  "pk": 6,
+  "fields": {
+    "name": "Доходы и расходы",
+    "description": "Изучите основы доходы и расходы",
+    "icon": "fa-chart-pie",
+    "main_category": "basics",
+    "order_in_category": 2,
+    "is_active": true
+  }
+},
+{
+  "model": "game.topic",
+  "pk": 3,
+  "fields": {
+    "name": "Банковские продукты",
+    "description": "Изучаем депозиты, карты и другие банковские услуги",
+    "icon": "fa-university",
+    "main_category": "basics",
+    "order_in_category": 3,
+    "is_active": true
+  }
+},
+{
+  "model": "game.topic",
+  "pk": 4,
+  "fields": {
+    "name": "Кредиты и займы",
+    "description": "Учимся правильно брать и возвращать кредиты",
+    "icon": "fa-credit-card",
+    "main_category": "basics",
+    "order_in_category": 4,
+    "is_active": true
+  }
+},
+{
+  "model": "game.topic",
+  "pk": 11,
+  "fields": {
+    "name": "Основы инвестирования",
+    "description": "Изучите основы основы инвестирования",
+    "icon": "fa-chart-line",
+    "main_category": "investments",
+    "order_in_category": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "game.topic",
+  "pk": 12,
+  "fields": {
+    "name": "Акции и облигации",
+    "description": "Изучите основы акции и облигации",
+    "icon": "fa-chart-bar",
+    "main_category": "investments",
+    "order_in_category": 2,
+    "is_active": true
+  }
+},
+{
+  "model": "game.topic",
+  "pk": 13,
+  "fields": {
+    "name": "Фонды и ETF",
+    "description": "Изучите основы фонды и etf",
+    "icon": "fa-layer-group",
+    "main_category": "investments",
+    "order_in_category": 3,
+    "is_active": true
+  }
+},
+{
+  "model": "game.topic",
+  "pk": 14,
+  "fields": {
+    "name": "Риски и диверсификация",
+    "description": "Изучите основы риски и диверсификация",
+    "icon": "fa-balance-scale",
+    "main_category": "investments",
+    "order_in_category": 4,
+    "is_active": true
+  }
+},
+{
+  "model": "game.topic",
+  "pk": 15,
+  "fields": {
+    "name": "Финансовое планирование",
+    "description": "Изучите основы финансовое планирование",
+    "icon": "fa-bullseye",
+    "main_category": "planning",
+    "order_in_category": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "game.topic",
+  "pk": 16,
+  "fields": {
+    "name": "Пенсионное планирование",
+    "description": "Изучите основы пенсионное планирование",
+    "icon": "fa-umbrella",
+    "main_category": "planning",
+    "order_in_category": 2,
+    "is_active": true
+  }
+},
+{
+  "model": "game.topic",
+  "pk": 17,
+  "fields": {
+    "name": "Страхование",
+    "description": "Изучите основы страхование",
+    "icon": "fa-shield",
+    "main_category": "planning",
+    "order_in_category": 3,
+    "is_active": true
+  }
+},
+{
+  "model": "game.topic",
+  "pk": 18,
+  "fields": {
+    "name": "Налоговое планирование",
+    "description": "Изучите основы налоговое планирование",
+    "icon": "fa-calculator",
+    "main_category": "planning",
+    "order_in_category": 4,
+    "is_active": true
+  }
+},
+{
+  "model": "game.topic",
+  "pk": 7,
+  "fields": {
+    "name": "Финансовая безопасность",
+    "description": "Изучите основы финансовая безопасность",
+    "icon": "fa-shield-halved",
+    "main_category": "security",
+    "order_in_category": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "game.topic",
+  "pk": 8,
+  "fields": {
+    "name": "Защита от мошенничества",
+    "description": "Изучите основы защита от мошенничества",
+    "icon": "fa-user-shield",
+    "main_category": "security",
+    "order_in_category": 2,
+    "is_active": true
+  }
+},
+{
+  "model": "game.topic",
+  "pk": 9,
+  "fields": {
+    "name": "Безопасность карт",
+    "description": "Изучите основы безопасность карт",
+    "icon": "fa-credit-card",
+    "main_category": "security",
+    "order_in_category": 3,
+    "is_active": true
+  }
+},
+{
+  "model": "game.topic",
+  "pk": 10,
+  "fields": {
+    "name": "Кибербезопасность",
+    "description": "Изучите основы кибербезопасность",
+    "icon": "fa-lock",
+    "main_category": "security",
+    "order_in_category": 4,
+    "is_active": true
+  }
+}
+]

@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ category.name }} - FinQuest{% endblock %}
+
+{% block content %}
+<!-- Навигация -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-primary">
+    <i class="fa-solid fa-home me-1"></i>Дашборд
+  </a>
+  <div></div>
+</div>
+
+<!-- Описание категории -->
+<div class="hero mb-4">
+  <div class="text-center">
+    <div class="main-category-icon mb-3">
+      <i class="fa-solid {{ category.icon }}"></i>
+    </div>
+    <h2 class="mb-3">{{ category.name }}</h2>
+    <p class="lead text-muted">{{ category.description }}</p>
+  </div>
+</div>
+
+<!-- Темы в категории -->
+{% if topics %}
+  <div class="row g-4">
+    {% for topic in topics %}
+      <div class="col-lg-3 col-md-6">
+        <div class="topic-card h-100">
+          <div class="topic-icon">
+            <i class="fa-solid {{ topic.icon }}"></i>
+          </div>
+          <div class="topic-content">
+            <h6 class="topic-name">{{ topic.name }}</h6>
+            <p class="topic-description">{{ topic.description|truncatewords:12 }}</p>
+            <div class="topic-progress">
+              <div class="progress" style="height: 4px;">
+                <div class="progress-bar" role="progressbar" style="width: {{ topic.progress.percent }}%;"></div>
+              </div>
+              <small class="text-muted">{{ topic.progress.completed }} из {{ topic.progress.total }}</small>
+            </div>
+            <a href="{% url 'topic_levels' topic.id %}" class="btn btn-outline-primary btn-sm">
+              <i class="fa-solid fa-play me-1"></i>Изучать
+            </a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="text-center py-5">
+    <div class="empty-icon mb-3">
+      <i class="fa-solid fa-book-open"></i>
+    </div>
+    <h4 class="empty-title">Темы пока не добавлены</h4>
+    <p class="empty-text">В этой категории пока нет доступных тем для изучения.</p>
+  </div>
+{% endif %}
+
+<style>
+.main-category-icon {
+  font-size: 4rem;
+  color: var(--game-primary);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.hero h2 {
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.hero .lead {
+  color: #e5e7eb;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  font-size: 1.2rem;
+}
+
+.dark-theme .hero h2 {
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+}
+
+.dark-theme .hero .lead {
+  color: #d1d5db;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+}
+</style>
+{% endblock %}

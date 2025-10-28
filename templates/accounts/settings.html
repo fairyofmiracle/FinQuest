@@ -5,49 +5,534 @@
 {% block title %}Настройки — FinQuest{% endblock %}
 
 {% block content %}
-<div class="text-center mb-4">
-  <h3>Настройки профиля</h3>
+    <div class="card gaming-card">
+        <div class="card-header text-center">
+          <h3 class="mb-0">
+            <i class="fa-solid fa-cog me-2"></i>Настройки профиля
+          </h3>
 </div>
 
+        <div class="card-body">
 <form method="post" enctype="multipart/form-data">
   {% csrf_token %}
 
-  <!-- Аватар -->
-  <div class="mb-4">
-    <label class="form-label">Аватар</label>
-    <div class="d-flex justify-content-center mb-2">
-      {% if user.avatar %}
-        <img src="{{ user.avatar.url }}" class="rounded-circle" width="80" height="80" alt="Аватар">
-      {% else %}
-        <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center" style="width:80px; height:80px; font-size:24px;">
-          {{ user.username|first|upper }}
-        </div>
-      {% endif %}
+            <!-- Выбор аватарки -->
+            <div class="mb-5">
+              <h5 class="mb-3">
+                <i class="fa-solid fa-user-circle me-2"></i>Выберите аватарку
+              </h5>
+              
+              <!-- Текущий аватар -->
+              <div class="text-center mb-4">
+                <div class="current-avatar-container">
+                  {% if user.get_avatar_display %}
+                    <img src="{{ user.get_avatar_display }}" class="current-avatar {{ user.get_avatar_border_class }}" alt="Текущий аватар">
+                  {% else %}
+                    <div class="current-avatar default-avatar {{ user.get_avatar_border_class }}">
+                      <i class="fa-solid fa-user"></i>
+                    </div>
+                  {% endif %}
     </div>
-    <input type="file" name="avatar" class="form-control" accept="image/*">
+                <p class="text-muted mt-2">Текущий аватар</p>
+              </div>
+
+              <!-- Выбор из готовых аватарок -->
+              <div class="row g-3 mb-4">
+                <div class="col-3">
+                  <div class="avatar-option" data-avatar="default1">
+                    <img src="{% static 'avatars/default/default1.svg' %}" class="avatar-preview" alt="Мечтатель">
+                    <p class="text-center mt-2 small">Мечтатель</p>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="avatar-option" data-avatar="default2">
+                    <img src="{% static 'avatars/default/default2.svg' %}" class="avatar-preview" alt="Новатор">
+                    <p class="text-center mt-2 small">Новатор</p>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="avatar-option" data-avatar="default3">
+                    <img src="{% static 'avatars/default/default3.svg' %}" class="avatar-preview" alt="Аналитик">
+                    <p class="text-center mt-2 small">Аналитик</p>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="avatar-option" data-avatar="default4">
+                    <img src="{% static 'avatars/default/default4.svg' %}" class="avatar-preview" alt="Победитель">
+                    <p class="text-center mt-2 small">Победитель</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Загрузка собственного аватара -->
+              <div class="mb-3">
+                <label class="form-label">
+                  <i class="fa-solid fa-upload me-2"></i>Или загрузите свой аватар
+                </label>
+                <input type="file" name="avatar" class="form-control" accept="image/*" id="avatar-upload">
     {% if form.avatar.errors %}<div class="text-danger">{{ form.avatar.errors }}</div>{% endif %}
   </div>
 
-  <!-- Уведомления -->
-  <div class="mb-4 form-check">
-    <input type="checkbox" class="form-check-input" id="notifications" name="notifications" {% if user.notifications_enabled %}checked{% endif %}>
-    <label class="form-check-label" for="notifications">Получать напоминания о прерванной серии</label>
-  </div>
+              <input type="hidden" name="selected_avatar" id="selected-avatar" value="">
+            </div>
+
+            <!-- Выбор рамки аватара -->
+            <div class="mb-4">
+              <h5 class="mb-3">
+                <i class="fa-solid fa-palette me-2"></i>Рамка аватара
+              </h5>
+              <div class="row g-3">
+                {% for border_id, border_name, border_color in user.get_available_borders %}
+                  <div class="col-md-4">
+                    <div class="border-option {% if user.avatar_border == border_id %}selected{% endif %}" data-border="{{ border_id }}">
+                      <div class="border-preview avatar-border-{{ border_id }}" style="width: 80px; height: 80px; margin: 0 auto;">
+                        <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #6f42c1, #8b5cf6); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px;">
+                          <i class="fa-solid fa-user"></i>
+                        </div>
+                      </div>
+                      <p class="text-center mt-2 small">{{ border_name }}</p>
+                      <p class="text-center text-muted" style="font-size: 0.8em;">{{ border_color }}</p>
+                    </div>
+                  </div>
+                {% endfor %}
+                
+                <!-- Заблокированные рамки -->
+                {% if user.points < 50 %}
+                  <div class="col-md-4">
+                    <div class="border-option locked">
+                      <div class="border-preview locked" style="width: 80px; height: 80px; margin: 0 auto; opacity: 0.3;">
+                        <div style="width: 100%; height: 100%; background: #ccc; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px;">
+                          <i class="fa-solid fa-lock"></i>
+                        </div>
+                      </div>
+                      <p class="text-center mt-2 small text-muted">Ученик</p>
+                      <p class="text-center text-muted" style="font-size: 0.8em;">Достигните 50 очков</p>
+                    </div>
+                  </div>
+                {% endif %}
+                {% if user.points < 150 %}
+                  <div class="col-md-4">
+                    <div class="border-option locked">
+                      <div class="border-preview locked" style="width: 80px; height: 80px; margin: 0 auto; opacity: 0.3;">
+                        <div style="width: 100%; height: 100%; background: #ccc; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px;">
+                          <i class="fa-solid fa-lock"></i>
+                        </div>
+                      </div>
+                      <p class="text-center mt-2 small text-muted">Защитник</p>
+                      <p class="text-center text-muted" style="font-size: 0.8em;">Достигните 150 очков</p>
+                    </div>
+                  </div>
+                {% endif %}
+                {% if user.points < 300 %}
+                  <div class="col-md-4">
+                    <div class="border-option locked">
+                      <div class="border-preview locked" style="width: 80px; height: 80px; margin: 0 auto; opacity: 0.3;">
+                        <div style="width: 100%; height: 100%; background: #ccc; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px;">
+                          <i class="fa-solid fa-lock"></i>
+                        </div>
+                      </div>
+                      <p class="text-center mt-2 small text-muted">Эксперт</p>
+                      <p class="text-center text-muted" style="font-size: 0.8em;">Достигните 300 очков</p>
+                    </div>
+                  </div>
+                {% endif %}
+                {% if user.points < 500 %}
+                  <div class="col-md-4">
+                    <div class="border-option locked">
+                      <div class="border-preview locked" style="width: 80px; height: 80px; margin: 0 auto; opacity: 0.3;">
+                        <div style="width: 100%; height: 100%; background: #ccc; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px;">
+                          <i class="fa-solid fa-lock"></i>
+                        </div>
+                      </div>
+                      <p class="text-center mt-2 small text-muted">Мастер</p>
+                      <p class="text-center text-muted" style="font-size: 0.8em;">Достигните 500 очков</p>
+                    </div>
+                  </div>
+                {% endif %}
+                {% if user.points < 1000 %}
+                  <div class="col-md-4">
+                    <div class="border-option locked">
+                      <div class="border-preview locked" style="width: 80px; height: 80px; margin: 0 auto; opacity: 0.3;">
+                        <div style="width: 100%; height: 100%; background: #ccc; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px;">
+                          <i class="fa-solid fa-lock"></i>
+                        </div>
+                      </div>
+                      <p class="text-center mt-2 small text-muted">Гуру</p>
+                      <p class="text-center text-muted" style="font-size: 0.8em;">Достигните 1000 очков</p>
+                    </div>
+                  </div>
+                {% endif %}
+                {% if user.points < 2000 %}
+                  <div class="col-md-4">
+                    <div class="border-option locked">
+                      <div class="border-preview locked" style="width: 80px; height: 80px; margin: 0 auto; opacity: 0.3;">
+                        <div style="width: 100%; height: 100%; background: #ccc; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px;">
+                          <i class="fa-solid fa-lock"></i>
+                        </div>
+                      </div>
+                      <p class="text-center mt-2 small text-muted">Легенда</p>
+                      <p class="text-center text-muted" style="font-size: 0.8em;">Достигните 2000 очков</p>
+                    </div>
+                  </div>
+                {% endif %}
+              </div>
+              <input type="hidden" name="selected_border" id="selected-border" value="{{ user.avatar_border }}">
+            </div>
+
+            <!-- Настройки уведомлений -->
+            <div class="mb-4">
+              <h5 class="mb-3">
+                <i class="fa-solid fa-bell me-2"></i>Уведомления
+              </h5>
+              <div class="form-check form-switch" style="font-size: 18px; padding: 15px 0;">
+                <div class="d-flex align-items-center flex-wrap" style="gap: 15px;">
+                  <input type="checkbox" class="form-check-input" id="notifications" name="notifications" {% if user.notifications_enabled %}checked{% endif %} style="width: 2.5rem !important; height: 1.2rem !important; flex-shrink: 0; margin: 0 !important;">
+                  <label class="form-check-label" for="notifications" style="font-size: 18px !important; font-weight: 500 !important; margin: 0 !important; line-height: 1.4; flex: 1; min-width: 0;">
+                    Получать напоминания о прерванной серии
+                  </label>
+                </div>
+              </div>
+            </div>
 
   <!-- Кнопки -->
-  <div class="d-grid gap-2">
-    <button type="submit" class="btn btn-primary">Сохранить</button>
-    <a href="{% url 'profile' %}" class="btn btn-outline-secondary">Отмена</a>
-  </div>
-</form>
-
-    <!-- Опционально: Сброс прогресса -->
-    <div class="mt-5 text-center">
-      <button class="btn btn-sm btn-outline-danger me-2" onclick="confirmReset()">Сбросить прогресс</button>
-      <button class="btn btn-sm btn-outline-info" onclick="restartTutorial()">Повторить обучение</button>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <a href="{% url 'profile' %}" class="btn btn-outline-secondary me-md-2">
+                <i class="fa-solid fa-times me-2"></i>Отмена
+              </a>
+              <button type="submit" class="btn btn-primary">
+                <i class="fa-solid fa-save me-2"></i>Сохранить изменения
+              </button>
+            </div>
+          </form>
     </div>
+  </div>
+  <div class="mt-5 text-center">
+    <button class="btn btn-sm btn-outline-danger me-2" onclick="confirmReset()">
+      <i class="fa-solid fa-trash me-1"></i>Сбросить прогресс
+    </button>
+    <button class="btn btn-sm btn-primary" onclick="restartTutorial()">
+      <i class="fa-solid fa-graduation-cap me-1"></i>Повторить обучение
+    </button>
+  </div>
+</div>
+
+<style>
+.current-avatar-container {
+  position: relative;
+  display: inline-block;
+}
+
+.current-avatar {
+  width: 120px !important;
+  height: 120px !important;
+  border-radius: 20px !important;
+  border: 6px solid #6f42c1 !important;
+  box-shadow: 0 4px 15px rgba(111, 66, 193, 0.3) !important;
+  transition: all 0.3s ease;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+/* Принудительное применение стилей рамок */
+.current-avatar.avatar-border-novice {
+  border: 6px solid #6b7280 !important;
+  box-shadow: 0 0 15px rgba(107, 114, 128, 0.6) !important;
+}
+
+.current-avatar.avatar-border-beginner {
+  border: 6px solid #10b981 !important;
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.6) !important;
+}
+
+.current-avatar.avatar-border-intermediate {
+  border: 6px solid #3b82f6 !important;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.6) !important;
+}
+
+.current-avatar.avatar-border-advanced {
+  border: 6px solid #8b5cf6 !important;
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.6) !important;
+}
+
+.current-avatar.avatar-border-expert {
+  border: 6px solid #f59e0b !important;
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.6) !important;
+}
+
+.current-avatar.avatar-border-master {
+  border: 6px solid #ef4444 !important;
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.6) !important;
+}
+
+.current-avatar.avatar-border-legend {
+  border: 6px solid #fbbf24 !important;
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.8) !important;
+}
+
+.default-avatar {
+  background: linear-gradient(135deg, #6f42c1, #8b5cf6);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+}
+
+.avatar-option {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 10px;
+  border-radius: 15px;
+  border: 2px solid transparent;
+}
+
+.avatar-option:hover {
+  background: rgba(111, 66, 193, 0.1);
+  border-color: rgba(111, 66, 193, 0.3);
+  transform: translateY(-2px);
+}
+
+.avatar-option.selected {
+  background: rgba(111, 66, 193, 0.2);
+  border-color: #6f42c1;
+  box-shadow: 0 4px 15px rgba(111, 66, 193, 0.3);
+}
+
+.avatar-preview {
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  margin: 0 auto;
+  display: block;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  object-fit: cover;
+}
+
+.default-avatar-1 {
+  background: linear-gradient(135deg, #f59e0b, #f97316);
+}
+
+.default-avatar-2 {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.default-avatar-3 {
+  background: linear-gradient(135deg, #8b5cf6, #a855f7);
+}
+
+.default-avatar-4 {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.avatar-option:hover .avatar-preview {
+  transform: scale(1.1);
+}
+
+.border-option {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 10px;
+  border-radius: 15px;
+  border: 2px solid transparent;
+}
+
+.border-option:hover {
+  background: rgba(111, 66, 193, 0.1);
+  border-color: rgba(111, 66, 193, 0.3);
+  transform: translateY(-2px);
+}
+
+.border-option.selected {
+  background: rgba(111, 66, 193, 0.2);
+  border-color: #6f42c1;
+  box-shadow: 0 4px 15px rgba(111, 66, 193, 0.3);
+}
+
+.border-option.locked {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.border-option.locked:hover {
+  background: none;
+  border-color: transparent;
+  transform: none;
+}
+
+.gaming-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+  border: 1px solid rgba(111, 66, 193, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(20px);
+}
+
+.gaming-card .card-header {
+  background: linear-gradient(135deg, #6f42c1, #8b5cf6);
+  color: white;
+  border: none;
+  border-radius: 15px 15px 0 0;
+}
+
+.form-check-input:checked {
+  background-color: #6f42c1;
+  border-color: #6f42c1;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #6f42c1, #8b5cf6);
+  border: none;
+  box-shadow: 0 4px 15px rgba(111, 66, 193, 0.3);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #5a2d91, #7c3aed);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(111, 66, 193, 0.4);
+}
+
+/* Стили для переключателя уведомлений */
+.form-check-input {
+  margin-top: 0 !important;
+  margin-right: 0.75rem !important;
+}
+
+.form-check-input:checked {
+  background-color: #6f42c1 !important;
+  border-color: #6f42c1 !important;
+}
+
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.25rem rgba(111, 66, 193, 0.25) !important;
+}
+</style>
 
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+  const avatarOptions = document.querySelectorAll('.avatar-option');
+  const selectedAvatarInput = document.getElementById('selected-avatar');
+  const currentAvatarContainer = document.querySelector('.current-avatar-container');
+  const avatarUpload = document.getElementById('avatar-upload');
+  
+  // Инициализируем рамку при загрузке страницы
+  const currentBorder = document.getElementById('selected-border').value;
+  if (currentBorder) {
+    updateCurrentAvatarBorder(currentBorder);
+  }
+
+  // Выбор готовой аватарки
+  avatarOptions.forEach(option => {
+    option.addEventListener('click', function() {
+      console.log('Avatar option clicked:', this.dataset.avatar);
+      
+      // Убираем выделение с других опций
+      avatarOptions.forEach(opt => opt.classList.remove('selected'));
+      
+      // Выделяем выбранную опцию
+      this.classList.add('selected');
+      
+      // Сохраняем выбранную аватарку
+      const avatarType = this.dataset.avatar;
+      selectedAvatarInput.value = avatarType;
+      console.log('Selected avatar type:', avatarType);
+      
+      // Обновляем превью текущего аватара
+      updateCurrentAvatarPreview(avatarType);
+    });
+  });
+
+  // Загрузка собственного аватара
+  avatarUpload.addEventListener('change', function() {
+    if (this.files && this.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.className = 'current-avatar';
+        img.alt = 'Загруженный аватар';
+        
+        currentAvatarContainer.innerHTML = '';
+        currentAvatarContainer.appendChild(img);
+        
+        // Сбрасываем выбор готовых аватарок
+        avatarOptions.forEach(opt => opt.classList.remove('selected'));
+        selectedAvatarInput.value = '';
+      };
+      reader.readAsDataURL(this.files[0]);
+    }
+  });
+
+  // Обработка выбора рамки
+  document.querySelectorAll('.border-option:not(.locked)').forEach(option => {
+    option.addEventListener('click', function() {
+      // Убираем выделение с других рамок
+      document.querySelectorAll('.border-option').forEach(opt => opt.classList.remove('selected'));
+      
+      // Выделяем выбранную рамку
+      this.classList.add('selected');
+      
+      // Устанавливаем значение в скрытое поле
+      const selectedBorder = this.dataset.border;
+      document.getElementById('selected-border').value = selectedBorder;
+      
+      // Обновляем рамку текущего аватара
+      updateCurrentAvatarBorder(selectedBorder);
+    });
+  });
+
+  function updateCurrentAvatarPreview(avatarType) {
+    console.log('Updating avatar preview with type:', avatarType);
+    const preview = document.createElement('img');
+    preview.className = 'current-avatar';
+    preview.src = `/static/avatars/default/${avatarType}.svg`;
+    preview.alt = 'Выбранный аватар';
+    
+    // Добавляем обработчик ошибки загрузки
+    preview.onerror = function() {
+      console.error('Failed to load avatar:', preview.src);
+      // Если не загрузилось, показываем placeholder
+      const placeholder = document.createElement('div');
+      placeholder.className = 'current-avatar default-avatar';
+      placeholder.innerHTML = '<i class="fa-solid fa-user"></i>';
+      currentAvatarContainer.innerHTML = '';
+      currentAvatarContainer.appendChild(placeholder);
+    };
+    
+    preview.onload = function() {
+      console.log('Avatar loaded successfully:', preview.src);
+      // Применяем текущую рамку к новому аватару
+      const currentBorder = document.getElementById('selected-border').value;
+      if (currentBorder) {
+        preview.classList.add(`avatar-border-${currentBorder}`);
+      }
+    };
+    
+    currentAvatarContainer.innerHTML = '';
+    currentAvatarContainer.appendChild(preview);
+  }
+
+  function updateCurrentAvatarBorder(borderType) {
+    const currentAvatar = currentAvatarContainer.querySelector('.current-avatar');
+    if (currentAvatar) {
+      console.log('Updating border to:', borderType);
+      
+      // Убираем старые классы рамки
+      currentAvatar.className = currentAvatar.className.replace(/avatar-border-\w+/g, '');
+      
+      // Добавляем новый класс рамки
+      currentAvatar.classList.add(`avatar-border-${borderType}`);
+      
+      // Принудительно обновляем стили
+      currentAvatar.style.border = '';
+      currentAvatar.style.boxShadow = '';
+      
+      console.log('Current avatar classes:', currentAvatar.className);
+    } else {
+      console.error('Current avatar not found!');
+    }
+  }
+});
+
 function confirmReset() {
   if (confirm("Вы уверены? Весь прогресс будет удалён!")) {
     window.location.href = "{% url 'reset_progress' %}";

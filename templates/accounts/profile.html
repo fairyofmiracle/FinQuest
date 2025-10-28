@@ -5,70 +5,577 @@
 {% block title %}Мой профиль — FinQuest{% endblock %}
 
 {% block content %}
-<div class="text-center mb-4">
-  <div class="mb-3">
-    {% if user.avatar %}
-      <img src="{{ user.avatar.url }}" class="rounded-circle shadow" width="90" height="90" alt="Аватар">
-    {% else %}
-      <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow"
-           style="width:90px; height:90px; font-size:28px; font-weight: bold;">
-        {{ user.username|first|upper }}
-      </div>
-    {% endif %}
-  </div>
-  <h3 class="section-title"><i class="fa-regular fa-user"></i> {{ user.get_full_name|default:user.username }}</h3>
-  <p class="text-muted">{{ user.get_level_title }} • Уровень {{ user.level_number }}</p>
-  <div class="d-flex justify-content-center gap-3 mb-3">
-    <span class="badge bg-primary rounded-pill px-3 py-2">Очки: {{ user.points }}</span>
-    <span class="badge bg-warning text-dark rounded-pill px-3 py-2">🪙 {{ user.coins }}</span>
-  </div>
-</div>
-
-<!-- Прогресс по темам -->
-<h5 class="mb-3 section-title"><i class="fa-solid fa-chart-line"></i> Прогресс по темам</h5>
-{% for topic in topics %}
-  <div class="card mb-3">
-    <div class="card-body py-2">
-      <div class="d-flex justify-content-between small">
-        <strong>{{ topic.name }}</strong>
-        <span>{{ topic.progress.completed }} / {{ topic.progress.total }}</span>
-      </div>
-      <div class="progress mt-1" style="height: 6px;">
-        <div class="progress-bar" role="progressbar" style="width: {{ topic.progress.percent }}%;"></div>
-      </div>
-    </div>
-  </div>
-{% empty %}
-  <p class="text-muted">Нет тем.</p>
-{% endfor %}
-
-<!-- Достижения -->
-<h5 class="mt-4 mb-3 section-title"><i class="fa-solid fa-trophy"></i> Достижения</h5>
-{% if achievements %}
-  <div class="row g-2">
-    {% for ua in achievements %}
-      <div class="col-6 col-md-4">
-        <div class="card text-center small shadow-sm">
-          <div class="card-body p-2">
-            <div class="bg-light rounded-circle mx-auto mb-1" style="width:40px; height:40px; line-height:40px;">
-              🏆
+<div class="container-fluid">
+  <div class="row">
+    <!-- Левая карточка профиля -->
+    <div class="col-lg-4 col-md-5 mb-4">
+      <div class="card gaming-profile-card h-100" style="height: 800px; overflow: hidden;">
+        <div class="card-body text-center">
+          <!-- Аватар -->
+          <div class="mb-4">
+            <!-- DEBUG: avatar={{ user.avatar }}, default_avatar={{ user.default_avatar }}, get_avatar_display={{ user.get_avatar_display }} -->
+            {% if user.get_avatar_display %}
+              <img src="{{ user.get_avatar_display }}" class="shadow-lg profile-avatar {{ user.get_avatar_border_class }}" width="150" height="150" alt="Аватар" style="border-radius: 20px; object-fit: cover;">
+            {% else %}
+              <div class="bg-gradient-primary text-white d-flex align-items-center justify-content-center shadow-lg mx-auto profile-avatar-placeholder {{ user.get_avatar_border_class }}" style="border-radius: 20px; width: 150px; height: 150px;">
+                {{ user.username|first|upper }}
+              </div>
+            {% endif %}
+          </div>
+          
+          <!-- Имя и звание -->
+          <h3 class="profile-name mb-2">{{ user.get_full_name|default:user.username }}</h3>
+          <p class="profile-title mb-3">{{ user.get_level_title }}</p>
+          
+          <!-- Статистика -->
+          <div class="profile-stats">
+            <div class="row g-3">
+              <div class="col-4">
+                <div class="stat-item text-center">
+                  <div class="stat-icon">🎯</div>
+                  <div class="stat-value">{{ user.points }}</div>
+                  <div class="stat-label">Очки</div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="stat-item text-center">
+                  <div class="stat-icon">🪙</div>
+                  <div class="stat-value">{{ user.coins }}</div>
+                  <div class="stat-label">Монеты</div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="stat-item text-center">
+                  <div class="stat-icon">⭐</div>
+                  <div class="stat-value">{{ user.get_level_number }}</div>
+                  <div class="stat-label">Уровень</div>
+                </div>
+              </div>
             </div>
-            <small class="text-truncate d-block">{{ ua.achievement.name }}</small>
+          </div>
+          
+          <!-- Прогресс навыков -->
+          <div class="profile-skills">
+            <h6 class="skills-title mb-3">
+              <i class="fa-solid fa-chart-line me-2"></i>Навыки финансовой грамотности
+            </h6>
+            {% for category_key, category in categories.items %}
+              <div class="skill-progress-item mb-2">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <span class="skill-name">{{ category.name }}</span>
+                  <span class="skill-percent">{{ category.progress_percent }}%</span>
+                </div>
+                <div class="progress skill-progress-bar" style="height: 6px;">
+                  <div class="progress-bar skill-bar" role="progressbar" 
+                       style="width: {{ category.progress_percent }}%;"
+                       data-skill="{{ category.name }}"
+                       data-percent="{{ category.progress_percent }}"></div>
+                </div>
+                <small class="text-muted">{{ category.completed_levels }} из {{ category.total_levels }} уровней</small>
+              </div>
+            {% empty %}
+              <p class="text-muted small mb-0">Нет данных о навыках.</p>
+            {% endfor %}
+          </div>
+          
+          <!-- Кнопки действий -->
+          <div class="profile-actions">
+            <a href="{% url 'settings' %}" class="btn btn-outline-primary btn-sm me-2">
+              <i class="fa-solid fa-cog me-1"></i>Настройки
+            </a>
+            <a href="{% url 'dashboard' %}" class="btn btn-primary btn-sm">
+              <i class="fa-solid fa-home me-1"></i>Дашборд
+            </a>
           </div>
         </div>
       </div>
-    {% endfor %}
+    </div>
+    
+    <!-- Правая часть с достижениями -->
+    <div class="col-lg-8 col-md-7">
+      <!-- Достижения -->
+      <div class="card gaming-achievements-card h-100">
+        <div class="card-header">
+          <h4 class="mb-0"><i class="fa-solid fa-trophy me-2"></i>Достижения</h4>
+        </div>
+        <div class="card-body d-flex flex-column">
+          {% if achievements %}
+            <div class="achievements-wrapper">
+              <div class="achievements-container">
+                {% for achievement_data in achievements %}
+                <div class="achievement-card {% if not achievement_data.earned %}achievement-locked{% endif %} {{ achievement_data.achievement.get_rarity_class }}" 
+                     onclick="flipAchievement(this)">
+                  <div class="achievement-card-inner">
+                    <!-- Лицевая сторона -->
+                    <div class="achievement-front">
+                    <div class="achievement-icon mb-2 achievement-icon-{{ achievement_data.achievement.rarity }}">
+                      {% if achievement_data.earned %}
+                        <i class="fa-solid {{ achievement_data.achievement.icon }}"></i>
+                      {% else %}
+                        <i class="fa-solid fa-lock"></i>
+                      {% endif %}
+                    </div>
+                    <div class="achievement-name small">{{ achievement_data.achievement.name }}</div>
+                    <div class="achievement-rarity text-muted" style="font-size: 0.6rem;">
+                      {{ achievement_data.achievement.get_rarity_display }}
+                    </div>
+                    {% if achievement_data.earned and achievement_data.earned_at %}
+                      <div class="achievement-date text-muted" style="font-size: 0.7rem;">{{ achievement_data.earned_at|date:"d.m.Y" }}</div>
+                      {% endif %}
+                    </div>
+                    
+                    <!-- Обратная сторона (только для полученных) -->
+                    {% if achievement_data.earned %}
+                      <div class="achievement-back">
+                        <div class="achievement-description">
+                          <h6 class="achievement-back-title">🏆 Достижение получено!</h6>
+                          <p class="achievement-back-text">{{ achievement_data.achievement.description }}</p>
+                          <div class="achievement-back-date">
+                            <i class="fa-solid fa-calendar me-1"></i>
+                            {{ achievement_data.earned_at|date:"d.m.Y в H:i" }}
+                          </div>
+                          <div class="achievement-back-emoji">
+                            {% if achievement_data.achievement.rarity == 'common' %}🥉{% elif achievement_data.achievement.rarity == 'uncommon' %}🥈{% elif achievement_data.achievement.rarity == 'rare' %}🥇{% elif achievement_data.achievement.rarity == 'legendary' %}💎{% endif %}
+                          </div>
+                        </div>
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          {% else %}
+            <div class="text-center py-4">
+              <div class="text-muted mb-2">🎯</div>
+              <p class="text-muted">Нет достижений. Пройди первый уровень!</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
   </div>
-{% else %}
-  <p class="text-muted">Нет достижений. Пройди первый уровень!</p>
-{% endif %}
-
-<div class="text-center mt-4">
-  <a href="{% url 'settings' %}" class="btn btn-outline-secondary btn-sm me-2">
-    <i class="fa-solid fa-cog me-1"></i>Настройки
-  </a>
-  <a href="{% url 'dashboard' %}" class="btn btn-outline-primary btn-sm">
-    <i class="fa-solid fa-home me-1"></i>Дашборд
-  </a>
 </div>
+
+<!-- Всплывающее уведомление о достижении -->
+<div id="achievementPopup" class="achievement-popup" style="display: none;">
+  <div class="achievement-popup-content">
+    <div class="achievement-popup-header">
+      <button type="button" class="achievement-popup-close" onclick="closeAchievementPopup()">
+        <i class="fa-solid fa-times"></i>
+      </button>
+    </div>
+    <div class="achievement-popup-body">
+      <div id="achievementPopupContent">
+        <!-- Содержимое будет заполнено JavaScript -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Стили для достижений -->
+<style>
+.achievements-wrapper {
+    overflow-x: hidden;
+    overflow-y: auto; /* Включаем вертикальную прокрутку */
+    flex: 1;
+    width: 100%;
+    padding: 10px 0;
+    max-height: 800px; /* Высота для 4 рядов (4 * 180px + 3 * 15px + padding) */
+}
+
+.achievements-wrapper::-webkit-scrollbar {
+    width: 8px;
+    height: 0px;
+}
+
+.achievements-wrapper::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+.achievements-wrapper::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #6f42c1, #8b5cf6);
+    border-radius: 4px;
+}
+
+.achievements-wrapper::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #5a2d91, #7c3aed);
+}
+
+.achievements-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 колонки равной ширины */
+    gap: 15px;
+    padding: 0;
+    min-height: 0;
+    align-content: start;
+    width: 100%; /* На всю ширину */
+}
+
+.achievement-card {
+    perspective: 1000px;
+    cursor: pointer;
+    height: 180px;
+    width: 100%; /* Занимает всю ширину ячейки сетки */
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.achievement-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Переворот при наведении только для полученных достижений */
+.achievement-card:not(.achievement-locked):hover .achievement-card-inner {
+    transform: rotateY(180deg);
+}
+
+/* Эффект для заблокированных достижений при наведении */
+.achievement-card.achievement-locked:hover {
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    opacity: 0.8;
+}
+
+.achievement-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s ease;
+    transform-style: preserve-3d;
+}
+
+.achievement-card.flipped .achievement-card-inner {
+    transform: rotateY(180deg);
+}
+
+.achievement-front, .achievement-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 15px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+    border: 1px solid rgba(111, 66, 193, 0.2);
+}
+
+.achievement-back {
+    transform: rotateY(180deg);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.achievement-back-title {
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.achievement-back-text {
+    font-size: 0.75rem;
+    margin-bottom: 10px;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.achievement-back-date {
+    font-size: 0.65rem;
+    opacity: 0.8;
+    margin-bottom: 8px;
+}
+
+.achievement-back-emoji {
+    font-size: 1.2rem;
+}
+
+.achievement-icon {
+    font-size: 2.5rem; /* Увеличиваем размер иконки */
+    margin-bottom: 12px;
+}
+
+.achievement-name {
+    font-weight: 600;
+    margin-bottom: 8px;
+    line-height: 1.2;
+    font-size: 0.9rem; /* Увеличиваем размер текста */
+}
+
+.achievement-rarity {
+    font-size: 0.75rem; /* Увеличиваем размер редкости */
+    margin-bottom: 8px;
+}
+
+.achievement-date {
+    font-size: 0.8rem; /* Увеличиваем размер даты */
+    opacity: 0.7;
+}
+
+/* Стили для всплывающего уведомления о достижении */
+.achievement-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.achievement-popup-content {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+    border: 2px solid #6f42c1;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow: hidden;
+    position: relative;
+    animation: slideIn 0.4s ease;
+}
+
+.achievement-popup-header {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+}
+
+.achievement-popup-close {
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.achievement-popup-close:hover {
+    background: #f8f9fa;
+    transform: scale(1.1);
+}
+
+.achievement-popup-body {
+    padding: 40px 30px 30px;
+    text-align: center;
+}
+
+.achievement-detail {
+    position: relative;
+}
+
+.achievement-detail-icon {
+    margin-bottom: 20px;
+}
+
+.achievement-detail-icon i {
+    font-size: 4rem;
+    background: linear-gradient(135deg, #6f42c1, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: bounce 2s infinite;
+}
+
+.achievement-detail-name {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #2d3748;
+    margin-bottom: 15px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.achievement-detail-rarity {
+    margin-bottom: 20px;
+}
+
+.achievement-detail-rarity .badge {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+    border-radius: 20px;
+}
+
+.achievement-detail-description {
+    margin-bottom: 25px;
+}
+
+.achievement-detail-description p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #4a5568;
+    font-style: italic;
+    margin: 0;
+}
+
+.achievement-detail-date {
+    padding: 15px;
+    background: linear-gradient(135deg, rgba(111, 66, 193, 0.1), rgba(139, 92, 246, 0.1));
+    border-radius: 15px;
+    border: 1px solid rgba(111, 66, 193, 0.2);
+}
+
+.achievement-detail-date small {
+    font-size: 0.9rem;
+    color: #6f42c1;
+    font-weight: 500;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { 
+        opacity: 0;
+        transform: scale(0.8) translateY(-50px);
+    }
+    to { 
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes fadeOut {
+    from { 
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+    to { 
+        opacity: 0;
+        transform: scale(0.8) translateY(-50px);
+    }
+}
+</style>
+
+<!-- Анимация прогресс-баров навыков и переворот достижений -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Анимация прогресс-баров при загрузке страницы
+    const skillBars = document.querySelectorAll('.skill-bar');
+    
+    skillBars.forEach((bar, index) => {
+        // Получаем процент из data-атрибута или из style
+        const percent = bar.getAttribute('data-percent') || bar.style.width.replace('%', '');
+        const targetWidth = percent + '%';
+        
+        // Устанавливаем начальную ширину 0
+        bar.style.width = '0%';
+        
+        // Анимируем к целевой ширине
+        setTimeout(() => {
+            bar.style.width = targetWidth;
+        }, index * 200 + 100);
+    });
+});
+
+// Функция показа деталей достижения
+function flipAchievement(card) {
+    // Показываем всплывающее уведомление только для полученных достижений
+    if (!card.classList.contains('achievement-locked')) {
+        showAchievementDetails(card);
+    }
+}
+
+// Предотвращаем переворот при клике (оставляем только при наведении)
+document.addEventListener('DOMContentLoaded', function() {
+    const achievementCards = document.querySelectorAll('.achievement-card:not(.achievement-locked)');
+    achievementCards.forEach(card => {
+        card.addEventListener('click', function(e) {
+            e.preventDefault();
+            flipAchievement(this);
+        });
+    });
+});
+
+// Функция показа деталей достижения во всплывающем уведомлении
+function showAchievementDetails(card) {
+    const achievementName = card.querySelector('.achievement-name').textContent;
+    const achievementRarity = card.querySelector('.achievement-rarity').textContent;
+    const achievementDate = card.querySelector('.achievement-date');
+    const achievementIcon = card.querySelector('.achievement-icon i').className;
+    
+    // Получаем описание с обратной стороны карточки
+    const achievementBack = card.querySelector('.achievement-back');
+    const achievementDescription = achievementBack ? achievementBack.querySelector('.achievement-back-text').textContent : 'Описание недоступно';
+    
+    // Создаем содержимое всплывающего уведомления
+    const popupContent = `
+        <div class="achievement-detail">
+            <div class="achievement-detail-icon">
+                <i class="${achievementIcon}"></i>
+            </div>
+            <h3 class="achievement-detail-name">${achievementName}</h3>
+            <div class="achievement-detail-rarity">
+                <span class="badge bg-primary">${achievementRarity}</span>
+            </div>
+            <div class="achievement-detail-description">
+                <p>${achievementDescription}</p>
+            </div>
+            ${achievementDate ? `
+            <div class="achievement-detail-date">
+                <small>
+                    <i class="fa-solid fa-calendar me-1"></i>
+                    Получено: ${achievementDate.textContent}
+                </small>
+            </div>
+            ` : ''}
+        </div>
+    `;
+    
+    // Заполняем всплывающее уведомление
+    document.getElementById('achievementPopupContent').innerHTML = popupContent;
+    
+    // Показываем всплывающее уведомление
+    document.getElementById('achievementPopup').style.display = 'flex';
+    
+    // Добавляем обработчик для закрытия по клику на фон
+    document.getElementById('achievementPopup').onclick = function(e) {
+        if (e.target === this) {
+            closeAchievementPopup();
+        }
+    };
+}
+
+// Функция закрытия всплывающего уведомления
+function closeAchievementPopup() {
+    const popup = document.getElementById('achievementPopup');
+    popup.style.animation = 'fadeOut 0.3s ease';
+    setTimeout(() => {
+        popup.style.display = 'none';
+        popup.style.animation = 'fadeIn 0.3s ease';
+    }, 300);
+}
+</script>
 {% endblock %}

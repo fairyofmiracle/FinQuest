@@ -1,0 +1,1382 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <a href="{% url 'topic_levels' level.topic.id %}" class="btn btn-sm btn-outline-secondary">
+    <i class="fa-solid fa-arrow-left me-1"></i>К теме
+  </a>
+  <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-primary">
+    <i class="fa-solid fa-home me-1"></i>Дашборд
+  </a>
+</div>
+
+
+
+
+<!-- Содержимое уровня -->
+<div class="level-content">
+  <form method="post" id="levelForm">
+    {% csrf_token %}
+    
+    <!-- Викторина с множественными вопросами -->
+    {% if level.type == 'quiz' %}
+      {% if quiz_data %}
+        <!-- Новый формат викторин с JSON -->
+        <div class="quiz-container">
+          <!-- Прогресс-бар викторины -->
+          <div class="quiz-progress mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div class="quiz-status">
+                <span class="badge bg-primary fs-6">
+                  <i class="fa-solid fa-question-circle me-2"></i>
+                  Вопрос {{ quiz_data.current_question_number }} из {{ quiz_data.total_questions }}
+                </span>
+                <span class="ms-3 text-muted">
+                  <i class="fa-solid fa-chart-line me-1"></i>
+                  Прогресс: {{ quiz_data.answered_questions }}/{{ quiz_data.total_questions }}
+            </span>
+          </div>
+        </div>
+            
+            <!-- Анимированный прогресс-бар -->
+            <div class="container-fluid px-0">
+              <div class="progress quiz-progress-bar" style="height: 12px; border-radius: 6px; overflow: hidden;">
+                <div class="progress-bar progress-bar-striped" 
+                     role="progressbar" 
+                     id="quizProgressBar"
+                     data-answered="{{ quiz_data.current_question }}"
+                     data-total="{{ quiz_data.total_questions }}">
+                  <span class="progress-text">{{ quiz_data.current_question }}/{{ quiz_data.total_questions }}</span>
+                </div>
+              </div>
+            </div>
+      </div>
+          
+            <!-- Текущий вопрос -->
+            <!-- DEBUG: current_question = {{ quiz_data.current_question }}, total_questions = {{ quiz_data.total_questions }}, answered_questions = {{ quiz_data.answered_questions }} -->
+            {% if quiz_data.current_question_data %}
+              <div class="question-block mb-4" data-question="{{ quiz_data.current_question }}">
+                <div class="card quiz-card">
+                  <div class="card-header quiz-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                          <i class="fa-solid fa-brain me-2"></i>
+                          Вопрос {{ quiz_data.current_question_number }}
+                        </h5>
+                      <div class="question-difficulty">
+                        {% if level.difficulty == 1 %}
+                          <span class="badge bg-success"><i class="fa-solid fa-star me-1"></i>Легко</span>
+                        {% elif level.difficulty == 2 %}
+                          <span class="badge bg-warning"><i class="fa-solid fa-star me-1"></i><i class="fa-solid fa-star me-1"></i>Средне</span>
+                        {% else %}
+                          <span class="badge bg-danger"><i class="fa-solid fa-star me-1"></i><i class="fa-solid fa-star me-1"></i><i class="fa-solid fa-star me-1"></i>Сложно</span>
+                        {% endif %}
+    </div>
+  </div>
+</div>
+
+                  <div class="card-body quiz-body">
+                    <div class="question-text mb-4">
+                      <div class="question-icon mb-3">
+                        <i class="fa-solid fa-lightbulb"></i>
+                      </div>
+                      <p class="lead question-content">{{ quiz_data.current_question_data.question }}</p>
+                    </div>
+                    
+                    <div class="quiz-options">
+                      {% if quiz_data.current_question_data.type == 'multiple' %}
+                        <div class="alert alert-info mb-3">
+                          <i class="fa-solid fa-info-circle me-2"></i>
+                          <strong>Множественный выбор:</strong> Выберите все правильные ответы
+                        </div>
+                        {% for option in quiz_data.current_question_data.options %}
+                          <div class="form-check quiz-option mb-3">
+                            <input class="form-check-input quiz-radio" type="checkbox" name="answers" value="{{ forloop.counter0 }}" id="option_{{ quiz_data.current_question }}_{{ forloop.counter0 }}">
+                            <label class="form-check-label quiz-label" for="option_{{ quiz_data.current_question }}_{{ forloop.counter0 }}">
+                              <div class="option-content">
+                                <div class="option-letter">{% if forloop.counter == 1 %}A{% elif forloop.counter == 2 %}B{% elif forloop.counter == 3 %}C{% elif forloop.counter == 4 %}D{% elif forloop.counter == 5 %}E{% else %}{{ forloop.counter }}{% endif %}</div>
+                                <div class="option-text">{{ option.text }}</div>
+                              </div>
+                            </label>
+                          </div>
+                        {% endfor %}
+                      {% elif quiz_data.current_question_data.type == 'matching' %}
+                        <!-- Сопоставление -->
+                        <div class="matching-container">
+                          <div class="alert alert-info mb-3">
+                            <i class="fa-solid fa-link me-2"></i>
+                            <strong>Сопоставление:</strong> Перетащите термины к соответствующим описаниям
+                          </div>
+                          <div class="row">
+                            <!-- Термины (draggable) -->
+                            <div class="col-md-6">
+                              <h6 class="mb-3"><i class="fa-solid fa-list me-2"></i>Термины (перетащите):</h6>
+                              <div class="matching-left">
+                                {% for left_item in quiz_data.current_question_data.left_items %}
+                                  <div class="matching-draggable mb-3" 
+                                       data-left-index="{{ forloop.counter0 }}"
+                                       draggable="true">
+                                    <div class="card">
+                                      <div class="card-body">
+                                        <i class="fa-solid fa-grip-vertical me-2 text-muted"></i>
+                                        {{ left_item }}
+                                      </div>
+                                    </div>
+                                  </div>
+                                {% endfor %}
+                              </div>
+                            </div>
+                            <!-- Описания (drop zones) -->
+                            <div class="col-md-6">
+                              <h6 class="mb-3"><i class="fa-solid fa-book me-2"></i>Описания:</h6>
+                              <div class="matching-right">
+                                {% for right_item in quiz_data.current_question_data.right_items %}
+                                  <div class="matching-drop-zone mb-3" 
+                                       data-right-index="{{ forloop.counter0 }}">
+                                    <div class="card h-100">
+                                      <div class="card-body">
+                                        <div class="right-item-text mb-2"><small class="text-muted">{{ right_item }}</small></div>
+                                        <hr>
+                                        <span class="drop-text">Перетащите термин сюда</span>
+                                      </div>
+                                    </div>
+                                    <input type="hidden" name="match_{{ forloop.counter0 }}" value="" id="hidden_match_{{ forloop.counter0 }}">
+                                  </div>
+                                {% endfor %}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      {% elif quiz_data.current_question_data.type == 'sorting' %}
+                        <!-- Сортировка -->
+                        <div class="sorting-container">
+                          <div class="alert alert-info mb-3">
+                            <i class="fa-solid fa-sort me-2"></i>
+                            <strong>Сортировка:</strong> Расположите элементы в правильном порядке
+                          </div>
+                          <ul id="sortable-list_{{ quiz_data.current_question }}" class="list-group">
+                            {% for item in quiz_data.current_question_data.items %}
+                              <li class="list-group-item" data-id="{{ item.id }}" draggable="true">
+                                <i class="fa-solid fa-grip-vertical me-2 handle"></i>
+                                {{ item.text }}
+                              </li>
+                            {% endfor %}
+                          </ul>
+                        </div>
+                      {% else %}
+                        <!-- Обычные варианты ответов (single) -->
+                        {% for option in quiz_data.current_question_data.options %}
+                          <div class="form-check quiz-option mb-3">
+                            <input class="form-check-input quiz-radio" 
+                                   type="radio" 
+                                   name="answer" 
+                                   value="{{ forloop.counter0 }}" 
+                                   id="option_{{ quiz_data.current_question }}_{{ forloop.counter0 }}">
+                            <label class="form-check-label quiz-label" 
+                                   for="option_{{ quiz_data.current_question }}_{{ forloop.counter0 }}">
+                              <div class="option-content">
+                                <div class="option-letter">{% if forloop.counter == 1 %}A{% elif forloop.counter == 2 %}B{% elif forloop.counter == 3 %}C{% elif forloop.counter == 4 %}D{% elif forloop.counter == 5 %}E{% else %}{{ forloop.counter }}{% endif %}</div>
+                                <div class="option-text">{{ option.text }}</div>
+                              </div>
+                            </label>
+                          </div>
+                        {% endfor %}
+                      {% endif %}
+                    </div>
+                    
+                     <input type="hidden" name="question_index" value="{{ quiz_data.current_question }}">
+                     <input type="hidden" name="completion_time" id="completionTime" value="0">
+                  </div>
+                  
+                  <div class="card-footer quiz-footer">
+                    <div class="d-flex justify-content-between align-items-center">
+                         <div class="quiz-hint">
+                           {% if request.user.coins >= 3 %}
+                            <button type="button" class="btn btn-outline-warning btn-sm hint-btn" onclick="showHint()">
+                              <i class="fa-solid fa-lightbulb me-1"></i>Подсказка (<span class="hint-coins">3🪙</span>)
+                            </button>
+                            <div id="hintContent" class="mt-3 hint-container" style="display: none;">
+                              <div class="hint-card">
+                                <div class="hint-icon">
+                                  <i class="fa-solid fa-lightbulb"></i>
+                                </div>
+                                <div class="hint-text">
+                                  {{ quiz_data.current_question_data.hint|default:"Подумайте внимательно над каждым вариантом ответа!" }}
+                                </div>
+                              </div>
+                            </div>
+                          {% else %}
+                            <button type="button" class="btn btn-outline-secondary btn-sm" disabled>
+                              <i class="fa-solid fa-lightbulb me-1"></i>Подсказка (<span class="hint-coins">3🪙</span>) - Недостаточно монет
+                            </button>
+                          {% endif %}
+                         </div>
+                      <div class="quiz-actions">
+                        <button type="button" class="btn btn-primary btn-lg quiz-submit" id="quizSubmitBtn">
+                          <i class="fa-solid fa-check me-2"></i>
+                          {% if quiz_data.current_question_number == quiz_data.total_questions %}
+                            Завершить викторину
+                          {% else %}
+                            Следующий вопрос
+                          {% endif %}
+                        </button>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            {% endif %}
+        </div>
+      {% else %}
+        <!-- Старый формат викторин с LevelOption -->
+        <div class="quiz-container">
+          {% for question_num in level.options.values_list.question_number.distinct %}
+            <div class="question-block mb-4" data-question="{{ question_num }}">
+      <div class="card">
+                <div class="card-header">
+                  <h5 class="mb-0">Вопрос {{ question_num }}</h5>
+                </div>
+        <div class="card-body">
+                  <div class="question-text mb-3">
+                    {% if level.content.questions %}
+                      {% for question in level.content.questions %}
+                        {% if forloop.counter == question_num %}
+                          <p class="lead">{{ question.text }}</p>
+                        {% endif %}
+                      {% endfor %}
+                    {% else %}
+                      <p class="lead">Вопрос {{ question_num }}</p>
+                    {% endif %}
+                  </div>
+                  
+          <div class="quiz-options">
+            {% for option in level.options.all %}
+                      {% if option.question_number == question_num %}
+              <div class="form-check mb-3">
+                          <input class="form-check-input" type="radio" name="answer_{{ question_num }}" value="{{ option.id }}" id="option_{{ option.id }}">
+                <label class="form-check-label" for="option_{{ option.id }}">
+                  {{ option.text }}
+                </label>
+              </div>
+                      {% endif %}
+            {% endfor %}
+          </div>
+                  
+                  <div class="hint-section mt-3" style="display: none;">
+                    <div class="alert alert-info">
+                      <i class="fa-solid fa-lightbulb me-2"></i>
+                      <strong>Подсказка:</strong>
+                      <span class="hint-text">
+                        {% if level.content.questions %}
+                          {% for question in level.content.questions %}
+                            {% if forloop.counter == question_num %}
+                              {{ question.hint }}
+                            {% endif %}
+                          {% endfor %}
+                        {% endif %}
+                      </span>
+        </div>
+      </div>
+    
+                  <button type="button" class="btn btn-outline-secondary btn-sm show-hint-btn">
+                    <i class="fa-solid fa-lightbulb me-1"></i>Показать подсказку
+                  </button>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    
+    <!-- Тест с множественными вопросами -->
+    {% elif level.type == 'test' %}
+      <div class="test-container">
+        {% for question_num in level.options.values_list.question_number.distinct %}
+          <div class="question-block mb-4" data-question="{{ question_num }}">
+      <div class="card">
+              <div class="card-header">
+                <h5 class="mb-0">Вопрос {{ question_num }}</h5>
+              </div>
+        <div class="card-body">
+                <div class="question-text mb-3">
+                  {% if level.content.questions %}
+                    {% for question in level.content.questions %}
+                      {% if forloop.counter == question_num %}
+                        <p class="lead">{{ question.text }}</p>
+                      {% endif %}
+                    {% endfor %}
+                  {% else %}
+                    <p class="lead">Вопрос {{ question_num }}</p>
+                  {% endif %}
+                </div>
+                
+          <div class="test-options">
+            {% for option in level.options.all %}
+                    {% if option.question_number == question_num %}
+              <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" name="answer_{{ question_num }}" value="{{ option.id }}" id="option_{{ option.id }}">
+                <label class="form-check-label" for="option_{{ option.id }}">
+                  {{ option.text }}
+                </label>
+              </div>
+                    {% endif %}
+            {% endfor %}
+          </div>
+                
+                <div class="hint-section mt-3" style="display: none;">
+                  <div class="alert alert-info">
+                    <i class="fa-solid fa-lightbulb me-2"></i>
+                    <strong>Подсказка:</strong>
+                    <span class="hint-text">
+                      {% if level.content.questions %}
+                        {% for question in level.content.questions %}
+                          {% if forloop.counter == question_num %}
+                            {{ question.hint }}
+                          {% endif %}
+                        {% endfor %}
+                      {% endif %}
+                    </span>
+        </div>
+      </div>
+    
+                <button type="button" class="btn btn-outline-secondary btn-sm show-hint-btn">
+                  <i class="fa-solid fa-lightbulb me-1"></i>Показать подсказку
+                      </button>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    
+    <!-- Расчеты -->
+    {% elif level.type == 'calculation' %}
+      <div class="calculation-container">
+        {% for question_data in level.content.questions %}
+          <div class="question-block mb-4">
+      <div class="card">
+              <div class="card-header">
+                <h5 class="mb-0">Задача {{ forloop.counter }}</h5>
+              </div>
+        <div class="card-body">
+                <div class="question-text mb-3">
+                  <p class="lead">{{ question_data.question }}</p>
+            </div>
+            
+                <div class="calculation-input">
+                  <div class="mb-3">
+                    <label for="calculation_answer_{{ forloop.counter }}" class="form-label">Ваш ответ:</label>
+                    <input type="number" class="form-control" name="calculation_answer_{{ forloop.counter }}" id="calculation_answer_{{ forloop.counter }}" step="0.01" required>
+        </div>
+      </div>
+    
+                <div class="hint-section mt-3" style="display: none;">
+                <div class="alert alert-info">
+                  <i class="fa-solid fa-lightbulb me-2"></i>
+                    <strong>Подсказка:</strong>
+                    <span class="hint-text">{{ question_data.hint }}</span>
+                </div>
+            </div>
+            
+                <button type="button" class="btn btn-outline-secondary btn-sm show-hint-btn">
+                  <i class="fa-solid fa-lightbulb me-1"></i>Показать подсказку
+                </button>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    
+    <!-- Квест -->
+    {% elif level.type == 'quest' %}
+      <div class="quest-container">
+      <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">Интерактивный квест</h5>
+          </div>
+        <div class="card-body">
+            <div class="quest-content">
+              <div class="quest-description mb-4">
+                <p>{{ level.content.description }}</p>
+            </div>
+            
+              <div class="quest-steps">
+                {% for step_num, step_data in level.content.steps.items %}
+                  <div class="quest-step mb-4" data-step="{{ step_num }}">
+                    <div class="card">
+                      <div class="card-header">
+                        <h6 class="mb-0">Шаг {{ step_num }}</h6>
+                      </div>
+                      <div class="card-body">
+                        <p class="mb-3">{{ step_data.description }}</p>
+                        
+                        <div class="quest-options">
+                          {% for option in step_data.options %}
+                <div class="form-check mb-3">
+                              <input class="form-check-input" type="radio" name="quest_answer_{{ step_num }}" value="{{ forloop.counter0 }}" id="quest_option_{{ step_num }}_{{ forloop.counter0 }}">
+                              <label class="form-check-label" for="quest_option_{{ step_num }}_{{ forloop.counter0 }}">
+                                {{ option.text }}
+                  </label>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+                {% endfor %}
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    <!-- Головоломка -->
+    {% elif level.type == 'puzzle' %}
+      <div class="puzzle-container">
+      <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">Головоломка</h5>
+          </div>
+        <div class="card-body">
+            <div class="puzzle-text mb-4">
+              <p class="lead">{{ level.content.puzzle_text }}</p>
+                  </div>
+            
+            <div class="puzzle-input">
+              <div class="mb-3">
+                <label for="puzzle_answer" class="form-label">Ваш ответ:</label>
+                <input type="text" class="form-control" name="puzzle_answer" id="puzzle_answer" required>
+              </div>
+                  </div>
+            
+            <div class="hint-section mt-3" style="display: none;">
+              <div class="alert alert-info">
+                <i class="fa-solid fa-lightbulb me-2"></i>
+                <strong>Подсказка:</strong>
+                <span class="hint-text">{{ level.content.hint }}</span>
+              </div>
+            </div>
+            
+            <button type="button" class="btn btn-outline-secondary btn-sm show-hint-btn">
+              <i class="fa-solid fa-lightbulb me-1"></i>Показать подсказку
+            </button>
+            </div>
+          </div>
+        </div>
+    
+    <!-- История с выбором -->
+    {% elif level.type == 'story' %}
+      <div class="story-container">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">История с выбором</h5>
+          </div>
+          <div class="card-body">
+            <div class="story-text mb-4">
+              <p class="lead">{{ level.content.story_text }}</p>
+      </div>
+    
+            <div class="story-questions">
+              {% for question in level.content.questions %}
+                <div class="question-block mb-4">
+      <div class="card">
+                    <div class="card-header">
+                      <h6 class="mb-0">Вопрос {{ forloop.counter }}</h6>
+                    </div>
+        <div class="card-body">
+                      <p class="mb-3">{{ question.question }}</p>
+                      
+                      <div class="story-options">
+                        {% for option in question.options %}
+                          <div class="form-check mb-3">
+                            <input class="form-check-input" type="radio" name="story_answer_{{ forloop.parentloop.counter }}" value="{{ forloop.counter0 }}" id="story_option_{{ forloop.parentloop.counter }}_{{ forloop.counter0 }}">
+                            <label class="form-check-label" for="story_option_{{ forloop.parentloop.counter }}_{{ forloop.counter0 }}">
+                              {{ option.text }}
+                            </label>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+    
+    <!-- Сценарий -->
+    {% elif level.type == 'scenario' %}
+      <div class="scenario-container">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">Сценарий принятия решений</h5>
+          </div>
+          <div class="card-body">
+            <div class="scenario-text mb-4">
+              <p class="lead">{{ level.content.scenario_text }}</p>
+      </div>
+    
+            <div class="scenario-options">
+              {% for option in level.content.options %}
+                <div class="form-check mb-3">
+                  <input class="form-check-input" type="radio" name="scenario_answer" value="{{ forloop.counter0 }}" id="scenario_option_{{ forloop.counter0 }}">
+                  <label class="form-check-label" for="scenario_option_{{ forloop.counter0 }}">
+                    {{ option.text }}
+                  </label>
+                </div>
+              {% endfor %}
+            </div>
+            
+            <div class="hint-section mt-3" style="display: none;">
+              <div class="alert alert-info">
+                <i class="fa-solid fa-lightbulb me-2"></i>
+                <strong>Подсказка:</strong>
+                <span class="hint-text">{{ level.content.hint }}</span>
+              </div>
+            </div>
+            
+            <button type="button" class="btn btn-outline-secondary btn-sm show-hint-btn">
+              <i class="fa-solid fa-lightbulb me-1"></i>Показать подсказку
+            </button>
+          </div>
+        </div>
+      </div>
+    
+    <!-- Симуляция -->
+    {% elif level.type == 'simulation' %}
+      <div class="simulation-container">
+      <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">Симуляция</h5>
+          </div>
+        <div class="card-body">
+            <div class="simulation-content">
+              {% for scenario in level.content.scenarios %}
+                <div class="simulation-scenario mb-4">
+                  <div class="card">
+                    <div class="card-header">
+                      <h6 class="mb-0">{{ scenario.title }}</h6>
+              </div>
+                    <div class="card-body">
+                      <p class="mb-3">{{ scenario.description }}</p>
+              
+                      <div class="simulation-options">
+                        {% for option in scenario.options %}
+                  <div class="form-check mb-3">
+                            <input class="form-check-input" type="radio" name="simulation_answer_{{ forloop.parentloop.counter }}" value="{{ forloop.counter0 }}" id="simulation_option_{{ forloop.parentloop.counter }}_{{ forloop.counter0 }}">
+                            <label class="form-check-label" for="simulation_option_{{ forloop.parentloop.counter }}_{{ forloop.counter0 }}">
+                              {{ option.text }}
+                    </label>
+                  </div>
+                {% endfor %}
+              </div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+    
+    {% if level.type != 'quiz' %}
+    <div class="text-center mt-4">
+      <button type="submit" class="btn btn-primary btn-lg">
+        <i class="fa-solid fa-check me-2"></i>Завершить уровень
+      </button>
+    </div>
+    {% endif %}
+  </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Показ подсказок
+    document.querySelectorAll('.show-hint-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const hintSection = this.parentElement.querySelector('.hint-section');
+            if (hintSection.style.display === 'none') {
+                hintSection.style.display = 'block';
+                this.innerHTML = '<i class="fa-solid fa-eye-slash me-1"></i>Скрыть подсказку';
+            } else {
+                hintSection.style.display = 'none';
+                this.innerHTML = '<i class="fa-solid fa-lightbulb me-1"></i>Показать подсказку';
+            }
+        });
+    });
+    
+    // Обновление прогресс-бара
+    function updateProgress() {
+        const totalQuestions = document.querySelectorAll('.question-block').length;
+        const answeredQuestions = document.querySelectorAll('.question-block input:checked').length;
+        const progress = totalQuestions > 0 ? (answeredQuestions / totalQuestions) * 100 : 0;
+        const progressBar = document.getElementById('progressBar');
+        if (progressBar) {
+            progressBar.style.width = progress + '%';
+        }
+    }
+    
+    // Отслеживание ответов
+    document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
+        input.addEventListener('change', updateProgress);
+    });
+    
+    // Инициализация прогресс-бара
+    updateProgress();
+});
+</script>
+
+<style>
+.question-block {
+    transition: all 0.3s ease;
+}
+
+.question-block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.quiz-options .form-check-input,
+.test-options .form-check-input {
+  transform: scale(1.2);
+}
+
+.hint-section {
+    transition: all 0.3s ease;
+}
+
+.level-type-icon {
+    font-size: 2rem;
+}
+
+.quest-step {
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.quest-step.active {
+    opacity: 1;
+}
+
+.simulation-scenario {
+    border-left: 4px solid #007bff;
+}
+
+.scenario-container .form-check-input:checked + .form-check-label {
+    background-color: #e3f2fd;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+/* Стили для drag & drop сопоставления */
+.matching-draggable {
+    cursor: grab;
+    transition: all 0.2s ease;
+    user-select: none;
+    margin-bottom: 20px;
+}
+
+.matching-draggable .card {
+    border: 2px solid #dee2e6;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.matching-draggable:active {
+    cursor: grabbing;
+}
+
+.matching-draggable:hover {
+    transform: translateY(-2px);
+}
+
+.matching-draggable:hover .card {
+    border-color: #9c27b0;
+}
+
+/* Стили для drop zone */
+.matching-drop-zone {
+    min-height: 90px;
+    transition: all 0.3s ease;
+    cursor: default;
+    position: relative;
+    padding: 0;
+    margin-bottom: 24px;
+}
+
+.matching-drop-zone .card {
+    min-height: 90px;
+    height: 100%;
+    border: 2px solid #e0e0e0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.matching-drop-zone input[type="hidden"] {
+    position: absolute;
+    pointer-events: none;
+}
+
+.matching-drop-zone.drop-active {
+    background-color: #f3e5f5 !important;
+    border: 3px solid #9c27b0 !important;
+    border-radius: 12px;
+    transform: scale(1.02);
+}
+
+.matching-drop-zone.drop-active .card {
+    background-color: #f3e5f5 !important;
+    border: 3px dashed #9c27b0 !important;
+    border-radius: 12px;
+}
+
+.matching-drop-zone.matched {
+    background-color: #e1bee7 !important;
+    border: 1px solid #7b1fa2 !important;
+    border-radius: 12px;
+}
+
+.matching-drop-zone.matched .card {
+    background-color: #e1bee7 !important;
+    border: 1px solid #7b1fa2 !important;
+    border-radius: 12px;
+}
+
+.matching-drop-zone.matched .card-body {
+    color: #4a148c;
+}
+
+/* Текст в drop zone */
+.drop-text {
+    font-style: italic;
+    color: #999;
+}
+
+.right-item-text {
+    font-weight: 500;
+    color: #495057;
+}
+
+.matching-drop-zone.matched .right-item-text {
+    color: #2e7d32;
+    font-weight: bold;
+}
+
+/* Стили для draggable элементов */
+.matching-draggable.matched {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+    filter: grayscale(100%);
+}
+
+.matching-draggable.matched .card {
+    background-color: #e0e0e0;
+    color: #757575;
+    border-color: #bdbdbd;
+}
+
+/* Предотвращение выделения текста */
+.matching-container .card {
+    user-select: none;
+}
+
+/* Заголовки колонок */
+.matching-container h6 {
+    font-weight: 600;
+    color: #495057;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e9ecef;
+    margin-bottom: 20px;
+}
+
+.matching-container .col-md-6:first-child {
+    border-right: 2px dashed #dee2e6;
+    padding-right: 24px;
+}
+
+.matching-container .col-md-6:last-child {
+    padding-left: 24px;
+}
+
+/* Контейнеры */
+.matching-left, .matching-right {
+    padding-top: 8px;
+}
+
+/* Стили для сортировки */
+.sorting-container .list-group {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.sorting-container .list-group-item {
+    cursor: grab;
+    transition: all 0.2s ease;
+    margin-bottom: 16px;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+}
+
+.sorting-container .list-group-item:hover {
+    transform: translateX(4px);
+    border-color: #6366f1;
+    box-shadow: 0 3px 6px rgba(99, 102, 241, 0.15);
+}
+
+.sorting-container .list-group-item:active {
+    cursor: grabbing;
+    transform: scale(1.02);
+}
+
+.sorting-container .list-group-item .handle {
+    color: #6c757d;
+    margin-right: 12px;
+}
+
+.sorting-container .list-group-item:last-child {
+    margin-bottom: 0;
+}
+
+/* Стили для элегантной подсказки */
+.hint-btn {
+    transition: all 0.3s ease;
+    color: #ffc107 !important;
+    background-color: transparent;
+    text-shadow: none !important;
+}
+
+.hint-coins {
+    color: #ffc107;
+    transition: color 0.3s ease;
+}
+
+.hint-btn:hover .hint-coins {
+    color: white;
+}
+
+.hint-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
+    color: white !important;
+    background-color: #ffc107 !important;
+    border-color: #ffc107;
+    text-shadow: none !important;
+}
+
+.hint-btn:active,
+.hint-btn:focus {
+    color: white !important;
+    background-color: #ffc107 !important;
+    border-color: #ffc107;
+    text-shadow: none !important;
+}
+
+/* Когда кнопка в состоянии "Скрыть подсказку" */
+.hint-btn.btn-warning {
+    color: white !important;
+    background-color: #ffc107 !important;
+    border-color: #ffc107 !important;
+    text-shadow: none !important;
+}
+
+.hint-btn.btn-warning:hover {
+    color: #ffc107 !important;
+    background-color: transparent !important;
+    border-color: #ffc107 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
+    text-shadow: none !important;
+}
+
+.hint-container {
+    animation: slideDown 0.3s ease-out;
+    transition: opacity 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hint-card {
+    position: relative;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    padding: 24px;
+    color: white;
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.hint-icon {
+    text-align: center;
+    margin-bottom: 16px;
+    font-size: 48px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+.hint-text {
+    font-size: 16px;
+    line-height: 1.6;
+    text-align: center;
+    font-weight: 500;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Таймер для викторины
+    let timeLeft = 0;
+    let timerInterval;
+    
+    function startTimer() {
+        timeLeft = 0;
+        timerInterval = setInterval(function() {
+            timeLeft++;
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            const timerElement = document.getElementById('timer');
+            if (timerElement) {
+                timerElement.textContent = 
+                    (minutes < 10 ? '0' : '') + minutes + ':' + 
+                    (seconds < 10 ? '0' : '') + seconds;
+            }
+        }, 1000);
+    }
+    
+    function stopTimer() {
+        if (timerInterval) {
+            clearInterval(timerInterval);
+        }
+    }
+    
+    // Запускаем таймер при загрузке страницы
+    startTimer();
+    
+    // Анимация при выборе ответа
+    const radioButtons = document.querySelectorAll('.quiz-radio');
+    radioButtons.forEach(radio => {
+        radio.addEventListener('change', function() {
+            // Убираем выделение с других вариантов ТОЛЬКО для radio (не для checkbox)
+            if (this.type === 'radio') {
+                radioButtons.forEach(rb => {
+                    if (rb !== this && rb.type === 'radio') {
+                        rb.checked = false;
+                    }
+                });
+            }
+            
+            // Анимация выбранного варианта
+            const label = this.nextElementSibling;
+            if (label) {
+                label.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    label.style.transform = 'scale(1.02)';
+                }, 150);
+            }
+    });
+  });
+  
+    // Анимация при наведении на варианты ответов
+    const optionLabels = document.querySelectorAll('.quiz-label');
+    optionLabels.forEach(label => {
+        label.addEventListener('mouseenter', function() {
+            if (!this.querySelector('.quiz-radio').checked) {
+                this.style.transform = 'scale(1.02)';
+            }
+        });
+        
+        label.addEventListener('mouseleave', function() {
+            if (!this.querySelector('.quiz-radio').checked) {
+                this.style.transform = 'scale(1)';
+      }
+    });
+  });
+    
+           // Проверка выбора ответа перед отправкой
+           const form = document.getElementById('levelForm');
+           if (form) {
+               // Добавляем обработчик на кнопку по ID
+              const submitButton = document.getElementById('quizSubmitBtn');
+              if (submitButton) {
+                  submitButton.addEventListener('click', function(e) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      
+                      // Проверка matching
+                      const matchingContainer = document.querySelector('.matching-container');
+                      if (matchingContainer) {
+                          const totalDropZones = matchingContainer.querySelectorAll('.matching-drop-zone').length;
+                          const matchedDropZones = matchingContainer.querySelectorAll('.matching-drop-zone.matched').length;
+                          
+                          if (matchedDropZones < totalDropZones) {
+                              alert(`Пожалуйста, сопоставьте все термины! (${matchedDropZones}/${totalDropZones})`);
+                              return;
+                          }
+                      }
+                      
+                      // Проверка и обработка sorting
+                      const sortingContainer = document.querySelector('.sorting-container');
+                      if (sortingContainer) {
+                          const sortableList = sortingContainer.querySelector('.list-group');
+                          if (sortableList) {
+                              // Удаляем старые hidden inputs для sorting
+                              form.querySelectorAll('input[name^="sort_"]').forEach(input => input.remove());
+                              
+                              // Создаем новые hidden inputs с текущим порядком
+                              const listItems = sortableList.querySelectorAll('li[data-id]');
+                              listItems.forEach((item, index) => {
+                                  const hiddenInput = document.createElement('input');
+                                  hiddenInput.type = 'hidden';
+                                  hiddenInput.name = `sort_${index}`;
+                                  hiddenInput.value = item.getAttribute('data-id');
+                                  form.appendChild(hiddenInput);
+                              });
+                          }
+                      }
+                      
+                      // Отправляем форму
+                      form.submit();
+                  });
+              }
+              
+              form.addEventListener('submit', function(e) {
+                   // Проверяем различные типы вопросов
+                   const checkedRadio = document.querySelector('.quiz-radio:checked');
+                   const checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+                   const matchingActive = document.querySelector('.matching-drop-zone.matched');
+                   const sortingList = document.querySelector('.list-group');
+                   
+                   // Для matching проверяем, что все элементы сопоставлены
+                   const matchingContainer = document.querySelector('.matching-container');
+                   
+                   if (matchingContainer) {
+                       const totalDropZones = matchingContainer.querySelectorAll('.matching-drop-zone').length;
+                       const matchedDropZones = matchingContainer.querySelectorAll('.matching-drop-zone.matched').length;
+                       
+                       if (matchedDropZones < totalDropZones) {
+                           e.preventDefault();
+                           alert(`Пожалуйста, сопоставьте все термины! (${matchedDropZones}/${totalDropZones})`);
+                           return false;
+                       }
+                   }
+                   
+                   // Для викторины проверяем выбор (только если это не matching или sorting)
+                   const hasMatching = document.querySelector('.matching-container') !== null;
+                   const hasSorting = document.querySelector('.list-group') !== null;
+                   
+                   // Если есть matching или sorting, форма будет обработана выше
+                   if (!checkedRadio && checkedCheckboxes.length === 0 && !hasMatching && !hasSorting) {
+                       e.preventDefault();
+                       alert('Пожалуйста, выберите вариант ответа!');
+                       return false;
+                   }
+                   
+                   // Сохраняем время прохождения
+                   const completionTimeField = document.getElementById('completionTime');
+                   if (completionTimeField) {
+                       completionTimeField.value = timeLeft;
+                   }
+                   
+                   // Останавливаем таймер при отправке
+                   stopTimer();
+              });
+           }
+    
+    
+    // Анимация прогресс-бара
+    const progressBar = document.getElementById('quizProgressBar');
+    if (progressBar) {
+        const answered = parseInt(progressBar.dataset.answered);
+        const total = parseInt(progressBar.dataset.total);
+        const percentage = total > 0 ? (answered / total) * 100 : 0;
+        
+        progressBar.style.width = percentage + '%';
+        progressBar.style.background = 'linear-gradient(45deg, #6366f1, #8b5cf6)';
+        
+        setTimeout(() => {
+            progressBar.style.transition = 'width 0.5s ease';
+        }, 100);
+    }
+});
+
+// Анимация появления карточки
+document.addEventListener('DOMContentLoaded', function() {
+    const quizCard = document.querySelector('.quiz-card');
+    if (quizCard) {
+        quizCard.style.opacity = '0';
+        quizCard.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            quizCard.style.transition = 'all 0.5s ease';
+            quizCard.style.opacity = '1';
+            quizCard.style.transform = 'translateY(0)';
+        }, 100);
+    }
+    
+});
+</script>
+
+
+<script>
+// Функции для подсказки с плавной анимацией
+function showHint() {
+    const hintContent = document.getElementById('hintContent');
+    const hintBtn = document.querySelector('.hint-btn');
+    
+    if (hintContent) {
+        hintContent.style.display = 'block';
+        // Добавляем небольшую задержку для анимации
+        setTimeout(() => {
+            hintContent.style.opacity = '1';
+        }, 10);
+    }
+    
+    // Меняем текст кнопки и добавляем обработчик для скрытия
+    if (hintBtn) {
+        hintBtn.innerHTML = '<i class="fa-solid fa-eye-slash me-1"></i>Скрыть подсказку';
+        hintBtn.classList.remove('btn-outline-warning');
+        hintBtn.classList.add('btn-warning');
+        hintBtn.setAttribute('onclick', 'hideHint()');
+    }
+}
+
+function hideHint() {
+    const hintContent = document.getElementById('hintContent');
+    const hintBtn = document.querySelector('.hint-btn');
+    
+    if (hintContent) {
+        hintContent.style.opacity = '0';
+        // Скрываем элемент после завершения анимации
+        setTimeout(() => {
+            hintContent.style.display = 'none';
+        }, 300);
+    }
+    
+    // Восстанавливаем текст кнопки
+    if (hintBtn) {
+        hintBtn.innerHTML = '<i class="fa-solid fa-lightbulb me-1"></i>Подсказка (<span class="hint-coins">3🪙</span>)';
+        hintBtn.classList.remove('btn-warning');
+        hintBtn.classList.add('btn-outline-warning');
+        hintBtn.setAttribute('onclick', 'showHint()');
+    }
+}
+</script>
+
+<script>
+// Обработка сортировки (drag and drop)
+document.addEventListener('DOMContentLoaded', function() {
+    const sortableLists = document.querySelectorAll('.list-group');
+    
+    sortableLists.forEach(list => {
+        let draggedElement = null;
+        
+        // Добавляем обработчики для drag and drop
+        list.querySelectorAll('li[data-id]').forEach(li => {
+            li.addEventListener('dragstart', function(e) {
+                draggedElement = this;
+                e.dataTransfer.effectAllowed = 'move';
+                this.style.opacity = '0.5';
+            });
+            
+            li.addEventListener('dragend', function(e) {
+                this.style.opacity = '1';
+                draggedElement = null;
+            });
+            
+            li.addEventListener('dragover', function(e) {
+                if (e.preventDefault) {
+                    e.preventDefault();
+                }
+                e.dataTransfer.dropEffect = 'move';
+                
+                if (draggedElement && this !== draggedElement) {
+                    const rect = this.getBoundingClientRect();
+                    const midPoint = rect.top + rect.height / 2;
+                    
+                    if (e.clientY < midPoint) {
+                        this.parentNode.insertBefore(draggedElement, this);
+                    } else {
+                        this.parentNode.insertBefore(draggedElement, this.nextSibling);
+                    }
+                }
+            });
+            
+            li.addEventListener('drop', function(e) {
+                if (e.stopPropagation) {
+                    e.stopPropagation();
+                }
+                return false;
+            });
+        });
+    });
+    
+    // Обработка формы для типа sorting
+    // НЕ добавляем второй обработчик - он уже есть выше на строке 843
+    const sortForm = document.getElementById('levelForm');
+    if (sortForm) {
+        // Добавляем дополнительную логику только для sorting
+        // Основной обработчик на строке 843 уже обрабатывает это
+    }
+    
+    // Обработка сопоставления (drag and drop для matching)
+    const matchingContainers = document.querySelectorAll('.matching-container');
+    
+    if (matchingContainers.length === 0) {
+        return; // Выходим, если нет matching контейнеров
+    }
+    
+    let draggedMatchingElement = null;
+    
+    matchingContainers.forEach((container, index) => {
+        const draggables = container.querySelectorAll('.matching-draggable');
+        const dropZones = container.querySelectorAll('.matching-drop-zone');
+        
+        draggables.forEach((draggable, draggableIndex) => {
+            // Проверяем, что элемент действительно draggable
+            if (draggable.getAttribute('draggable') !== 'true') {
+                draggable.setAttribute('draggable', 'true');
+            }
+            
+            draggable.addEventListener('dragstart', function(e) {
+                draggedMatchingElement = this;
+                this.style.opacity = '0.5';
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', this.getAttribute('data-left-index'));
+            }, {passive: false});
+            
+            draggable.addEventListener('dragend', function(e) {
+                this.style.opacity = '1';
+                // Если элемент не был сопоставлен, ничего не делаем
+            });
+        });
+        
+        dropZones.forEach((zone, zoneIndex) => {
+            // Предотвращаем событие drag для вложенных элементов
+            zone.querySelectorAll('*').forEach(child => {
+                child.addEventListener('drag', function(e) {
+                    e.stopPropagation();
+                });
+            });
+            
+            zone.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.dataTransfer.dropEffect = 'move';
+                e.dataTransfer.effectAllowed = 'move';
+                if (!this.classList.contains('drop-active')) {
+                    this.classList.add('drop-active');
+                }
+            }, {passive: false});
+            
+            zone.addEventListener('dragenter', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.dataTransfer.dropEffect = 'move';
+                e.dataTransfer.effectAllowed = 'move';
+                this.classList.add('drop-active');
+            }, {passive: false});
+            
+            zone.addEventListener('dragleave', function(e) {
+                // Проверяем, что покидаем именно эту зону, а не вложенные элементы
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX;
+                const y = e.clientY;
+                
+                if (x < rect.left || x >= rect.right || y < rect.top || y >= rect.bottom) {
+                    this.classList.remove('drop-active');
+                }
+            });
+            
+            zone.addEventListener('drop', function(e) {
+                try {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    this.classList.remove('drop-active');
+                    
+                    if (draggedMatchingElement) {
+                        // Проверяем, не используется ли эта zone уже
+                        if (this.classList.contains('matched')) {
+                            // Очищаем предыдущее сопоставление
+                            const oldInput = this.querySelector('input[type="hidden"]');
+                            if (oldInput) {
+                                oldInput.value = '';
+                            }
+                            const dropText = this.querySelector('.drop-text');
+                            dropText.innerHTML = 'Перетащите термин сюда';
+                            this.classList.remove('matched');
+                        }
+                        
+                        // Получаем индексы
+                        const leftIndex = draggedMatchingElement.getAttribute('data-left-index');
+                        const rightIndex = this.getAttribute('data-right-index');
+                        
+                        // Сохраняем текст термина из карточки
+                        const cardBody = draggedMatchingElement.querySelector('.card-body');
+                        const termText = cardBody.innerText.trim();
+                        
+                        // Показываем сопоставление без галочки
+                        const dropText = this.querySelector('.drop-text');
+                        dropText.innerHTML = `<span style="color: #7b1fa2; font-weight: 600;">${termText}</span>`;
+                        
+                        // Находим hidden input внутри этой zone
+                        const hiddenInput = this.querySelector('input[type="hidden"]');
+                        if (hiddenInput) {
+                            hiddenInput.value = leftIndex;
+                        }
+                        
+                        // Визуально отмечаем, что сопоставлено
+                        this.classList.add('matched');
+                        draggedMatchingElement.classList.add('matched');
+                        
+                        // Делаем draggable серым, полупрозрачным и неинтерактивным
+                        draggedMatchingElement.style.opacity = '0.4';
+                        draggedMatchingElement.style.filter = 'grayscale(100%)';
+                        draggedMatchingElement.setAttribute('draggable', 'false');
+                        
+                        // Также делаем карточку внутри серой
+                        const card = draggedMatchingElement.querySelector('.card');
+                        if (card) {
+                            card.style.backgroundColor = '#e0e0e0';
+                            card.style.color = '#757575';
+                        }
+                        
+                        // Восстанавливаем opacity для следующего перетаскивания
+                        draggedMatchingElement = null;
+                    }
+                } catch (error) {
+                    // Обрабатываем ошибку тихо
+                }
+                
+                return false;
+            });
+        });
+    });
+});
+</script>
+
+{% endblock %}

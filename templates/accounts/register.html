@@ -6,13 +6,17 @@
 <div class="row justify-content-center">
   <div class="col-md-6">
     <div class="hero text-center">
-      <div class="mb-4">
-        <i class="fa-solid fa-user-plus text-success" style="font-size: 4rem;"></i>
-      </div>
-      <h2 class="section-title mb-3">
-        <i class="fa-solid fa-rocket"></i> Присоединяйтесь к FinQuest!
+      <h2 class="section-title mb-3 text-center" style="text-align: center !important; color: #000 !important; text-shadow: none !important;">
+        <i class="fa-solid fa-rocket" style="color: #6f42c1 !important; text-shadow: none !important;"></i> Присоединяйтесь к FinQuest!
       </h2>
       <p class="text-muted mb-4">Создайте аккаунт и начните изучать финансы в игровой форме</p>
+      
+      <!-- Информация об аватарке -->
+      <div class="alert alert-info mb-4">
+        <i class="fa-solid fa-info-circle me-2"></i>
+        <strong>Бонус:</strong> При регистрации вам автоматически будет установлена аватарка! 
+        Вы сможете изменить её в настройках профиля.
+      </div>
       
       <form method="post">
         {% csrf_token %}
@@ -62,4 +66,29 @@
     </div>
   </div>
 </div>
+
+<style>
+.section-title {
+  text-align: center !important;
+  width: 100%;
+  display: block;
+}
+
+/* Видимая обводка для полей ввода */
+.form-control {
+  border: 2px solid #dee2e6 !important;
+  background-color: #fff !important;
+  transition: all 0.3s ease;
+}
+
+.form-control:hover {
+  border-color: #adb5bd !important;
+}
+
+.form-control:focus {
+  border-color: #6f42c1 !important;
+  box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.25) !important;
+  background-color: #fff !important;
+}
+</style>
 {% endblock %}

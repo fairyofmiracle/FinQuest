@@ -1,0 +1,734 @@
+[
+{
+  "model": "game.leveloption",
+  "pk": 1,
+  "fields": {
+    "level": 2,
+    "text": "Деньги, потраченные на развлечения",
+    "is_correct": false,
+    "order": 1,
+    "question_number": 1,
+    "hint": ""
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 7,
+  "fields": {
+    "level": 5,
+    "text": "Зарплата",
+    "is_correct": true,
+    "order": 1,
+    "question_number": 1,
+    "hint": ""
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 10,
+  "fields": {
+    "level": 6,
+    "text": "Продукты",
+    "is_correct": true,
+    "order": 1,
+    "question_number": 1,
+    "hint": ""
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 14,
+  "fields": {
+    "level": 8,
+    "text": "Кредитная",
+    "is_correct": false,
+    "order": 1,
+    "question_number": 1,
+    "hint": ""
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 17,
+  "fields": {
+    "level": 9,
+    "text": "Высокая ставка",
+    "is_correct": true,
+    "order": 1,
+    "question_number": 1,
+    "hint": ""
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 21,
+  "fields": {
+    "level": 11,
+    "text": "Подарок",
+    "is_correct": false,
+    "order": 1,
+    "question_number": 1,
+    "hint": ""
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 24,
+  "fields": {
+    "level": 14,
+    "text": "Деньги, потраченные на развлечения",
+    "is_correct": false,
+    "order": 1,
+    "question_number": 1,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 30,
+  "fields": {
+    "level": 17,
+    "text": "Записать на бумажке",
+    "is_correct": false,
+    "order": 1,
+    "question_number": 1,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 36,
+  "fields": {
+    "level": 19,
+    "text": "Трата денег",
+    "is_correct": false,
+    "order": 1,
+    "question_number": 1,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 42,
+  "fields": {
+    "level": 20,
+    "text": "Государственные облигации",
+    "is_correct": false,
+    "order": 1,
+    "question_number": 1,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 46,
+  "fields": {
+    "level": 25,
+    "text": "Проверить URL и наличие https",
+    "is_correct": true,
+    "order": 1,
+    "question_number": 1,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 49,
+  "fields": {
+    "level": 26,
+    "text": "Использовать карту только в проверенных местах",
+    "is_correct": true,
+    "order": 1,
+    "question_number": 1,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 53,
+  "fields": {
+    "level": 27,
+    "text": "Долг в компании",
+    "is_correct": false,
+    "order": 1,
+    "question_number": 1,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 59,
+  "fields": {
+    "level": 31,
+    "text": "260 000 ₽",
+    "is_correct": true,
+    "order": 1,
+    "question_number": 1,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 2,
+  "fields": {
+    "level": 2,
+    "text": "Деньги, отложенные на будущее",
+    "is_correct": true,
+    "order": 2,
+    "question_number": 1,
+    "hint": ""
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 8,
+  "fields": {
+    "level": 5,
+    "text": "Аренда квартиры",
+    "is_correct": false,
+    "order": 2,
+    "question_number": 1,
+    "hint": ""
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 11,
+  "fields": {
+    "level": 6,
+    "text": "Кино",
+    "is_correct": false,
+    "order": 2,
+    "question_number": 1,
+    "hint": ""
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 15,
+  "fields": {
+    "level": 8,
+    "text": "Дебетовая",
+    "is_correct": true,
+    "order": 2,
+    "question_number": 1,
+    "hint": ""
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 18,
+  "fields": {
+    "level": 9,
+    "text": "Возможность пополнения",
+    "is_correct": true,
+    "order": 2,
+    "question_number": 1,
+    "hint": ""
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 22,
+  "fields": {
+    "level": 11,
+    "text": "Проценты",
+    "is_correct": true,
+    "order": 2,
+    "question_number": 1,
+    "hint": ""
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 25,
+  "fields": {
+    "level": 14,
+    "text": "Деньги, отложенные на будущее",
+    "is_correct": true,
+    "order": 2,
+    "question_number": 1,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 31,
+  "fields": {
+    "level": 17,
+    "text": "Держать в секрете",
+    "is_correct": true,
+    "order": 2,
+    "question_number": 1,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 37,
+  "fields": {
+    "level": 19,
+    "text": "Вложение денег для получения дохода",
+    "is_correct": true,
+    "order": 2,
+    "question_number": 1,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 43,
+  "fields": {
+    "level": 20,
+    "text": "Акции молодых компаний",
+    "is_correct": true,
+    "order": 2,
+    "question_number": 1,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 47,
+  "fields": {
+    "level": 25,
+    "text": "Ввести данные без проверки",
+    "is_correct": false,
+    "order": 2,
+    "question_number": 1,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 50,
+  "fields": {
+    "level": 26,
+    "text": "Скрывать PIN-код при вводе",
+    "is_correct": true,
+    "order": 2,
+    "question_number": 1,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 54,
+  "fields": {
+    "level": 27,
+    "text": "Доля в компании",
+    "is_correct": true,
+    "order": 2,
+    "question_number": 1,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 60,
+  "fields": {
+    "level": 31,
+    "text": "500 000 ₽",
+    "is_correct": false,
+    "order": 2,
+    "question_number": 1,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 3,
+  "fields": {
+    "level": 2,
+    "text": "Долг перед банком",
+    "is_correct": false,
+    "order": 3,
+    "question_number": 1,
+    "hint": ""
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 9,
+  "fields": {
+    "level": 5,
+    "text": "Кредит",
+    "is_correct": false,
+    "order": 3,
+    "question_number": 1,
+    "hint": ""
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 12,
+  "fields": {
+    "level": 6,
+    "text": "Коммуналка",
+    "is_correct": true,
+    "order": 3,
+    "question_number": 1,
+    "hint": ""
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 16,
+  "fields": {
+    "level": 8,
+    "text": "Обе",
+    "is_correct": false,
+    "order": 3,
+    "question_number": 1,
+    "hint": ""
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 19,
+  "fields": {
+    "level": 9,
+    "text": "Страхование АСВ",
+    "is_correct": true,
+    "order": 3,
+    "question_number": 1,
+    "hint": ""
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 23,
+  "fields": {
+    "level": 11,
+    "text": "Ничего",
+    "is_correct": false,
+    "order": 3,
+    "question_number": 1,
+    "hint": ""
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 26,
+  "fields": {
+    "level": 14,
+    "text": "Деньги, взятые в долг",
+    "is_correct": false,
+    "order": 3,
+    "question_number": 1,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 32,
+  "fields": {
+    "level": 17,
+    "text": "Рассказать родственникам",
+    "is_correct": false,
+    "order": 3,
+    "question_number": 1,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 38,
+  "fields": {
+    "level": 19,
+    "text": "Сбережение денег",
+    "is_correct": false,
+    "order": 3,
+    "question_number": 1,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 44,
+  "fields": {
+    "level": 20,
+    "text": "Банковские депозиты",
+    "is_correct": false,
+    "order": 3,
+    "question_number": 1,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 48,
+  "fields": {
+    "level": 25,
+    "text": "Перейти по ссылке из письма",
+    "is_correct": false,
+    "order": 3,
+    "question_number": 1,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 51,
+  "fields": {
+    "level": 26,
+    "text": "Делиться данными карты с друзьями",
+    "is_correct": false,
+    "order": 3,
+    "question_number": 1,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 55,
+  "fields": {
+    "level": 27,
+    "text": "Кредит компании",
+    "is_correct": false,
+    "order": 3,
+    "question_number": 1,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 61,
+  "fields": {
+    "level": 31,
+    "text": "1 000 000 ₽",
+    "is_correct": false,
+    "order": 3,
+    "question_number": 1,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 13,
+  "fields": {
+    "level": 6,
+    "text": "Новые кроссовки",
+    "is_correct": false,
+    "order": 4,
+    "question_number": 1,
+    "hint": ""
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 20,
+  "fields": {
+    "level": 9,
+    "text": "Скрытые комиссии",
+    "is_correct": false,
+    "order": 4,
+    "question_number": 1,
+    "hint": ""
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 45,
+  "fields": {
+    "level": 20,
+    "text": "Криптовалюты",
+    "is_correct": true,
+    "order": 4,
+    "question_number": 1,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 52,
+  "fields": {
+    "level": 26,
+    "text": "Регулярно проверять выписки",
+    "is_correct": true,
+    "order": 4,
+    "question_number": 1,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 4,
+  "fields": {
+    "level": 2,
+    "text": "5-10%",
+    "is_correct": false,
+    "order": 1,
+    "question_number": 2,
+    "hint": ""
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 27,
+  "fields": {
+    "level": 14,
+    "text": "5-10%",
+    "is_correct": false,
+    "order": 1,
+    "question_number": 2,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 33,
+  "fields": {
+    "level": 17,
+    "text": "Раз в год",
+    "is_correct": false,
+    "order": 1,
+    "question_number": 2,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 39,
+  "fields": {
+    "level": 19,
+    "text": "Вложить все в один актив",
+    "is_correct": false,
+    "order": 1,
+    "question_number": 2,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 56,
+  "fields": {
+    "level": 27,
+    "text": "Только на росте цены",
+    "is_correct": false,
+    "order": 1,
+    "question_number": 2,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 5,
+  "fields": {
+    "level": 2,
+    "text": "10-20%",
+    "is_correct": true,
+    "order": 2,
+    "question_number": 2,
+    "hint": ""
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 28,
+  "fields": {
+    "level": 14,
+    "text": "10-20%",
+    "is_correct": true,
+    "order": 2,
+    "question_number": 2,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 34,
+  "fields": {
+    "level": 17,
+    "text": "Еженедельно",
+    "is_correct": true,
+    "order": 2,
+    "question_number": 2,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 40,
+  "fields": {
+    "level": 19,
+    "text": "Диверсификация",
+    "is_correct": true,
+    "order": 2,
+    "question_number": 2,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 57,
+  "fields": {
+    "level": 27,
+    "text": "На росте цены и дивидендах",
+    "is_correct": true,
+    "order": 2,
+    "question_number": 2,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 6,
+  "fields": {
+    "level": 2,
+    "text": "30-50%",
+    "is_correct": false,
+    "order": 3,
+    "question_number": 2,
+    "hint": ""
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 29,
+  "fields": {
+    "level": 14,
+    "text": "30-50%",
+    "is_correct": false,
+    "order": 3,
+    "question_number": 2,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 35,
+  "fields": {
+    "level": 17,
+    "text": "Никогда",
+    "is_correct": false,
+    "order": 3,
+    "question_number": 2,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 41,
+  "fields": {
+    "level": 19,
+    "text": "Быстрое обогащение",
+    "is_correct": false,
+    "order": 3,
+    "question_number": 2,
+    "hint": null
+  }
+},
+{
+  "model": "game.leveloption",
+  "pk": 58,
+  "fields": {
+    "level": 27,
+    "text": "Только на дивидендах",
+    "is_correct": false,
+    "order": 3,
+    "question_number": 2,
+    "hint": null
+  }
+}
+]

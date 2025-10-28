@@ -6,6 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   {% load static %}
   <title>{% block title %}FinQuest{% endblock %}</title>
+  <!-- Фавиконка из FontAwesome иконки -->
+  <style>
+    .favicon {
+      width: 16px;
+      height: 16px;
+      display: inline-block;
+    }
+  </style>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><circle cx='256' cy='256' r='200' fill='%236366f1' stroke='%234f46e5' stroke-width='8'/><circle cx='200' cy='200' r='25' fill='%23fbbf24' stroke='%23f59e0b' stroke-width='3'/><circle cx='312' cy='200' r='25' fill='%23fbbf24' stroke='%23f59e0b' stroke-width='3'/><circle cx='200' cy='312' r='25' fill='%23fbbf24' stroke='%23f59e0b' stroke-width='3'/><circle cx='312' cy='312' r='25' fill='%23fbbf24' stroke='%23f59e0b' stroke-width='3'/><circle cx='256' cy='256' r='30' fill='%23fbbf24' stroke='%23f59e0b' stroke-width='4'/><text x='256' y='265' text-anchor='middle' font-family='Arial' font-size='20' font-weight='bold' fill='%23d97706'>₽</text></svg>">
   <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'css/inter-fonts.css' %}" rel="stylesheet">
   <link href="{% static 'css/fontawesome.min.css' %}" rel="stylesheet">
@@ -13,33 +22,126 @@
   <style>
     body { padding-bottom: 60px; }
     .btn-lg { width: 100%; margin: 8px 0; }
+    
+    /* Стили для модального окна достижений */
+    .achievement-modal-content {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+    
+    .achievement-celebration {
+      color: white;
+    }
+    
+    .achievement-icon-large {
+      font-size: 4rem;
+      color: #ffd700;
+      animation: bounce 1s infinite alternate;
+    }
+    
+    .achievement-title {
+      font-size: 2rem;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .achievement-description {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+    
+    .achievement-rarity-badge {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+    
+    .rarity-common { background: #6c757d; }
+    .rarity-uncommon { background: #28a745; }
+    .rarity-rare { background: #007bff; }
+    .rarity-legendary { background: #ffc107; color: #000; }
+    
+    @keyframes bounce {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-20px); }
+    }
+    
+    /* Конфетти */
+    #confetti-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+    
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #ff6b6b;
+      animation: confetti-fall 3s linear infinite;
+    }
+    
+    .confetti:nth-child(2n) { background: #4ecdc4; }
+    .confetti:nth-child(3n) { background: #45b7d1; }
+    .confetti:nth-child(4n) { background: #96ceb4; }
+    .confetti:nth-child(5n) { background: #feca57; }
+    .confetti:nth-child(6n) { background: #ff9ff3; }
+    
+    @keyframes confetti-fall {
+      0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
   </style>
   <script src="{% static 'js/finquest.js' %}" defer></script>
   <script src="{% static 'js/tutorial.js' %}" defer></script>
 </head>
 <body>
-  <nav class="navbar navbar-dark bg-gradient">
+  <nav class="navbar navbar-expand-lg gaming-navbar">
     <div class="container">
       <a class="navbar-brand" href="{% url 'dashboard' %}">
-        <i class="fa-solid fa-coins me-2"></i>FinQuest
+        <i class="fa-solid fa-money-bill-trend-up me-2"></i>FinQuest
       </a>
       {% if user.is_authenticated %}
         <div class="d-flex align-items-center gap-2">
-          <a href="{% url 'leaderboard' %}" class="btn btn-sm btn-outline-light">
-            <i class="fa-solid fa-trophy me-1"></i>Рейтинг
+          <button class="btn btn-sm btn-outline-light" onclick="toggleTheme()" title="Переключить тему">
+            <i class="fa-solid fa-moon" id="theme-icon"></i>
+          </button>
+          <a href="{% url 'media' %}" class="btn btn-outline-light">
+            <i class="fa-solid fa-newspaper me-2"></i>Статьи
           </a>
-          <a href="{% url 'media' %}" class="btn btn-sm btn-outline-light">
-            <i class="fa-solid fa-newspaper me-1"></i>Статьи
+          <div class="position-relative" style="display: inline-block;">
+            <a href="{% url 'notifications_list' %}" class="btn btn-outline-light">
+              <i class="fa-regular fa-bell me-2" style="color: white; font-size: 16px;"></i>Уведомления
+            </a>
+            {% if unread_notifications_count > 0 %}
+              <span class="notification-badge" style="position: absolute; top: -8px; right: -8px; z-index: 9999; background: #ef4444 !important; color: white !important; border-radius: 50% !important; width: 22px !important; height: 22px !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.7rem !important; font-weight: bold !important; padding: 0 !important; box-shadow: 0 2px 6px rgba(239, 68, 68, 0.5) !important; min-width: 22px !important;">
+                {{ unread_notifications_count }}
+              </span>
+            {% endif %}
+          </div>
+          <a href="{% url 'profile' %}" class="btn btn-outline-light">
+            <i class="fa-regular fa-user me-2"></i>Профиль
           </a>
-          <a href="{% url 'notifications_list' %}" class="btn btn-sm btn-outline-light">
-            <i class="fa-regular fa-bell me-1"></i>Уведомления
-          </a>
-          <a href="{% url 'profile' %}" class="btn btn-sm btn-outline-light">
-            <i class="fa-regular fa-user me-1"></i>Профиль
-          </a>
-          <a href="{% url 'logout' %}" class="btn btn-sm btn-danger">
-            <i class="fa-solid fa-sign-out-alt me-1"></i>Выйти
-          </a>
+          <form method="post" action="{% url 'logout' %}" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm btn-danger">
+              <i class="fa-solid fa-sign-out-alt me-1"></i>Выйти
+            </button>
+          </form>
         </div>
       {% else %}
         <a href="{% url 'login' %}" class="btn btn-sm btn-primary">Войти</a>
@@ -50,6 +152,127 @@
   <div class="container mt-3">
     {% block content %}{% endblock %}
   </div>
+  
+  <!-- Модальное окно для достижений -->
+  <div class="modal fade" id="achievementModal" tabindex="-1" aria-labelledby="achievementModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content achievement-modal-content">
+        <div class="modal-body text-center p-4">
+          <div class="achievement-celebration">
+            <div class="achievement-icon-large mb-3">
+              <i class="fa-solid fa-trophy" id="achievementIcon"></i>
+            </div>
+            <h4 class="achievement-title mb-2" id="achievementTitle">🎉 Поздравляем!</h4>
+            <p class="achievement-description mb-3" id="achievementDescription">Вы получили новое достижение!</p>
+            <div class="achievement-rarity-badge mb-3" id="achievementRarity"></div>
+            <button type="button" class="btn btn-primary btn-lg" onclick="closeAchievementModal()">
+              <i class="fa-solid fa-check me-2"></i>Ура! 🎉
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Конфетти контейнер -->
+  <div id="confetti-container"></div>
+  
   <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+  
+  <script>
+    // Система тем
+    function toggleTheme() {
+      const body = document.body;
+      const themeIcon = document.getElementById('theme-icon');
+      
+      if (body.classList.contains('dark-theme')) {
+        // Переключаемся на светлую тему
+        body.classList.remove('dark-theme');
+        themeIcon.className = 'fa-solid fa-moon';
+        localStorage.setItem('theme', 'light');
+      } else {
+        // Переключаемся на темную тему
+        body.classList.add('dark-theme');
+        themeIcon.className = 'fa-solid fa-sun';
+        localStorage.setItem('theme', 'dark');
+      }
+    }
+    
+    // Загружаем сохраненную тему при загрузке страницы
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedTheme = localStorage.getItem('theme');
+      const themeIcon = document.getElementById('theme-icon');
+      
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+        if (themeIcon) {
+          themeIcon.className = 'fa-solid fa-sun';
+        }
+      }
+    });
+    
+    // Функции для достижений и конфетти
+    function showAchievement(achievementData) {
+      const modal = new bootstrap.Modal(document.getElementById('achievementModal'));
+      const icon = document.getElementById('achievementIcon');
+      const title = document.getElementById('achievementTitle');
+      const description = document.getElementById('achievementDescription');
+      const rarity = document.getElementById('achievementRarity');
+      
+      // Устанавливаем данные достижения
+      if (achievementData.icon) {
+        icon.className = `fa-solid ${achievementData.icon}`;
+      }
+      title.textContent = `🎉 ${achievementData.name}`;
+      description.textContent = achievementData.description;
+      
+      // Устанавливаем редкость
+      rarity.textContent = achievementData.rarity_display;
+      rarity.className = `achievement-rarity-badge rarity-${achievementData.rarity}`;
+      
+      // Показываем модальное окно
+      modal.show();
+      
+      // Запускаем конфетти
+      createConfetti();
+    }
+    
+    function closeAchievementModal() {
+      const modal = bootstrap.Modal.getInstance(document.getElementById('achievementModal'));
+      if (modal) {
+        modal.hide();
+      }
+    }
+    
+    function createConfetti() {
+      const container = document.getElementById('confetti-container');
+      const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3'];
+      
+      // Очищаем предыдущие конфетти
+      container.innerHTML = '';
+      
+      // Создаем 50 конфетти
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.animationDelay = Math.random() * 3 + 's';
+        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.width = (Math.random() * 10 + 5) + 'px';
+        confetti.style.height = confetti.style.width;
+        
+        container.appendChild(confetti);
+        
+        // Удаляем конфетти через 3 секунды
+        setTimeout(() => {
+          if (confetti.parentNode) {
+            confetti.parentNode.removeChild(confetti);
+          }
+        }, 3000);
+      }
+    }
+  </script>
+  
+  {% block extra_js %}{% endblock %}
 </body>
 </html>

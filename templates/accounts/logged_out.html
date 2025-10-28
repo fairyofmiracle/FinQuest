@@ -5,12 +5,8 @@
 <div class="row justify-content-center">
   <div class="col-md-8">
     <div class="hero text-center">
-      <div class="mb-4">
-        <i class="fa-solid fa-heart text-danger" style="font-size: 4rem; animation: heartbeat 2s ease-in-out infinite;"></i>
-      </div>
-      
-      <h2 class="section-title mb-3">
-        <i class="fa-solid fa-hand-wave"></i> До свидания!
+      <h2 class="section-title mb-3 text-center" style="text-align: center !important; color: #000 !important; text-shadow: none !important;">
+        <i class="fa-solid fa-hand-wave" style="color: #6f42c1 !important; text-shadow: none !important;"></i> До свидания!
       </h2>
       
       <p class="lead mb-4">Спасибо, что изучали финансы вместе с нами!</p>
@@ -46,11 +42,8 @@
       </div>
       
       <div class="mt-4">
-        <a href="{% url 'login' %}" class="btn btn-primary btn-lg me-3">
+        <a href="{% url 'login' %}" class="btn btn-primary btn-lg">
           <i class="fa-solid fa-sign-in-alt me-2"></i>Войти снова
-        </a>
-        <a href="{% url 'dashboard' %}" class="btn btn-outline-primary btn-lg">
-          <i class="fa-solid fa-home me-2"></i>На главную
         </a>
       </div>
       
@@ -67,12 +60,6 @@
 </div>
 
 <style>
-@keyframes heartbeat {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
-}
-
 .hand-wave {
   animation: wave 2s ease-in-out infinite;
 }
@@ -81,6 +68,12 @@
   0%, 100% { transform: rotate(0deg); }
   25% { transform: rotate(20deg); }
   75% { transform: rotate(-10deg); }
+}
+
+.section-title {
+  text-align: center !important;
+  width: 100%;
+  display: block;
 }
 </style>
 {% endblock %}
