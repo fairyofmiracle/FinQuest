@@ -1559,13 +1559,13 @@ body::before {
 
 .profile-avatar {
   border: 4px solid rgba(99, 102, 241, 0.3);
-  transition: all 0.3s ease;
+  transition: none;
 }
 
 .profile-avatar:hover {
-  border-color: rgba(99, 102, 241, 0.6);
-  transform: scale(1.05);
-  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+  border-color: rgba(99, 102, 241, 0.3);
+  transform: none;
+  box-shadow: none;
 }
 
 .profile-avatar-placeholder {
@@ -1573,15 +1573,15 @@ body::before {
   height: 150px !important;
   font-size: 48px !important;
   font-weight: bold;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+  background: #6366f1 !important;
   border: 4px solid rgba(99, 102, 241, 0.3);
-  transition: all 0.3s ease;
+  transition: none;
 }
 
 .profile-avatar-placeholder:hover {
-  border-color: rgba(99, 102, 241, 0.6);
-  transform: scale(1.05);
-  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+  border-color: rgba(99, 102, 241, 0.3);
+  transform: none;
+  box-shadow: none;
 }
 
 .profile-name {
@@ -1648,23 +1648,7 @@ body::before {
 }
 
 .skill-bar::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  animation: shimmer 2s infinite;
-}
-
-@keyframes shimmer {
-  0% {
-    left: -100%;
-  }
-  100% {
-    left: 100%;
-  }
+  display: none;
 }
 
 .stat-item {

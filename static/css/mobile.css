@@ -1,0 +1,1578 @@
+/* ============================================
+   МОБИЛЬНАЯ ВЕРСИЯ - КОМПАКТНАЯ ВЁРСТКА
+   ============================================ */
+
+/* Основные настройки для мобильных устройств */
+body.mobile-view {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-attachment: fixed;
+  font-size: 14px; /* Уменьшен базовый размер */
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Ограничение ширины контента */
+body.mobile-view .container {
+  max-width: 100%;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0.75rem;
+  box-sizing: border-box;
+}
+
+body.mobile-view::before {
+  display: none;
+}
+
+/* Навигация для мобильных - компактная */
+body.mobile-view .navbar {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px);
+  padding: 0.5rem 0; /* Уменьшено */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+body.mobile-view .navbar .container {
+  padding: 0 0.75rem; /* Уменьшено */
+  max-width: 100%;
+}
+
+body.mobile-view .navbar-brand {
+  font-size: 1rem; /* Уменьшено */
+  font-weight: 700;
+  color: #667eea !important;
+}
+
+body.mobile-view .navbar .d-flex {
+  gap: 0.25rem; /* Уменьшено */
+  flex-wrap: wrap;
+}
+
+body.mobile-view .navbar .btn {
+  font-size: 0.75rem; /* Уменьшено */
+  padding: 0.35rem 0.5rem; /* Уменьшено */
+  min-height: 32px; /* Уменьшено */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body.mobile-view .navbar .btn-sm {
+  font-size: 0.7rem; /* Уменьшено */
+  padding: 0.25rem 0.4rem; /* Уменьшено */
+  min-height: 28px; /* Уменьшено */
+}
+
+body.mobile-view .navbar .btn i {
+  font-size: 0.875rem; /* Уменьшено */
+}
+
+/* Контейнеры - компактные */
+body.mobile-view .container {
+  max-width: 100%;
+  width: 100%;
+  padding: 0.75rem; /* Уменьшено */
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+body.mobile-view .container-fluid {
+  padding: 0.75rem; /* Уменьшено */
+  box-sizing: border-box;
+}
+
+/* Предотвращаем разъезжание элементов */
+body.mobile-view * {
+  box-sizing: border-box;
+}
+
+body.mobile-view img,
+body.mobile-view video,
+body.mobile-view iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Все карточки и контейнеры на 100% ширины */
+body.mobile-view .card,
+body.mobile-view .card-body,
+body.mobile-view .main-category-card,
+body.mobile-view .category-card,
+body.mobile-view .topic-card {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Исправляем flex элементы */
+body.mobile-view .d-flex {
+  flex-wrap: wrap;
+}
+
+body.mobile-view .d-flex.gap-2 > * {
+  margin: 0.25rem;
+}
+
+/* Section titles */
+body.mobile-view .section-title {
+  font-size: 1.125rem;
+  margin-bottom: 0.75rem;
+  padding: 0 0.5rem;
+  margin-top: 0.5rem;
+}
+
+/* На главной странице в мобильной версии показываем только категории */
+body.mobile-view .container.mt-3 {
+  margin-top: 0.5rem !important;
+  padding-top: 0.5rem !important;
+}
+
+/* Исправляем таблицы и списки */
+body.mobile-view table {
+  width: 100%;
+  font-size: 0.8rem;
+  display: block;
+  overflow-x: auto;
+}
+
+body.mobile-view .list-group {
+  width: 100%;
+}
+
+/* Main category cards - полная ширина на мобильных */
+body.mobile-view .main-category-card {
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 1rem;
+}
+
+body.mobile-view .main-category-stats {
+  width: 100%;
+  margin-top: 0.75rem;
+}
+
+body.mobile-view .main-category-progress {
+  width: 100%;
+}
+
+body.mobile-view .main-category-progress .progress {
+  width: 100%;
+}
+
+/* Container - убираем лишние отступы */
+body.mobile-view .container {
+  padding: 0.75rem;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 100%;
+}
+
+body.mobile-view .container.mt-3 {
+  margin-top: 0.75rem !important;
+}
+
+/* Card body - компактный */
+body.mobile-view .card-body {
+  padding: 0.875rem;
+}
+
+/* Убираем g-4 (gap) на мобильных */
+body.mobile-view .row.g-4 {
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+}
+
+body.mobile-view .row.g-4 > * {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Progress bars - компактные */
+body.mobile-view .progress {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Badges - компактные */
+body.mobile-view .badge {
+  font-size: 0.75rem;
+  padding: 0.375rem 0.5rem;
+  white-space: nowrap;
+}
+
+/* Align items - центрируем на мобильных */
+body.mobile-view .align-items-center {
+  align-items: center !important;
+}
+
+body.mobile-view .text-center {
+  text-align: center !important;
+}
+
+/* Flex utilities для мобильных */
+body.mobile-view .d-flex {
+  flex-wrap: wrap;
+}
+
+body.mobile-view .d-flex.gap-2 {
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+/* Исправляем overflow */
+body.mobile-view {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+body.mobile-view html {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Карточки - компактные */
+body.mobile-view .card {
+  border-radius: 12px; /* Уменьшено */
+  margin-bottom: 0.75rem; /* Уменьшено */
+  padding: 0.875rem; /* Уменьшено */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: none;
+}
+
+body.mobile-view .card-title {
+  font-size: 1rem; /* Уменьшено */
+  font-weight: 700;
+  margin-bottom: 0.5rem; /* Уменьшено */
+}
+
+body.mobile-view .card-text {
+  font-size: 0.875rem; /* Уменьшено */
+  line-height: 1.5;
+}
+
+/* Кнопки - компактные */
+body.mobile-view .btn {
+  font-size: 0.875rem; /* Уменьшено */
+  padding: 0.5rem 1rem; /* Уменьшено */
+  min-height: 36px; /* Уменьшено */
+  border-radius: 8px; /* Уменьшено */
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem; /* Уменьшено */
+}
+
+body.mobile-view .btn-lg {
+  font-size: 0.95rem; /* Уменьшено */
+  padding: 0.625rem 1.25rem; /* Уменьшено */
+  min-height: 40px; /* Уменьшено */
+}
+
+body.mobile-view .btn-sm {
+  font-size: 0.75rem; /* Уменьшено */
+  padding: 0.375rem 0.75rem; /* Уменьшено */
+  min-height: 32px; /* Уменьшено */
+}
+
+body.mobile-view .btn:active {
+  transform: scale(0.98);
+}
+
+/* Формы - компактные */
+body.mobile-view .form-control,
+body.mobile-view .form-select {
+  font-size: 14px; /* Уменьшено */
+  padding: 0.5rem 0.75rem; /* Уменьшено */
+  min-height: 36px; /* Уменьшено */
+  border-radius: 8px; /* Уменьшено */
+  border: 1px solid #e5e7eb;
+}
+
+body.mobile-view .form-control:focus,
+body.mobile-view .form-select:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+body.mobile-view .form-label {
+  font-size: 0.875rem; /* Уменьшено */
+  font-weight: 600;
+  margin-bottom: 0.375rem; /* Уменьшено */
+  color: #374151;
+}
+
+/* Заголовки - уменьшенные */
+body.mobile-view h1 {
+  font-size: 1.5rem; /* Уменьшено */
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 0.75rem; /* Уменьшено */
+}
+
+body.mobile-view h2 {
+  font-size: 1.25rem; /* Уменьшено */
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 0.5rem; /* Уменьшено */
+}
+
+body.mobile-view h3 {
+  font-size: 1.125rem; /* Уменьшено */
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+body.mobile-view h4 {
+  font-size: 1rem; /* Уменьшено */
+  font-weight: 600;
+  margin-bottom: 0.375rem; /* Уменьшено */
+}
+
+/* Текст - уменьшенный */
+body.mobile-view p {
+  font-size: 0.875rem; /* Уменьшено */
+  line-height: 1.5;
+  margin-bottom: 0.75rem; /* Уменьшено */
+}
+
+body.mobile-view .lead {
+  font-size: 0.95rem; /* Уменьшено */
+  line-height: 1.5;
+}
+
+/* Сетка - компактная для мобильных */
+body.mobile-view .row {
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+body.mobile-view .row > * {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  margin-bottom: 0.75rem;
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+/* Все колонки на мобильных занимают 100% ширины */
+body.mobile-view .col-lg-3,
+body.mobile-view .col-lg-4,
+body.mobile-view .col-lg-6,
+body.mobile-view .col-md-3,
+body.mobile-view .col-md-4,
+body.mobile-view .col-md-6,
+body.mobile-view .col-sm-6,
+body.mobile-view .col-auto,
+body.mobile-view .col {
+  flex: 0 0 100%;
+  max-width: 100%;
+  width: 100%;
+}
+
+body.mobile-view .col-12 {
+  width: 100%;
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+/* Таблицы - компактные */
+body.mobile-view .table {
+  font-size: 0.8rem; /* Уменьшено */
+  width: 100%;
+  overflow-x: auto;
+  display: block;
+}
+
+body.mobile-view .table-responsive {
+  border-radius: 8px; /* Уменьшено */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Модальные окна - компактные */
+body.mobile-view .modal-dialog {
+  margin: 0.75rem; /* Уменьшено */
+  max-width: calc(100% - 1.5rem);
+}
+
+body.mobile-view .modal-content {
+  border-radius: 12px; /* Уменьшено */
+  border: none;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+body.mobile-view .modal-header {
+  padding: 0.875rem; /* Уменьшено */
+  border-bottom: 1px solid #e5e7eb;
+}
+
+body.mobile-view .modal-body {
+  padding: 0.875rem; /* Уменьшено */
+  font-size: 0.875rem; /* Уменьшено */
+}
+
+body.mobile-view .modal-footer {
+  padding: 0.75rem 0.875rem; /* Уменьшено */
+  border-top: 1px solid #e5e7eb;
+}
+
+/* Списки - компактные */
+body.mobile-view .list-group-item {
+  padding: 0.75rem; /* Уменьшено */
+  font-size: 0.875rem; /* Уменьшено */
+  border-radius: 8px; /* Уменьшено */
+  margin-bottom: 0.375rem; /* Уменьшено */
+  min-height: 40px; /* Уменьшено */
+  display: flex;
+  align-items: center;
+}
+
+/* Аватары и изображения - уменьшенные */
+body.mobile-view img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px; /* Уменьшено */
+}
+
+body.mobile-view .avatar {
+  width: 48px; /* Уменьшено */
+  height: 48px; /* Уменьшено */
+  border-radius: 50%;
+}
+
+/* Прогресс-бары - компактные */
+body.mobile-view .progress {
+  height: 8px; /* Уменьшено */
+  border-radius: 4px; /* Уменьшено */
+  background: #e5e7eb;
+}
+
+body.mobile-view .progress-bar {
+  border-radius: 4px; /* Уменьшено */
+  font-size: 0.7rem; /* Уменьшено */
+}
+
+/* Бейджи - компактные */
+body.mobile-view .badge {
+  font-size: 0.75rem; /* Уменьшено */
+  padding: 0.375rem 0.5rem; /* Уменьшено */
+  border-radius: 6px; /* Уменьшено */
+  font-weight: 600;
+}
+
+/* Алерты - компактные */
+body.mobile-view .alert {
+  padding: 0.75rem 0.875rem; /* Уменьшено */
+  border-radius: 8px; /* Уменьшено */
+  font-size: 0.875rem; /* Уменьшено */
+  margin-bottom: 0.75rem; /* Уменьшено */
+}
+
+/* Навигационные вкладки - компактные */
+body.mobile-view .nav-tabs {
+  border-bottom: 2px solid #e5e7eb;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  flex-wrap: nowrap;
+}
+
+body.mobile-view .nav-tabs .nav-link {
+  padding: 0.5rem 0.75rem; /* Уменьшено */
+  font-size: 0.875rem; /* Уменьшено */
+  white-space: nowrap;
+  min-height: 40px; /* Уменьшено */
+  display: flex;
+  align-items: center;
+}
+
+/* Футер - скрыт в мобильной версии (как в приложении) */
+body.mobile-view .site-footer {
+  display: none !important;
+}
+
+/* Страницы авторизации - мобильная версия */
+body.mobile-view .hero {
+  padding: 1.5rem 0.75rem;
+  border-radius: 12px;
+  margin: 0.5rem 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+body.mobile-view .hero h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+body.mobile-view .hero p {
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+}
+
+body.mobile-view .form-label {
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+body.mobile-view .form-control-lg {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+}
+
+body.mobile-view .btn-lg {
+  padding: 0.875rem 1.5rem;
+  font-size: 1rem;
+}
+
+body.mobile-view .alert {
+  font-size: 0.875rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Карусель на аватаре в мобильной версии */
+body.mobile-view .avatar-carousel-on-avatar {
+  max-width: 100%;
+  gap: 0.75rem;
+  padding: 0 0.5rem;
+}
+
+body.mobile-view .avatar-carousel-btn {
+  width: 38px;
+  height: 38px;
+  font-size: 0.875rem;
+}
+
+body.mobile-view .current-avatar-container {
+  width: 100px;
+  height: 130px;
+}
+
+body.mobile-view .current-avatar {
+  width: 100px !important;
+  height: 100px !important;
+}
+
+body.mobile-view .avatar-carousel-slide .avatar-name {
+  bottom: -25px;
+  font-size: 0.7rem;
+}
+
+body.mobile-view .avatar-carousel-dots {
+  margin-top: 1.5rem;
+}
+
+/* Настройки - компактные для мобильных */
+body.mobile-view .container.mt-3 {
+  background: white !important;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 0 !important;
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+body.mobile-view .gaming-card {
+  margin-bottom: 0;
+  background: white !important;
+  border-radius: 12px;
+  box-shadow: none;
+  border: none;
+}
+
+body.mobile-view .gaming-card .card-header {
+  background: linear-gradient(135deg, #6f42c1, #8b5cf6);
+  border-radius: 12px 12px 0 0;
+  padding: 1rem;
+}
+
+body.mobile-view .gaming-card .card-body {
+  background: white;
+  padding: 1rem;
+}
+
+body.mobile-view .gaming-card .card-header h3 {
+  font-size: 1.25rem;
+}
+
+body.mobile-view .gaming-card h5 {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+body.mobile-view .current-avatar {
+  width: 100px !important;
+  height: 100px !important;
+}
+
+body.mobile-view .border-option {
+  padding: 0.5rem;
+}
+
+body.mobile-view .border-preview {
+  width: 60px !important;
+  height: 60px !important;
+}
+
+body.mobile-view .form-check {
+  padding: 0.75rem 0;
+}
+
+body.mobile-view .form-check-input {
+  width: 2rem !important;
+  height: 1rem !important;
+}
+
+body.mobile-view .form-check-label {
+  font-size: 0.875rem !important;
+}
+
+/* Hero секции - компактные */
+body.mobile-view .hero {
+  padding: 1rem 0.75rem;
+  border-radius: 12px;
+  margin: 0.75rem 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+body.mobile-view .hero h1 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  word-wrap: break-word;
+}
+
+body.mobile-view .hero p {
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+  word-wrap: break-word;
+}
+
+/* User card - скрыта на главной в мобильной версии */
+body.mobile-view .user-card {
+  display: none !important;
+}
+
+/* Профиль - компактная версия для мобильных */
+body.mobile-view .gaming-profile-card {
+  height: auto !important;
+  margin-bottom: 1rem;
+}
+
+body.mobile-view .profile-avatar,
+body.mobile-view .profile-avatar-placeholder {
+  width: 100px !important;
+  height: 100px !important;
+  margin-bottom: 0.75rem;
+}
+
+body.mobile-view .profile-name {
+  font-size: 1.125rem;
+  margin-bottom: 0.5rem;
+}
+
+body.mobile-view .profile-title {
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Статистика в одну линию под аватаром - без отдельных контейнеров */
+body.mobile-view .profile-stats {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+body.mobile-view .profile-stats .row {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 0 !important;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+body.mobile-view .profile-stats .col-4 {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+body.mobile-view .stat-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0;
+  background: none;
+  border-radius: 0;
+  min-width: auto;
+  text-align: left;
+}
+
+body.mobile-view .stat-icon {
+  font-size: 1.25rem;
+  margin: 0;
+  line-height: 1;
+  display: inline-block;
+  width: auto;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+body.mobile-view .stat-value {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1;
+  color: #1f2937;
+}
+
+body.mobile-view .stat-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1;
+  display: none; /* Скрываем лейблы в мобильной версии */
+}
+
+/* Исправляем отображение эмодзи - используем Unicode для надежности */
+body.mobile-view .stat-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+  display: inline-block;
+}
+
+/* Скрываем кнопки Настройки и Дашборд в мобильной версии */
+body.mobile-view .profile-actions {
+  display: none !important;
+}
+
+/* Навыки - компактные */
+body.mobile-view .profile-skills {
+  margin-top: 1rem;
+}
+
+body.mobile-view .skills-title {
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+body.mobile-view .skill-progress-item {
+  margin-bottom: 0.75rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+}
+
+body.mobile-view .skill-name {
+  font-size: 0.8rem;
+}
+
+body.mobile-view .skill-percent {
+  font-size: 0.75rem;
+}
+
+body.mobile-view .skill-progress-bar {
+  height: 4px !important;
+  margin-bottom: 0.25rem;
+}
+
+body.mobile-view .skill-progress-item small {
+  font-size: 0.7rem;
+}
+
+/* Достижения - адаптивные */
+/* Скрываем достижения в профиле для мобильной версии */
+body.mobile-view .mobile-achievements-hidden {
+  display: none !important;
+}
+
+body.mobile-view .gaming-achievements-card {
+  height: auto !important;
+}
+
+body.mobile-view .achievements-container {
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 0.75rem;
+}
+
+body.mobile-view .achievement-card {
+  height: 140px !important;
+}
+
+body.mobile-view .achievement-icon {
+  width: 50px !important;
+  height: 50px !important;
+  font-size: 1.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+body.mobile-view .achievement-name {
+  font-size: 0.75rem !important;
+}
+
+body.mobile-view .achievement-rarity {
+  font-size: 0.65rem !important;
+}
+
+/* Категории и темы - компактные */
+body.mobile-view .category-card,
+body.mobile-view .topic-card,
+body.mobile-view .main-category-card {
+  padding: 0.875rem;
+  margin-bottom: 0.75rem;
+  border-radius: 12px;
+  min-height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+body.mobile-view .category-card h3,
+body.mobile-view .topic-card h3,
+body.mobile-view .main-category-title {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  word-wrap: break-word;
+}
+
+body.mobile-view .main-category-icon {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+body.mobile-view .main-category-description {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
+}
+
+body.mobile-view .main-category-button {
+  width: 100%;
+  padding: 0.625rem;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+/* Уровни - компактные */
+body.mobile-view .level-card {
+  padding: 0.75rem; /* Уменьшено */
+  margin-bottom: 0.5rem; /* Уменьшено */
+  border-radius: 8px; /* Уменьшено */
+  min-height: 70px; /* Уменьшено */
+}
+
+body.mobile-view .level-card .btn {
+  width: 100%;
+  margin-top: 0.5rem; /* Уменьшено */
+}
+
+/* Статистика - компактная */
+body.mobile-view .stat-card {
+  padding: 0.75rem; /* Уменьшено */
+  text-align: center;
+  border-radius: 8px; /* Уменьшено */
+  margin-bottom: 0.75rem; /* Уменьшено */
+}
+
+body.mobile-view .stat-number {
+  font-size: 1.5rem; /* Уменьшено */
+  font-weight: 800;
+  margin-bottom: 0.375rem; /* Уменьшено */
+}
+
+body.mobile-view .stat-label {
+  font-size: 0.75rem; /* Уменьшено */
+  color: #6b7280;
+}
+
+/* Достижения - компактные */
+body.mobile-view .achievement-card {
+  padding: 0.75rem; /* Уменьшено */
+  border-radius: 8px; /* Уменьшено */
+  margin-bottom: 0.5rem; /* Уменьшено */
+  min-height: 80px; /* Уменьшено */
+}
+
+body.mobile-view .achievement-icon {
+  width: 40px; /* Уменьшено */
+  height: 40px; /* Уменьшено */
+}
+
+/* Уведомления - компактные */
+body.mobile-view .notification-item {
+  padding: 0.75rem; /* Уменьшено */
+  border-radius: 8px; /* Уменьшено */
+  margin-bottom: 0.5rem; /* Уменьшено */
+  min-height: 50px; /* Уменьшено */
+}
+
+body.mobile-view .notification-badge {
+  width: 20px; /* Уменьшено */
+  height: 20px; /* Уменьшено */
+  font-size: 0.7rem; /* Уменьшено */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Игры и викторины - компактные */
+body.mobile-view .question-card {
+  padding: 1rem 0.75rem; /* Уменьшено */
+  border-radius: 12px; /* Уменьшено */
+  margin-bottom: 0.75rem; /* Уменьшено */
+}
+
+body.mobile-view .question-title {
+  font-size: 1rem; /* Уменьшено */
+  font-weight: 700;
+  margin-bottom: 0.75rem; /* Уменьшено */
+}
+
+body.mobile-view .answer-option {
+  padding: 0.75rem; /* Уменьшено */
+  margin-bottom: 0.5rem; /* Уменьшено */
+  border-radius: 8px; /* Уменьшено */
+  min-height: 44px; /* Уменьшено */
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+body.mobile-view .answer-option:active {
+  transform: scale(0.98);
+}
+
+/* Статьи - компактные */
+body.mobile-view .article-content {
+  font-size: 0.875rem; /* Уменьшено */
+  line-height: 1.6;
+}
+
+body.mobile-view .article-content h2 {
+  font-size: 1.25rem; /* Уменьшено */
+  margin-top: 1.5rem; /* Уменьшено */
+  margin-bottom: 0.75rem; /* Уменьшено */
+}
+
+body.mobile-view .article-content h3 {
+  font-size: 1.125rem; /* Уменьшено */
+  margin-top: 1rem; /* Уменьшено */
+  margin-bottom: 0.5rem; /* Уменьшено */
+}
+
+body.mobile-view .article-content img {
+  margin: 1rem 0; /* Уменьшено */
+  border-radius: 8px; /* Уменьшено */
+}
+
+/* Утилиты - уменьшенные отступы */
+body.mobile-view .text-center {
+  text-align: center;
+}
+
+body.mobile-view .mb-3 {
+  margin-bottom: 0.75rem !important; /* Уменьшено */
+}
+
+body.mobile-view .mb-4 {
+  margin-bottom: 1rem !important; /* Уменьшено */
+}
+
+body.mobile-view .mt-3 {
+  margin-top: 0.75rem !important; /* Уменьшено */
+}
+
+body.mobile-view .mt-4 {
+  margin-top: 1rem !important; /* Уменьшено */
+}
+
+body.mobile-view .p-3 {
+  padding: 0.75rem !important; /* Уменьшено */
+}
+
+body.mobile-view .p-4 {
+  padding: 1rem !important; /* Уменьшено */
+}
+
+/* Анимации для мобильных (оптимизированные) */
+body.mobile-view * {
+  -webkit-tap-highlight-color: rgba(102, 126, 234, 0.2);
+}
+
+body.mobile-view .btn,
+body.mobile-view .card,
+body.mobile-view .answer-option {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Плавная прокрутка */
+body.mobile-view {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Оптимизация производительности */
+body.mobile-view * {
+  will-change: auto;
+}
+
+body.mobile-view .card:hover {
+  transform: none; /* Отключаем hover эффекты на мобильных */
+}
+
+/* Адаптация для очень маленьких экранов */
+@media (max-width: 360px) {
+  body.mobile-view .container {
+    padding: 0.5rem;
+  }
+  
+  body.mobile-view .btn {
+    font-size: 0.8rem;
+    padding: 0.45rem 0.875rem;
+  }
+  
+  body.mobile-view h1 {
+    font-size: 1.25rem;
+  }
+  
+  body.mobile-view h2 {
+    font-size: 1.125rem;
+  }
+}
+
+/* Ландшафтная ориентация */
+@media (max-width: 900px) and (orientation: landscape) {
+  body.mobile-view .navbar {
+    padding: 0.375rem 0;
+  }
+  
+  body.mobile-view .hero {
+    padding: 1rem 0.75rem;
+  }
+}
+
+/* ============================================
+   МОБИЛЬНОЕ БОКОВОЕ МЕНЮ (как в Telegram)
+   ============================================ */
+
+/* Кнопка гамбургера */
+body.mobile-view .mobile-menu-toggle {
+  background: transparent !important;
+  border: none !important;
+  color: #667eea !important;
+  font-size: 1.25rem;
+  padding: 0.5rem;
+  min-width: 40px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body.mobile-view .mobile-menu-toggle:active {
+  opacity: 0.7;
+}
+
+/* Оверлей (затемнение фона) */
+body.mobile-view .mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1040;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+body.mobile-view .mobile-menu-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Боковое меню */
+body.mobile-view .mobile-menu {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 280px;
+  max-width: 85%;
+  height: 100%;
+  background: #ffffff;
+  z-index: 1050;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+  transition: right 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+body.mobile-view .mobile-menu.active {
+  right: 0;
+}
+
+/* Заголовок меню */
+body.mobile-view .mobile-menu-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+}
+
+body.mobile-view .mobile-menu-user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+body.mobile-view .mobile-menu-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  object-fit: cover;
+  display: block;
+  flex-shrink: 0;
+}
+
+body.mobile-view .mobile-menu-avatar-placeholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+}
+
+body.mobile-view .mobile-menu-user-info {
+  flex: 1;
+  min-width: 0;
+}
+
+body.mobile-view .mobile-menu-username {
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+body.mobile-view .mobile-menu-user-level {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-top: 0.25rem;
+}
+
+body.mobile-view .mobile-menu-close {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.25rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s ease;
+}
+
+body.mobile-view .mobile-menu-close:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Тело меню */
+body.mobile-view .mobile-menu-body {
+  flex: 1;
+  padding: 0.5rem 0;
+  overflow-y: auto;
+}
+
+body.mobile-view .mobile-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  color: #1f2937;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: background 0.2s ease;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+body.mobile-view .mobile-menu-item:hover,
+body.mobile-view .mobile-menu-item:active {
+  background: #f3f4f6;
+  color: #667eea;
+}
+
+body.mobile-view .mobile-menu-item i {
+  width: 24px;
+  font-size: 1.125rem;
+  color: #667eea;
+  text-align: center;
+}
+
+body.mobile-view .mobile-menu-item span {
+  flex: 1;
+}
+
+body.mobile-view .mobile-menu-badge {
+  background: #ef4444;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  min-width: 20px;
+  text-align: center;
+}
+
+body.mobile-view .mobile-menu-logout {
+  color: #dc2626;
+}
+
+body.mobile-view .mobile-menu-logout i {
+  color: #dc2626;
+}
+
+body.mobile-view .mobile-menu-logout:hover,
+body.mobile-view .mobile-menu-logout:active {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+/* Переключатель темы в мобильном меню */
+body.mobile-view .mobile-menu-theme-toggle {
+  cursor: pointer;
+  user-select: none;
+}
+
+body.mobile-view .mobile-theme-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+body.mobile-view .mobile-theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+body.mobile-view .mobile-theme-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.3s;
+  border-radius: 28px;
+}
+
+body.mobile-view .mobile-theme-slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+body.mobile-view .mobile-theme-switch input:checked + .mobile-theme-slider {
+  background-color: #667eea;
+}
+
+body.mobile-view .mobile-theme-switch input:checked + .mobile-theme-slider:before {
+  transform: translateX(22px);
+}
+
+body.mobile-view .mobile-theme-switch input:focus + .mobile-theme-slider {
+  box-shadow: 0 0 1px #667eea;
+}
+
+body.mobile-view .mobile-theme-switch input:active + .mobile-theme-slider:before {
+  transform: translateX(5px);
+}
+
+body.mobile-view .mobile-menu-theme-toggle:hover {
+  background: #f3f4f6;
+}
+
+body.mobile-view .mobile-menu-theme-toggle:active {
+  background: #e5e7eb;
+}
+
+body.mobile-view .mobile-menu-divider {
+  height: 1px;
+  background: #e5e7eb;
+  margin: 0.5rem 0;
+}
+
+/* Страница достижений для мобильной версии */
+body.mobile-view .gaming-achievements-card {
+  margin-bottom: 1rem;
+}
+
+body.mobile-view .achievements-container {
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 0.75rem;
+}
+
+body.mobile-view .achievement-card {
+  height: 140px !important;
+}
+
+body.mobile-view .achievement-icon {
+  width: 50px !important;
+  height: 50px !important;
+  font-size: 1.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+body.mobile-view .achievement-name {
+  font-size: 0.75rem !important;
+}
+
+body.mobile-view .achievement-rarity {
+  font-size: 0.65rem !important;
+}
+
+body.mobile-view .achievement-date {
+  font-size: 0.7rem !important;
+}
+
+/* Скрываем обычные кнопки навигации в мобильной версии */
+body.mobile-view .navbar .d-flex:not(.mobile-menu-toggle) {
+  display: none !important;
+}
+
+/* Хэдер в мобильной версии - прямоугольник без овальчика */
+body.mobile-view .gaming-navbar {
+  border-radius: 0 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+body.mobile-view .gaming-navbar .container {
+  border-radius: 0 !important;
+  padding: 0.75rem 1rem;
+}
+
+body.mobile-view .gaming-navbar .navbar-brand {
+  font-size: 1.25rem;
+}
+
+body.mobile-view .mobile-menu-toggle {
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+}
+
+/* Карусель рамок в мобильной версии */
+body.mobile-view .border-carousel-container {
+  max-width: 100%;
+  padding: 0 0.5rem;
+}
+
+body.mobile-view .border-carousel-btn {
+  width: 35px;
+  height: 35px;
+  font-size: 0.875rem;
+}
+
+body.mobile-view .border-preview {
+  width: 80px !important;
+  height: 80px !important;
+}
+
+/* Темная тема для мобильной версии */
+body.mobile-view.dark-theme {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%) !important;
+  color: #f1f5f9;
+}
+
+body.mobile-view.dark-theme .navbar {
+  background: linear-gradient(135deg, rgba(15, 15, 35, 0.98) 0%, rgba(26, 26, 62, 0.98) 50%, rgba(45, 27, 105, 0.98) 100%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.mobile-view.dark-theme .navbar-brand {
+  color: #ffffff !important;
+}
+
+body.mobile-view.dark-theme .container {
+  background: rgba(30, 41, 59, 0.3);
+  color: #f1f5f9;
+}
+
+body.mobile-view.dark-theme .card,
+body.mobile-view.dark-theme .gaming-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.92) 100%) !important;
+  border: 1px solid #475569;
+  color: #f1f5f9;
+}
+
+body.mobile-view.dark-theme .card-body {
+  background: transparent;
+  color: #f1f5f9;
+}
+
+body.mobile-view.dark-theme .card-header {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, rgba(139, 92, 246, 0.3) 100%) !important;
+  color: #ffffff;
+  border-bottom: 1px solid #475569;
+}
+
+body.mobile-view.dark-theme .text-muted {
+  color: #9ca3af !important;
+}
+
+body.mobile-view.dark-theme .form-control {
+  background-color: #1f2937;
+  border-color: #475569;
+  color: #f1f5f9;
+}
+
+body.mobile-view.dark-theme .form-control:focus {
+  background-color: #1f2937;
+  border-color: #667eea;
+  color: #f1f5f9;
+}
+
+body.mobile-view.dark-theme .btn-primary {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border: none;
+  color: white;
+}
+
+body.mobile-view.dark-theme .btn-outline-secondary {
+  color: #f1f5f9;
+  border-color: #475569;
+}
+
+body.mobile-view.dark-theme .btn-outline-secondary:hover {
+  background-color: #1f2937;
+  border-color: #475569;
+  color: #f1f5f9;
+}
+
+body.mobile-view.dark-theme .mobile-menu {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.95) 100%);
+  border-right: 1px solid #475569;
+}
+
+body.mobile-view.dark-theme .mobile-menu-header {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+  border-bottom: 1px solid #475569;
+}
+
+body.mobile-view.dark-theme .mobile-menu-item {
+  color: #f1f5f9;
+}
+
+body.mobile-view.dark-theme .mobile-menu-item:hover,
+body.mobile-view.dark-theme .mobile-menu-item:active {
+  background: rgba(99, 102, 241, 0.2);
+  color: #a5b4fc;
+}
+
+body.mobile-view.dark-theme .mobile-menu-item i {
+  color: #a5b4fc;
+}
+
+body.mobile-view.dark-theme .mobile-menu-divider {
+  background: #475569;
+}
+
+
+body.mobile-view.dark-theme .mobile-menu-theme-toggle:hover {
+  background: rgba(99, 102, 241, 0.2);
+}
+
+body.mobile-view.dark-theme .mobile-menu-theme-toggle:active {
+  background: rgba(99, 102, 241, 0.3);
+}
+
+body.mobile-view.dark-theme h1,
+body.mobile-view.dark-theme h2,
+body.mobile-view.dark-theme h3,
+body.mobile-view.dark-theme h4,
+body.mobile-view.dark-theme h5,
+body.mobile-view.dark-theme h6 {
+  color: #f1f5f9;
+}
+
+body.mobile-view.dark-theme .hero {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.92) 100%);
+  border: 1px solid #475569;
+  color: #f1f5f9;
+}
+
+body.mobile-view.dark-theme .gaming-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.92) 100%) !important;
+  border: 1px solid #475569;
+  color: #f1f5f9;
+}
+
+body.mobile-view.dark-theme .container.mt-3 {
+  background: rgba(30, 41, 59, 0.3) !important;
+  color: #f1f5f9;
+}
+
+/* Скрываем кнопки сброса прогресса и повтора обучения в мобильной версии */
+body.mobile-view .mt-5.text-center {
+  display: none !important;
+}

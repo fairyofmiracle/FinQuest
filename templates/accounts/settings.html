@@ -11,7 +11,6 @@
             <i class="fa-solid fa-cog me-2"></i>Настройки профиля
           </h3>
 </div>
-
         <div class="card-body">
 <form method="post" enctype="multipart/form-data">
   {% csrf_token %}
@@ -22,45 +21,59 @@
                 <i class="fa-solid fa-user-circle me-2"></i>Выберите аватарку
               </h5>
               
-              <!-- Текущий аватар -->
+              <!-- Текущий аватар с каруселью -->
               <div class="text-center mb-4">
+                <div class="avatar-carousel-on-avatar" onmouseenter="showCarouselControls()" onmouseleave="hideCarouselControls()">
+                  <button class="avatar-carousel-btn avatar-carousel-prev" type="button" onclick="moveAvatarCarousel(-1)" id="carouselPrevBtn">
+                    <i class="fa-solid fa-chevron-left"></i>
+                  </button>
                 <div class="current-avatar-container">
-                  {% if user.get_avatar_display %}
-                    <img src="{{ user.get_avatar_display }}" class="current-avatar {{ user.get_avatar_border_class }}" alt="Текущий аватар">
-                  {% else %}
-                    <div class="current-avatar default-avatar {{ user.get_avatar_border_class }}">
-                      <i class="fa-solid fa-user"></i>
+                    <div class="avatar-carousel-track" id="avatarCarouselTrack">
+                      {% if user.avatar %}
+                      <!-- Загруженное фото пользователя -->
+                      <div class="avatar-carousel-slide">
+                        <div class="avatar-option" data-avatar="uploaded" data-avatar-url="{{ user.avatar.url }}">
+                          <img src="{{ user.avatar.url }}" class="current-avatar {{ user.get_avatar_border_class }}" alt="Мой аватар">
+                          <p class="text-center mt-2 small avatar-name">Мой аватар</p>
+                        </div>
                     </div>
                   {% endif %}
-    </div>
-                <p class="text-muted mt-2">Текущий аватар</p>
-              </div>
-
-              <!-- Выбор из готовых аватарок -->
-              <div class="row g-3 mb-4">
-                <div class="col-3">
-                  <div class="avatar-option" data-avatar="default1">
-                    <img src="{% static 'avatars/default/default1.svg' %}" class="avatar-preview" alt="Мечтатель">
-                    <p class="text-center mt-2 small">Мечтатель</p>
+                      <div class="avatar-carousel-slide">
+                        <div class="avatar-option {% if not user.avatar %}active{% endif %}" data-avatar="default1">
+                          <img src="{% static 'avatars/default/default1.svg' %}" class="current-avatar {{ user.get_avatar_border_class }}" alt="Мечтатель">
+                          <p class="text-center mt-2 small avatar-name">Мечтатель</p>
                   </div>
                 </div>
-                <div class="col-3">
+                      <div class="avatar-carousel-slide">
                   <div class="avatar-option" data-avatar="default2">
-                    <img src="{% static 'avatars/default/default2.svg' %}" class="avatar-preview" alt="Новатор">
-                    <p class="text-center mt-2 small">Новатор</p>
+                          <img src="{% static 'avatars/default/default2.svg' %}" class="current-avatar {{ user.get_avatar_border_class }}" alt="Новатор">
+                          <p class="text-center mt-2 small avatar-name">Новатор</p>
                   </div>
                 </div>
-                <div class="col-3">
+                      <div class="avatar-carousel-slide">
                   <div class="avatar-option" data-avatar="default3">
-                    <img src="{% static 'avatars/default/default3.svg' %}" class="avatar-preview" alt="Аналитик">
-                    <p class="text-center mt-2 small">Аналитик</p>
+                          <img src="{% static 'avatars/default/default3.svg' %}" class="current-avatar {{ user.get_avatar_border_class }}" alt="Аналитик">
+                          <p class="text-center mt-2 small avatar-name">Аналитик</p>
                   </div>
                 </div>
-                <div class="col-3">
+                      <div class="avatar-carousel-slide">
                   <div class="avatar-option" data-avatar="default4">
-                    <img src="{% static 'avatars/default/default4.svg' %}" class="avatar-preview" alt="Победитель">
-                    <p class="text-center mt-2 small">Победитель</p>
+                          <img src="{% static 'avatars/default/default4.svg' %}" class="current-avatar {{ user.get_avatar_border_class }}" alt="Победитель">
+                          <p class="text-center mt-2 small avatar-name">Победитель</p>
+                        </div>
                   </div>
+                    </div>
+                  </div>
+                  <button class="avatar-carousel-btn avatar-carousel-next" type="button" onclick="moveAvatarCarousel(1)" id="carouselNextBtn">
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </button>
+                </div>
+                <div class="avatar-carousel-dots mt-3" id="carouselDots">
+                  {% if user.avatar %}<span class="carousel-dot" data-slide="0"></span>{% endif %}
+                  <span class="carousel-dot {% if not user.avatar %}active{% endif %}" data-slide="{% if user.avatar %}1{% else %}0{% endif %}"></span>
+                  <span class="carousel-dot" data-slide="{% if user.avatar %}2{% else %}1{% endif %}"></span>
+                  <span class="carousel-dot" data-slide="{% if user.avatar %}3{% else %}2{% endif %}"></span>
+                  <span class="carousel-dot" data-slide="{% if user.avatar %}4{% else %}3{% endif %}"></span>
                 </div>
               </div>
 
@@ -76,105 +89,115 @@
               <input type="hidden" name="selected_avatar" id="selected-avatar" value="">
             </div>
 
-            <!-- Выбор рамки аватара -->
+            <!-- Выбор рамки аватара - Карусель -->
             <div class="mb-4">
               <h5 class="mb-3">
                 <i class="fa-solid fa-palette me-2"></i>Рамка аватара
               </h5>
-              <div class="row g-3">
+              <div class="border-carousel-container">
+                <div class="border-carousel-wrapper">
+                  <button class="border-carousel-btn border-carousel-prev" type="button" onclick="moveBorderCarousel(-1)">
+                    <i class="fa-solid fa-chevron-left"></i>
+                  </button>
+                  <div class="border-carousel">
+                    <div class="border-carousel-track" id="borderCarouselTrack">
                 {% for border_id, border_name, border_color in user.get_available_borders %}
-                  <div class="col-md-4">
-                    <div class="border-option {% if user.avatar_border == border_id %}selected{% endif %}" data-border="{{ border_id }}">
-                      <div class="border-preview avatar-border-{{ border_id }}" style="width: 80px; height: 80px; margin: 0 auto;">
-                        <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #6f42c1, #8b5cf6); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px;">
+                      <div class="border-carousel-slide">
+                        <div class="border-option {% if user.avatar_border == border_id %}active{% endif %}" data-border="{{ border_id }}">
+                          <div class="border-preview avatar-border-{{ border_id }}" style="width: 100px; height: 100px; margin: 0 auto;">
+                            <div style="width: 100%; height: 100%; background: #6f42c1; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
                           <i class="fa-solid fa-user"></i>
                         </div>
                       </div>
-                      <p class="text-center mt-2 small">{{ border_name }}</p>
-                      <p class="text-center text-muted" style="font-size: 0.8em;">{{ border_color }}</p>
+                          <p class="text-center mt-2 small border-name">{{ border_name }}</p>
+                          <p class="text-center text-muted" style="font-size: 0.75em;">{{ border_color }}</p>
                     </div>
                   </div>
                 {% endfor %}
-                
-                <!-- Заблокированные рамки -->
                 {% if user.points < 50 %}
-                  <div class="col-md-4">
+                      <div class="border-carousel-slide">
                     <div class="border-option locked">
-                      <div class="border-preview locked" style="width: 80px; height: 80px; margin: 0 auto; opacity: 0.3;">
-                        <div style="width: 100%; height: 100%; background: #ccc; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px;">
+                          <div class="border-preview locked" style="width: 100px; height: 100px; margin: 0 auto; opacity: 0.3;">
+                            <div style="width: 100%; height: 100%; background: #ccc; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
                           <i class="fa-solid fa-lock"></i>
                         </div>
                       </div>
-                      <p class="text-center mt-2 small text-muted">Ученик</p>
-                      <p class="text-center text-muted" style="font-size: 0.8em;">Достигните 50 очков</p>
+                          <p class="text-center mt-2 small text-muted border-name">Ученик</p>
+                          <p class="text-center text-muted" style="font-size: 0.75em;">Достигните 50 очков</p>
                     </div>
                   </div>
                 {% endif %}
                 {% if user.points < 150 %}
-                  <div class="col-md-4">
+                      <div class="border-carousel-slide">
                     <div class="border-option locked">
-                      <div class="border-preview locked" style="width: 80px; height: 80px; margin: 0 auto; opacity: 0.3;">
-                        <div style="width: 100%; height: 100%; background: #ccc; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px;">
+                          <div class="border-preview locked" style="width: 100px; height: 100px; margin: 0 auto; opacity: 0.3;">
+                            <div style="width: 100%; height: 100%; background: #ccc; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
                           <i class="fa-solid fa-lock"></i>
                         </div>
                       </div>
-                      <p class="text-center mt-2 small text-muted">Защитник</p>
-                      <p class="text-center text-muted" style="font-size: 0.8em;">Достигните 150 очков</p>
+                          <p class="text-center mt-2 small text-muted border-name">Защитник</p>
+                          <p class="text-center text-muted" style="font-size: 0.75em;">Достигните 150 очков</p>
                     </div>
                   </div>
                 {% endif %}
                 {% if user.points < 300 %}
-                  <div class="col-md-4">
+                      <div class="border-carousel-slide">
                     <div class="border-option locked">
-                      <div class="border-preview locked" style="width: 80px; height: 80px; margin: 0 auto; opacity: 0.3;">
-                        <div style="width: 100%; height: 100%; background: #ccc; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px;">
+                          <div class="border-preview locked" style="width: 100px; height: 100px; margin: 0 auto; opacity: 0.3;">
+                            <div style="width: 100%; height: 100%; background: #ccc; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
                           <i class="fa-solid fa-lock"></i>
                         </div>
                       </div>
-                      <p class="text-center mt-2 small text-muted">Эксперт</p>
-                      <p class="text-center text-muted" style="font-size: 0.8em;">Достигните 300 очков</p>
+                          <p class="text-center mt-2 small text-muted border-name">Эксперт</p>
+                          <p class="text-center text-muted" style="font-size: 0.75em;">Достигните 300 очков</p>
                     </div>
                   </div>
                 {% endif %}
                 {% if user.points < 500 %}
-                  <div class="col-md-4">
+                      <div class="border-carousel-slide">
                     <div class="border-option locked">
-                      <div class="border-preview locked" style="width: 80px; height: 80px; margin: 0 auto; opacity: 0.3;">
-                        <div style="width: 100%; height: 100%; background: #ccc; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px;">
+                          <div class="border-preview locked" style="width: 100px; height: 100px; margin: 0 auto; opacity: 0.3;">
+                            <div style="width: 100%; height: 100%; background: #ccc; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
                           <i class="fa-solid fa-lock"></i>
                         </div>
                       </div>
-                      <p class="text-center mt-2 small text-muted">Мастер</p>
-                      <p class="text-center text-muted" style="font-size: 0.8em;">Достигните 500 очков</p>
+                          <p class="text-center mt-2 small text-muted border-name">Мастер</p>
+                          <p class="text-center text-muted" style="font-size: 0.75em;">Достигните 500 очков</p>
                     </div>
                   </div>
                 {% endif %}
                 {% if user.points < 1000 %}
-                  <div class="col-md-4">
+                      <div class="border-carousel-slide">
                     <div class="border-option locked">
-                      <div class="border-preview locked" style="width: 80px; height: 80px; margin: 0 auto; opacity: 0.3;">
-                        <div style="width: 100%; height: 100%; background: #ccc; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px;">
+                          <div class="border-preview locked" style="width: 100px; height: 100px; margin: 0 auto; opacity: 0.3;">
+                            <div style="width: 100%; height: 100%; background: #ccc; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
                           <i class="fa-solid fa-lock"></i>
                         </div>
                       </div>
-                      <p class="text-center mt-2 small text-muted">Гуру</p>
-                      <p class="text-center text-muted" style="font-size: 0.8em;">Достигните 1000 очков</p>
+                          <p class="text-center mt-2 small text-muted border-name">Гуру</p>
+                          <p class="text-center text-muted" style="font-size: 0.75em;">Достигните 1000 очков</p>
                     </div>
                   </div>
                 {% endif %}
                 {% if user.points < 2000 %}
-                  <div class="col-md-4">
+                      <div class="border-carousel-slide">
                     <div class="border-option locked">
-                      <div class="border-preview locked" style="width: 80px; height: 80px; margin: 0 auto; opacity: 0.3;">
-                        <div style="width: 100%; height: 100%; background: #ccc; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px;">
+                          <div class="border-preview locked" style="width: 100px; height: 100px; margin: 0 auto; opacity: 0.3;">
+                            <div style="width: 100%; height: 100%; background: #ccc; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
                           <i class="fa-solid fa-lock"></i>
                         </div>
                       </div>
-                      <p class="text-center mt-2 small text-muted">Легенда</p>
-                      <p class="text-center text-muted" style="font-size: 0.8em;">Достигните 2000 очков</p>
+                          <p class="text-center mt-2 small text-muted border-name">Легенда</p>
+                          <p class="text-center text-muted" style="font-size: 0.75em;">Достигните 2000 очков</p>
                     </div>
                   </div>
                 {% endif %}
+                    </div>
+                  </div>
+                  <button class="border-carousel-btn border-carousel-next" type="button" onclick="moveBorderCarousel(1)">
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </button>
+                </div>
               </div>
               <input type="hidden" name="selected_border" id="selected-border" value="{{ user.avatar_border }}">
             </div>
@@ -196,12 +219,12 @@
 
   <!-- Кнопки -->
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-              <a href="{% url 'profile' %}" class="btn btn-outline-secondary me-md-2">
-                <i class="fa-solid fa-times me-2"></i>Отмена
-              </a>
               <button type="submit" class="btn btn-primary">
                 <i class="fa-solid fa-save me-2"></i>Сохранить изменения
               </button>
+              <a href="{% url 'profile' %}" class="btn btn-outline-secondary me-md-2">
+                <i class="fa-solid fa-times me-2"></i>Отмена
+              </a>
             </div>
           </form>
     </div>
@@ -227,8 +250,8 @@
   height: 120px !important;
   border-radius: 20px !important;
   border: 6px solid #6f42c1 !important;
-  box-shadow: 0 4px 15px rgba(111, 66, 193, 0.3) !important;
-  transition: all 0.3s ease;
+  box-shadow: none !important;
+  transition: none;
   object-fit: cover !important;
   display: block !important;
 }
@@ -236,41 +259,41 @@
 /* Принудительное применение стилей рамок */
 .current-avatar.avatar-border-novice {
   border: 6px solid #6b7280 !important;
-  box-shadow: 0 0 15px rgba(107, 114, 128, 0.6) !important;
+  box-shadow: none !important;
 }
 
 .current-avatar.avatar-border-beginner {
   border: 6px solid #10b981 !important;
-  box-shadow: 0 0 15px rgba(16, 185, 129, 0.6) !important;
+  box-shadow: none !important;
 }
 
 .current-avatar.avatar-border-intermediate {
   border: 6px solid #3b82f6 !important;
-  box-shadow: 0 0 15px rgba(59, 130, 246, 0.6) !important;
+  box-shadow: none !important;
 }
 
 .current-avatar.avatar-border-advanced {
   border: 6px solid #8b5cf6 !important;
-  box-shadow: 0 0 15px rgba(139, 92, 246, 0.6) !important;
+  box-shadow: none !important;
 }
 
 .current-avatar.avatar-border-expert {
   border: 6px solid #f59e0b !important;
-  box-shadow: 0 0 15px rgba(245, 158, 11, 0.6) !important;
+  box-shadow: none !important;
 }
 
 .current-avatar.avatar-border-master {
   border: 6px solid #ef4444 !important;
-  box-shadow: 0 0 15px rgba(239, 68, 68, 0.6) !important;
+  box-shadow: none !important;
 }
 
 .current-avatar.avatar-border-legend {
   border: 6px solid #fbbf24 !important;
-  box-shadow: 0 0 20px rgba(251, 191, 36, 0.8) !important;
+  box-shadow: none !important;
 }
 
 .default-avatar {
-  background: linear-gradient(135deg, #6f42c1, #8b5cf6);
+  background: #6f42c1;
   color: white;
   display: flex;
   align-items: center;
@@ -280,7 +303,7 @@
 
 .avatar-option {
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: none;
   padding: 10px;
   border-radius: 15px;
   border: 2px solid transparent;
@@ -289,7 +312,7 @@
 .avatar-option:hover {
   background: rgba(111, 66, 193, 0.1);
   border-color: rgba(111, 66, 193, 0.3);
-  transform: translateY(-2px);
+  transform: none;
 }
 
 .avatar-option.selected {
@@ -304,7 +327,7 @@
   border-radius: 16px;
   margin: 0 auto;
   display: block;
-  transition: all 0.3s ease;
+  transition: none;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   object-fit: cover;
 }
@@ -326,12 +349,220 @@
 }
 
 .avatar-option:hover .avatar-preview {
-  transform: scale(1.1);
+  transform: none;
+}
+
+/* Карусель на текущем аватаре */
+.avatar-carousel-on-avatar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.current-avatar-container {
+  position: relative;
+  width: 120px;
+  height: 150px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-carousel-track {
+  display: flex;
+  transition: none;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.avatar-carousel-slide {
+  min-width: 100%;
+  width: 100%;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  padding-top: 0;
+}
+
+.avatar-carousel-slide .avatar-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  padding: 0;
+  border: none;
+  background: none;
+  width: 100%;
+}
+
+.avatar-carousel-slide .avatar-option.active .current-avatar {
+  transform: none;
+  box-shadow: none !important;
+}
+
+.avatar-carousel-slide .avatar-name {
+  margin-top: 0.75rem;
+  white-space: nowrap;
+  font-size: 0.75rem;
+  color: #6b7280;
+  text-align: center;
+}
+
+.avatar-carousel-btn {
+  background: linear-gradient(135deg, #6f42c1, #8b5cf6);
+  border: none;
+  color: white;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: none;
+  flex-shrink: 0;
+  box-shadow: 0 2px 10px rgba(111, 66, 193, 0.3);
+  z-index: 10;
+  position: relative;
+  opacity: 1;
+  pointer-events: all;
+}
+
+.avatar-carousel-dots {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.avatar-carousel-on-avatar:hover ~ .avatar-carousel-dots,
+.avatar-carousel-on-avatar:active ~ .avatar-carousel-dots,
+.avatar-carousel-dots:hover {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Карусель для рамок */
+.border-carousel-container {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.border-carousel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.border-carousel {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.border-carousel-track {
+  display: flex;
+  transition: none;
+  width: 100%;
+}
+
+.border-carousel-slide {
+  min-width: 100%;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+.border-carousel-btn {
+  background: linear-gradient(135deg, #6f42c1, #8b5cf6);
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: none;
+  flex-shrink: 0;
+  box-shadow: 0 2px 10px rgba(111, 66, 193, 0.3);
+  z-index: 10;
+  position: relative;
+}
+
+.border-carousel-btn:hover {
+  background: linear-gradient(135deg, #5a2d91, #7c3aed);
+  transform: none;
+  box-shadow: 0 2px 10px rgba(111, 66, 193, 0.3);
+}
+
+.avatar-carousel-btn:hover {
+  background: linear-gradient(135deg, #5a2d91, #7c3aed);
+  transform: none;
+  box-shadow: 0 2px 10px rgba(111, 66, 193, 0.3);
+}
+
+.avatar-carousel-btn:active {
+  transform: none;
+}
+
+.avatar-carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(111, 66, 193, 0.3);
+  cursor: pointer;
+  transition: none;
+}
+
+.carousel-dot.active {
+  background: #6f42c1;
+  transform: none;
+}
+
+/* Мобильная версия карусели */
+@media (max-width: 768px) {
+  .avatar-carousel-container {
+    max-width: 100%;
+  }
+  
+  .avatar-carousel-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 0.875rem;
+  }
+  
+  .avatar-preview {
+    width: 100px;
+    height: 100px;
+  }
 }
 
 .border-option {
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: none;
   padding: 10px;
   border-radius: 15px;
   border: 2px solid transparent;
@@ -340,7 +571,7 @@
 .border-option:hover {
   background: rgba(111, 66, 193, 0.1);
   border-color: rgba(111, 66, 193, 0.3);
-  transform: translateY(-2px);
+  transform: none;
 }
 
 .border-option.selected {
@@ -408,114 +639,286 @@
 </style>
 
 <script>
+let currentAvatarSlide = 0;
+let hasUploadedAvatar = {% if user.avatar %}true{% else %}false{% endif %};
+let totalAvatarSlides = hasUploadedAvatar ? 5 : 4;
+
+// Определяем текущий аватар пользователя
 document.addEventListener('DOMContentLoaded', function() {
-  const avatarOptions = document.querySelectorAll('.avatar-option');
+  {% if user.avatar %}
+    // Если есть загруженное фото, оно на позиции 0
+    currentAvatarSlide = 0;
+  {% else %}
+    // Иначе определяем по default_avatar
+    const currentAvatar = '{{ user.default_avatar|default:"default1" }}';
+    const avatarMap = {
+      'default1': 0,
+      'default2': 1,
+      'default3': 2,
+      'default4': 3
+    };
+    
+    if (avatarMap[currentAvatar] !== undefined) {
+      currentAvatarSlide = avatarMap[currentAvatar];
+    }
+  {% endif %}
+  
+  goToAvatarSlide(currentAvatarSlide);
+  
+  // Скрываем контролы по умолчанию
+  hideCarouselControls();
+});
+
+function moveAvatarCarousel(direction) {
+  showCarouselControls(); // Показываем контролы при листании
+  currentAvatarSlide += direction;
+  
+  if (currentAvatarSlide < 0) {
+    currentAvatarSlide = totalAvatarSlides - 1;
+  } else if (currentAvatarSlide >= totalAvatarSlides) {
+    currentAvatarSlide = 0;
+  }
+  
+  goToAvatarSlide(currentAvatarSlide);
+}
+
+function showCarouselControls() {
+  const prevBtn = document.getElementById('carouselPrevBtn');
+  const nextBtn = document.getElementById('carouselNextBtn');
+  const dots = document.getElementById('carouselDots');
+  
+  if (prevBtn) prevBtn.style.opacity = '1';
+  if (nextBtn) nextBtn.style.opacity = '1';
+  if (dots) dots.style.opacity = '1';
+}
+
+function hideCarouselControls() {
+  const prevBtn = document.getElementById('carouselPrevBtn');
+  const nextBtn = document.getElementById('carouselNextBtn');
+  const dots = document.getElementById('carouselDots');
+  
+  if (prevBtn) prevBtn.style.opacity = '0';
+  if (nextBtn) nextBtn.style.opacity = '0';
+  if (dots) dots.style.opacity = '0';
+}
+
+function goToAvatarSlide(index) {
+  showCarouselControls(); // Показываем контролы при переключении
+  currentAvatarSlide = index;
+  const track = document.getElementById('avatarCarouselTrack');
+  const offset = -currentAvatarSlide * 100;
+  track.style.transition = 'none';
+  track.style.transform = `translateX(${offset}%)`;
+  
+  // Обновляем активный аватар
+  const avatarOptions = document.querySelectorAll('.avatar-carousel-slide .avatar-option');
+  avatarOptions.forEach((option, i) => {
+    if (i === currentAvatarSlide) {
+      option.classList.add('active');
+      const avatarType = option.dataset.avatar;
+      if (avatarType === 'uploaded') {
+        // Для загруженного фото не устанавливаем selected_avatar
+        document.getElementById('selected-avatar').value = '';
+      } else {
+        document.getElementById('selected-avatar').value = avatarType;
+      }
+    } else {
+      option.classList.remove('active');
+    }
+  });
+  
+  // Обновляем точки
+  updateAvatarDots();
+}
+
+function updateAvatarDots() {
+  const dots = document.querySelectorAll('.avatar-carousel-dots .carousel-dot');
+  dots.forEach((dot, index) => {
+    if (index === currentAvatarSlide) {
+      dot.classList.add('active');
+    } else {
+      dot.classList.remove('active');
+    }
+  });
+}
+
+// Поддержка свайпов для мобильных
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.addEventListener('DOMContentLoaded', function() {
+  const carousel = document.querySelector('.avatar-carousel-on-avatar');
+  
+  if (carousel) {
+    carousel.addEventListener('touchstart', function(e) {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+    
+    carousel.addEventListener('touchend', function(e) {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    });
+  }
+  
+  function handleSwipe() {
+    if (touchEndX < touchStartX - 50) {
+      moveAvatarCarousel(1); // Свайп влево - следующий слайд
+      showCarouselControls(); // Показываем контролы при свайпе
+    }
+    if (touchEndX > touchStartX + 50) {
+      moveAvatarCarousel(-1); // Свайп вправо - предыдущий слайд
+      showCarouselControls(); // Показываем контролы при свайпе
+    }
+  }
+  
+  const avatarOptions = document.querySelectorAll('.avatar-carousel-slide .avatar-option');
   const selectedAvatarInput = document.getElementById('selected-avatar');
-  const currentAvatarContainer = document.querySelector('.current-avatar-container');
   const avatarUpload = document.getElementById('avatar-upload');
   
-  // Инициализируем рамку при загрузке страницы
-  const currentBorder = document.getElementById('selected-border').value;
-  if (currentBorder) {
-    updateCurrentAvatarBorder(currentBorder);
-  }
-
-  // Выбор готовой аватарки
+  // Обработка клика на аватар
   avatarOptions.forEach(option => {
     option.addEventListener('click', function() {
-      console.log('Avatar option clicked:', this.dataset.avatar);
-      
-      // Убираем выделение с других опций
-      avatarOptions.forEach(opt => opt.classList.remove('selected'));
-      
-      // Выделяем выбранную опцию
-      this.classList.add('selected');
-      
-      // Сохраняем выбранную аватарку
       const avatarType = this.dataset.avatar;
-      selectedAvatarInput.value = avatarType;
-      console.log('Selected avatar type:', avatarType);
+      const avatarMap = {
+        'default1': 0,
+        'default2': 1,
+        'default3': 2,
+        'default4': 3
+      };
       
-      // Обновляем превью текущего аватара
-      updateCurrentAvatarPreview(avatarType);
+      if (avatarMap[avatarType] !== undefined) {
+        goToAvatarSlide(avatarMap[avatarType]);
+      }
     });
   });
+  
+  // Инициализируем рамку при загрузке страницы
+  const initialBorder = document.getElementById('selected-border').value;
+  if (initialBorder) {
+    updateCurrentAvatarBorder(initialBorder);
+  }
+  
+  // Обработка кликов на точки карусели аватаров
+  document.querySelectorAll('#carouselDots .carousel-dot').forEach(dot => {
+    dot.addEventListener('click', function() {
+      const slideIndex = parseInt(this.dataset.slide);
+      goToAvatarSlide(slideIndex);
+    });
+  });
+
 
   // Загрузка собственного аватара
   avatarUpload.addEventListener('change', function() {
     if (this.files && this.files[0]) {
       const reader = new FileReader();
       reader.onload = function(e) {
-        const img = document.createElement('img');
-        img.src = e.target.result;
-        img.className = 'current-avatar';
-        img.alt = 'Загруженный аватар';
+        // Добавляем загруженное фото как первый слайд в карусели
+        const track = document.getElementById('avatarCarouselTrack');
+        const firstSlide = track.querySelector('.avatar-carousel-slide');
         
-        currentAvatarContainer.innerHTML = '';
-        currentAvatarContainer.appendChild(img);
+        // Если уже есть загруженное фото, обновляем его
+        let uploadedSlide = track.querySelector('[data-avatar="uploaded"]');
+        if (uploadedSlide) {
+          const img = uploadedSlide.querySelector('img');
+        img.src = e.target.result;
+        } else {
+          // Создаем новый слайд с загруженным фото
+          const newSlide = document.createElement('div');
+          newSlide.className = 'avatar-carousel-slide';
+          newSlide.innerHTML = `
+            <div class="avatar-option active" data-avatar="uploaded">
+              <img src="${e.target.result}" class="current-avatar {{ user.get_avatar_border_class }}" alt="Мой аватар">
+              <p class="text-center mt-2 small avatar-name">Мой аватар</p>
+            </div>
+          `;
+          track.insertBefore(newSlide, firstSlide);
+          
+          // Обновляем точки
+          const dotsContainer = document.getElementById('carouselDots');
+          const newDot = document.createElement('span');
+          newDot.className = 'carousel-dot active';
+          newDot.onclick = () => goToAvatarSlide(0);
+          dotsContainer.insertBefore(newDot, dotsContainer.firstChild);
+          
+          // Обновляем общее количество слайдов
+          hasUploadedAvatar = true;
+          totalAvatarSlides = 5;
+          currentAvatarSlide = 0;
+        }
+        
+        // Переключаемся на загруженное фото
+        goToAvatarSlide(0);
         
         // Сбрасываем выбор готовых аватарок
-        avatarOptions.forEach(opt => opt.classList.remove('selected'));
         selectedAvatarInput.value = '';
       };
       reader.readAsDataURL(this.files[0]);
     }
   });
 
-  // Обработка выбора рамки
-  document.querySelectorAll('.border-option:not(.locked)').forEach(option => {
+  // Инициализация карусели рамок
+  let currentBorderSlide = 0;
+  const borderSlides = document.querySelectorAll('.border-carousel-slide');
+  const totalBorderSlides = borderSlides.length;
+  
+  // Определяем текущую рамку
+  const currentBorder = document.getElementById('selected-border').value;
+  borderSlides.forEach((slide, index) => {
+    const borderOption = slide.querySelector('.border-option');
+    if (borderOption && borderOption.dataset.border === currentBorder) {
+      currentBorderSlide = index;
+    }
+  });
+  
+  goToBorderSlide(currentBorderSlide);
+  
+  function moveBorderCarousel(direction) {
+    currentBorderSlide += direction;
+    
+    if (currentBorderSlide < 0) {
+      currentBorderSlide = totalBorderSlides - 1;
+    } else if (currentBorderSlide >= totalBorderSlides) {
+      currentBorderSlide = 0;
+    }
+    
+    goToBorderSlide(currentBorderSlide);
+  }
+  
+  function goToBorderSlide(index) {
+    currentBorderSlide = index;
+    const track = document.getElementById('borderCarouselTrack');
+    const offset = -currentBorderSlide * 100;
+    track.style.transition = 'none';
+    track.style.transform = `translateX(${offset}%)`;
+    
+    // Обновляем активную рамку
+    const borderOptions = document.querySelectorAll('.border-carousel-slide .border-option');
+    borderOptions.forEach((option, i) => {
+      if (i === currentBorderSlide && !option.classList.contains('locked')) {
+        option.classList.add('active');
+        const borderType = option.dataset.border;
+        if (borderType) {
+          document.getElementById('selected-border').value = borderType;
+          updateCurrentAvatarBorder(borderType);
+        }
+      } else {
+        option.classList.remove('active');
+      }
+    });
+  }
+  
+  // Обработка клика на рамку
+  document.querySelectorAll('.border-carousel-slide .border-option:not(.locked)').forEach((option, index) => {
     option.addEventListener('click', function() {
-      // Убираем выделение с других рамок
-      document.querySelectorAll('.border-option').forEach(opt => opt.classList.remove('selected'));
-      
-      // Выделяем выбранную рамку
-      this.classList.add('selected');
-      
-      // Устанавливаем значение в скрытое поле
-      const selectedBorder = this.dataset.border;
-      document.getElementById('selected-border').value = selectedBorder;
-      
-      // Обновляем рамку текущего аватара
-      updateCurrentAvatarBorder(selectedBorder);
+      goToBorderSlide(index);
     });
   });
 
-  function updateCurrentAvatarPreview(avatarType) {
-    console.log('Updating avatar preview with type:', avatarType);
-    const preview = document.createElement('img');
-    preview.className = 'current-avatar';
-    preview.src = `/static/avatars/default/${avatarType}.svg`;
-    preview.alt = 'Выбранный аватар';
-    
-    // Добавляем обработчик ошибки загрузки
-    preview.onerror = function() {
-      console.error('Failed to load avatar:', preview.src);
-      // Если не загрузилось, показываем placeholder
-      const placeholder = document.createElement('div');
-      placeholder.className = 'current-avatar default-avatar';
-      placeholder.innerHTML = '<i class="fa-solid fa-user"></i>';
-      currentAvatarContainer.innerHTML = '';
-      currentAvatarContainer.appendChild(placeholder);
-    };
-    
-    preview.onload = function() {
-      console.log('Avatar loaded successfully:', preview.src);
-      // Применяем текущую рамку к новому аватару
-      const currentBorder = document.getElementById('selected-border').value;
-      if (currentBorder) {
-        preview.classList.add(`avatar-border-${currentBorder}`);
-      }
-    };
-    
-    currentAvatarContainer.innerHTML = '';
-    currentAvatarContainer.appendChild(preview);
-  }
 
   function updateCurrentAvatarBorder(borderType) {
-    const currentAvatar = currentAvatarContainer.querySelector('.current-avatar');
+    const currentAvatars = document.querySelectorAll('.current-avatar');
+    currentAvatars.forEach(currentAvatar => {
     if (currentAvatar) {
-      console.log('Updating border to:', borderType);
-      
       // Убираем старые классы рамки
       currentAvatar.className = currentAvatar.className.replace(/avatar-border-\w+/g, '');
       
@@ -525,11 +928,8 @@ document.addEventListener('DOMContentLoaded', function() {
       // Принудительно обновляем стили
       currentAvatar.style.border = '';
       currentAvatar.style.boxShadow = '';
-      
-      console.log('Current avatar classes:', currentAvatar.className);
-    } else {
-      console.error('Current avatar not found!');
     }
+    });
   }
 });
 

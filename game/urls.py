@@ -12,4 +12,5 @@ urlpatterns = [
     path('notifications/', views.notifications_list, name='notifications_list'),  # /notifications/
     path('daily-quests/', views.daily_quests, name='daily_quests'),  # /daily-quests/
     path('leaderboard/', views.leaderboard, name='leaderboard'),  # /leaderboard/
+    path('toggle-mobile/', views.toggle_mobile_view, name='toggle_mobile_view'),  # /toggle-mobile/
 ]

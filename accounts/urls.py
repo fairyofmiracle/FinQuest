@@ -10,4 +10,5 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('settings/', views.settings_view, name='settings'),
     path('reset/', views.reset_progress, name='reset_progress'),
+    path('achievements/', views.mobile_achievements, name='mobile_achievements'),
 ]

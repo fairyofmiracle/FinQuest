@@ -10,6 +10,81 @@ from game.models import Topic, UserLevelProgress, UserAchievement, Achievement
 
 
 @login_required
+@login_required
+def mobile_achievements(request):
+    """Страница достижений для мобильной версии"""
+    user = request.user
+    
+    # Получаем все достижения пользователя
+    user_achievements = UserAchievement.objects.filter(user=user).select_related('achievement').order_by('-earned_at')
+    
+    # Получаем все возможные достижения
+    all_achievements = []
+    
+    # Добавляем системные достижения (не привязанные к темам)
+    system_achievements = Achievement.objects.filter(
+        name__in=['Первые шаги', 'Легенда финансовой грамотности']
+    )
+    
+    for achievement in system_achievements:
+        # Проверяем, получено ли достижение пользователем
+        user_achievement = UserAchievement.objects.filter(
+            user=user, achievement=achievement
+        ).first()
+        
+        all_achievements.append({
+            'achievement': achievement,
+            'earned': user_achievement is not None,
+            'earned_at': user_achievement.earned_at if user_achievement else None
+        })
+    
+    # Добавляем достижения для тем с разными уровнями редкости
+    rarity_levels = ['common', 'uncommon', 'rare', 'legendary']
+    icon_classes = ['fa-solid fa-star', 'fa-solid fa-gem', 'fa-solid fa-trophy', 'fa-solid fa-crown']
+    
+    for index, topic in enumerate(Topic.objects.all()):
+        achievement_name = f"Мастер {topic.name}"
+        achievement_description = f"Пройдены все уровни по теме «{topic.name}»"
+        
+        # Определяем редкость в зависимости от индекса
+        rarity_index = index % len(rarity_levels)
+        rarity = rarity_levels[rarity_index]
+        icon = icon_classes[rarity_index]
+        
+        # Получаем или создаем достижение с редкостью
+        achievement, _ = Achievement.objects.get_or_create(
+            name=achievement_name,
+            defaults={
+                "description": achievement_description,
+                "rarity": rarity,
+                "icon": icon
+            }
+        )
+        
+        # Если достижение уже существует без редкости, добавляем её
+        if not achievement.rarity:
+            achievement.rarity = rarity
+            achievement.icon = icon
+            achievement.save()
+        
+        # Проверяем, получено ли достижение пользователем
+        user_achievement = UserAchievement.objects.filter(
+            user=user, achievement=achievement
+        ).first()
+        
+        all_achievements.append({
+            'achievement': achievement,
+            'earned': user_achievement is not None,
+            'earned_at': user_achievement.earned_at if user_achievement else None
+        })
+    
+    # Сортируем: сначала полученные, потом неполученные
+    achievements = sorted(all_achievements, key=lambda x: (not x['earned'], x['achievement'].name))
+    
+    return render(request, 'accounts/mobile_achievements.html', {
+        'achievements': achievements,
+    })
+
 def profile(request):
     user = request.user
     

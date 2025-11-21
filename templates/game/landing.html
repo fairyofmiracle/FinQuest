@@ -2,15 +2,22 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
+  {% if mobile_view %}
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes">
+  {% else %}
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% endif %}
 {% load static %}
   <title>Добро пожаловать в FinQuest</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><circle cx='256' cy='256' r='200' fill='%236366f1' stroke='%234f46e5' stroke-width='8'/><circle cx='200' cy='200' r='25' fill='%23fbbf24' stroke='%23f59e0b' stroke-width='3'/><circle cx='312' cy='200' r='25' fill='%23fbbf24' stroke='%23f59e0b' stroke-width='3'/><circle cx='200' cy='312' r='25' fill='%23fbbf24' stroke='%23f59e0b' stroke-width='3'/><circle cx='312' cy='312' r='25' fill='%23fbbf24' stroke='%23f59e0b' stroke-width='3'/><circle cx='256' cy='256' r='30' fill='%23fbbf24' stroke='%23f59e0b' stroke-width='4'/><text x='256' y='265' text-anchor='middle' font-family='Arial' font-size='20' font-weight='bold' fill='%23d97706'>₽</text></svg>">
   <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'css/inter-fonts.css' %}" rel="stylesheet">
   <link href="{% static 'css/fontawesome.min.css' %}" rel="stylesheet">
+  {% if mobile_view %}
+  <link href="{% static 'css/mobile.css' %}" rel="stylesheet">
+  {% endif %}
 </head>
-<body>
+<body{% if mobile_view %} class="mobile-view"{% endif %}>
 <!-- Декоративные элементы -->
 <div class="decorative-circle circle-1"></div>
 <div class="decorative-circle circle-2"></div>
@@ -56,6 +63,9 @@
           </a>
           <a href="{% url 'register' %}" class="btn btn-outline-light btn-lg px-5 py-3">
             <i class="fa-solid fa-user-plus me-2"></i>Регистрация
+          </a>
+          <a href="{% url 'toggle_mobile_view' %}" class="btn btn-mobile-view btn-lg mt-2 px-5 py-3">
+            <i class="fa-solid fa-mobile-screen-button me-2"></i>Мобильная версия
           </a>
         </div>
       </div>
@@ -664,6 +674,139 @@ body::before {
   color: white !important;
   background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
 }
+
+/* Mobile View Button */
+.btn-mobile-view {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  color: white !important;
+  border: none !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+}
+
+.btn-mobile-view:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  color: white !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.5) !important;
+}
+
+/* Дополнительные стили для мобильной версии landing */
+{% if mobile_view %}
+.decorative-circle {
+  display: none;
+}
+
+.landing-container {
+  padding: 0;
+}
+
+.marquee-container {
+  display: none;
+}
+
+.landing-navbar {
+  padding: 0.75rem 0;
+}
+
+.hero-section {
+  padding: 1.5rem 0;
+}
+
+.brand-name-large {
+  font-size: 2rem;
+}
+
+.hero-title {
+  font-size: 1.5rem;
+}
+
+.hero-subtitle {
+  font-size: 0.95rem;
+}
+
+.hero-actions {
+  margin-top: 1.5rem;
+}
+
+.hero-actions .btn {
+  width: 100%;
+  margin: 0.5rem 0;
+}
+
+.feature-card {
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.feature-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.feature-title {
+  font-size: 1.125rem;
+  margin-bottom: 0.75rem;
+}
+
+.feature-text {
+  font-size: 0.9rem;
+}
+
+.learning-section,
+.cta-section {
+  padding: 1.5rem 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.section-heading {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.learning-item {
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.stat-card {
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.stat-number {
+  font-size: 2rem;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+}
+
+.cta-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.cta-text {
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+.landing-footer {
+  padding: 2rem 1rem 1rem;
+  font-size: 0.875rem;
+}
+
+.landing-footer .row {
+  margin-bottom: 1.5rem;
+}
+
+.landing-footer h5 {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+{% endif %}
 
 /* Responsive */
 @media (max-width: 768px) {

@@ -15,6 +15,17 @@ def home(request):
         return redirect('dashboard')  # ← редирект
     return render(request, 'game/home.html')
 
+def toggle_mobile_view(request):
+    """Переключение мобильной версии через сессию"""
+    if 'mobile_view' in request.session:
+        request.session['mobile_view'] = not request.session['mobile_view']
+    else:
+        request.session['mobile_view'] = True
+    
+    # Редирект на предыдущую страницу или на главную
+    referer = request.META.get('HTTP_REFERER', '/')
+    return redirect(referer)
+
 @login_required
 def category_detail(request, category_slug):
     """Детальная страница категории с подкатегориями"""

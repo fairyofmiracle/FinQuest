@@ -1,100 +1,15 @@
-<!-- templates/accounts/profile.html -->
+<!-- templates/accounts/mobile_achievements.html -->
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Мой профиль — FinQuest{% endblock %}
+{% block title %}Достижения — FinQuest{% endblock %}
 
 {% block content %}
 <div class="container-fluid">
   <div class="row">
-    <!-- Левая карточка профиля -->
-    <div class="col-lg-4 col-md-5 mb-4">
-      <div class="card gaming-profile-card h-100" style="height: 800px; overflow: hidden;">
-        <div class="card-body text-center">
-          <!-- Аватар -->
-          <div class="mb-4">
-            <!-- DEBUG: avatar={{ user.avatar }}, default_avatar={{ user.default_avatar }}, get_avatar_display={{ user.get_avatar_display }} -->
-            {% if user.get_avatar_display %}
-              <img src="{{ user.get_avatar_display }}" class="shadow-lg profile-avatar {{ user.get_avatar_border_class }}" width="150" height="150" alt="Аватар" style="border-radius: 20px; object-fit: cover;">
-            {% else %}
-              <div class="bg-gradient-primary text-white d-flex align-items-center justify-content-center shadow-lg mx-auto profile-avatar-placeholder {{ user.get_avatar_border_class }}" style="border-radius: 20px; width: 150px; height: 150px;">
-                {{ user.username|first|upper }}
-              </div>
-            {% endif %}
-          </div>
-          
-          <!-- Имя и звание -->
-          <h3 class="profile-name mb-2">{{ user.get_full_name|default:user.username }}</h3>
-          <p class="profile-title mb-3">{{ user.get_level_title }}</p>
-          
-          <!-- Статистика -->
-          <div class="profile-stats">
-            <div class="row g-3">
-              <div class="col-4">
-                <div class="stat-item text-center">
-                  <div class="stat-icon">🎯</div>
-                  <div class="stat-value">{{ user.points }}</div>
-                  <div class="stat-label">Очки</div>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="stat-item text-center">
-                  <div class="stat-icon">🪙</div>
-                  <div class="stat-value">{{ user.coins }}</div>
-                  <div class="stat-label">Монеты</div>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="stat-item text-center">
-                  <div class="stat-icon">⭐</div>
-                  <div class="stat-value">{{ user.get_level_number }}</div>
-                  <div class="stat-label">Уровень</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Прогресс навыков -->
-          <div class="profile-skills">
-            <h6 class="skills-title mb-3">
-              <i class="fa-solid fa-chart-line me-2"></i>Навыки финансовой грамотности
-            </h6>
-            {% for category_key, category in categories.items %}
-              <div class="skill-progress-item mb-2">
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                  <span class="skill-name">{{ category.name }}</span>
-                  <span class="skill-percent">{{ category.progress_percent }}%</span>
-                </div>
-                <div class="progress skill-progress-bar" style="height: 6px;">
-                  <div class="progress-bar skill-bar" role="progressbar" 
-                       style="width: {{ category.progress_percent }}%;"
-                       data-skill="{{ category.name }}"
-                       data-percent="{{ category.progress_percent }}"></div>
-                </div>
-                <small class="text-muted">{{ category.completed_levels }} из {{ category.total_levels }} уровней</small>
-              </div>
-            {% empty %}
-              <p class="text-muted small mb-0">Нет данных о навыках.</p>
-            {% endfor %}
-          </div>
-          
-          <!-- Кнопки действий -->
-          <div class="profile-actions">
-            <a href="{% url 'settings' %}" class="btn btn-outline-primary btn-sm me-2">
-              <i class="fa-solid fa-cog me-1"></i>Настройки
-            </a>
-            <a href="{% url 'dashboard' %}" class="btn btn-primary btn-sm">
-              <i class="fa-solid fa-home me-1"></i>Дашборд
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Правая часть с достижениями -->
-    <div class="col-lg-8 col-md-7 {% if mobile_view %}mobile-achievements-hidden{% endif %}">
+    <div class="col-12">
       <!-- Достижения -->
-      <div class="card gaming-achievements-card h-100">
+      <div class="card gaming-achievements-card">
         <div class="card-header">
           <h4 class="mb-0"><i class="fa-solid fa-trophy me-2"></i>Достижения</h4>
         </div>
@@ -110,7 +25,6 @@
                     <div class="achievement-front">
                     <div class="achievement-icon mb-2 achievement-icon-{{ achievement_data.achievement.rarity }}">
                       {% if achievement_data.earned %}
-                        {% load static %}
                         <img src="{% static 'images/achievements/' %}{% if 'Первый шаг' in achievement_data.achievement.name %}first_step{% elif 'Открыть финансовую грамотность' in achievement_data.achievement.name %}unlock_literacy{% elif 'основных знаний' in achievement_data.achievement.name %}master_basics{% elif 'базовых навыков' in achievement_data.achievement.name %}master_skills{% elif 'бюджетирования' in achievement_data.achievement.name %}master_budget{% elif 'сбережений' in achievement_data.achievement.name %}master_savings{% elif 'кредитов' in achievement_data.achievement.name %}master_credit{% elif 'банковских услуг' in achievement_data.achievement.name %}master_banking{% elif 'акционерия' in achievement_data.achievement.name or 'Акци' in achievement_data.achievement.name %}master_stocks{% elif 'долговых инструментов' in achievement_data.achievement.name or 'Облигаци' in achievement_data.achievement.name %}master_bonds{% elif 'недвижимости' in achievement_data.achievement.name %}master_realestate{% elif 'криптовалют' in achievement_data.achievement.name %}master_crypto{% elif 'пенсион' in achievement_data.achievement.name %}master_retirement{% elif 'налог' in achievement_data.achievement.name %}master_taxes{% elif 'страхов' in achievement_data.achievement.name %}master_insurance{% elif 'целей' in achievement_data.achievement.name or 'постановки' in achievement_data.achievement.name %}master_goals{% elif 'мошенн' in achievement_data.achievement.name %}master_fraud{% elif 'информационной безопасности' in achievement_data.achievement.name or 'данных' in achievement_data.achievement.name %}master_privacy{% elif 'юридической' in achievement_data.achievement.name %}master_legal{% elif 'риск' in achievement_data.achievement.name %}master_risks{% elif 'планирования' in achievement_data.achievement.name %}master_planning{% elif 'финансовой безопасности' in achievement_data.achievement.name %}master_security{% elif 'финансовой грамотности' in achievement_data.achievement.name %}master_financial{% elif achievement_data.achievement.category == 'streak' %}streak{% elif achievement_data.achievement.category == 'points' %}points{% elif achievement_data.achievement.category == 'coins' %}coins{% elif achievement_data.achievement.rarity == 'legendary' %}legendary{% else %}trophy{% endif %}.svg" 
                              alt="{{ achievement_data.achievement.name }}" 
                              class="achievement-svg" />
@@ -180,11 +94,11 @@
 <style>
 .achievements-wrapper {
     overflow-x: hidden;
-    overflow-y: auto; /* Включаем вертикальную прокрутку */
+    overflow-y: auto;
     flex: 1;
     width: 100%;
     padding: 10px 0;
-    max-height: 800px; /* Высота для 4 рядов (4 * 180px + 3 * 15px + padding) */
+    max-height: calc(100vh - 200px);
 }
 
 .achievements-wrapper::-webkit-scrollbar {
@@ -208,19 +122,19 @@
 
 .achievements-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 колонки равной ширины */
+    grid-template-columns: repeat(2, 1fr);
     gap: 15px;
     padding: 0;
     min-height: 0;
     align-content: start;
-    width: 100%; /* На всю ширину */
+    width: 100%;
 }
 
 .achievement-card {
     perspective: 1000px;
     cursor: pointer;
     height: 180px;
-    width: 100%; /* Занимает всю ширину ячейки сетки */
+    width: 100%;
     border-radius: 15px;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -232,12 +146,10 @@
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
-/* Переворот при наведении только для полученных достижений */
 .achievement-card:not(.achievement-locked):hover .achievement-card-inner {
     transform: rotateY(180deg);
 }
 
-/* Эффект для заблокированных достижений при наведении */
 .achievement-card.achievement-locked:hover {
     transform: translateY(-3px) scale(1.01);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
@@ -302,7 +214,7 @@
 }
 
 .achievement-icon {
-    font-size: 2.5rem; /* Увеличиваем размер иконки */
+    font-size: 2.5rem;
     margin-bottom: 12px;
     position: relative;
     display: flex;
@@ -330,20 +242,19 @@
     font-weight: 600;
     margin-bottom: 8px;
     line-height: 1.2;
-    font-size: 0.9rem; /* Увеличиваем размер текста */
+    font-size: 0.9rem;
 }
 
 .achievement-rarity {
-    font-size: 0.75rem; /* Увеличиваем размер редкости */
+    font-size: 0.75rem;
     margin-bottom: 8px;
 }
 
 .achievement-date {
-    font-size: 0.8rem; /* Увеличиваем размер даты */
+    font-size: 0.8rem;
     opacity: 0.7;
 }
 
-/* Стили для всплывающего уведомления о достижении */
 .achievement-popup {
     position: fixed;
     top: 0;
@@ -502,27 +413,8 @@
 }
 </style>
 
-<!-- Анимация прогресс-баров навыков и переворот достижений -->
+<!-- Анимация и переворот достижений -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Анимация прогресс-баров при загрузке страницы
-    const skillBars = document.querySelectorAll('.skill-bar');
-    
-    skillBars.forEach((bar, index) => {
-        // Получаем процент из data-атрибута или из style
-        const percent = bar.getAttribute('data-percent') || bar.style.width.replace('%', '');
-        const targetWidth = percent + '%';
-        
-        // Устанавливаем начальную ширину 0
-        bar.style.width = '0%';
-        
-        // Анимируем к целевой ширине
-        setTimeout(() => {
-            bar.style.width = targetWidth;
-        }, index * 200 + 100);
-    });
-});
-
 // Функция показа деталей достижения
 function flipAchievement(card) {
     // Показываем всплывающее уведомление только для полученных достижений
@@ -606,3 +498,4 @@ function closeAchievementPopup() {
 }
 </script>
 {% endblock %}
+

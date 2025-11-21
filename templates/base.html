@@ -3,7 +3,11 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
+  {% if mobile_view %}
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes">
+  {% else %}
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% endif %}
   {% load static %}
   <title>{% block title %}FinQuest{% endblock %}</title>
   <!-- Фавиконка из FontAwesome иконки -->
@@ -20,6 +24,9 @@
   <link href="{% static 'css/fontawesome.min.css' %}" rel="stylesheet">
   <link href="{% static 'css/finquest.css' %}" rel="stylesheet">
   <link href="{% static 'css/finquest_tutorial_addon.css' %}" rel="stylesheet">
+  {% if mobile_view %}
+  <link href="{% static 'css/mobile.css' %}" rel="stylesheet">
+  {% endif %}
   <style>
     body { padding-bottom: 0; }
     .btn-lg { width: 100%; margin: 8px 0; }
@@ -209,52 +216,151 @@
         opacity: 0;
       }
     }
+    
   </style>
   <script src="{% static 'js/finquest.js' %}" defer></script>
   <script src="{% static 'js/tutorial.js' %}" defer></script>
 </head>
-<body>
+<body{% if mobile_view %} class="mobile-view"{% endif %}>
   <nav class="navbar navbar-expand-lg gaming-navbar">
     <div class="container">
       <a class="navbar-brand" href="{% url 'dashboard' %}">
         <i class="fa-solid fa-money-bill-trend-up me-2"></i>FinQuest
       </a>
-      {% if user.is_authenticated %}
-        <div class="d-flex align-items-center gap-2">
-          <button class="btn btn-sm btn-outline-light" onclick="toggleTheme()" title="Переключить тему">
-            <i class="fa-solid fa-moon" id="theme-icon"></i>
+      {% if mobile_view %}
+        <!-- Мобильное меню с гамбургером -->
+        {% if user.is_authenticated %}
+          <button class="btn btn-sm btn-outline-light mobile-menu-toggle" onclick="toggleMobileMenu()" type="button">
+            <i class="fa-solid fa-bars"></i>
           </button>
-          <a href="{% url 'media' %}" class="btn btn-outline-light">
-            <i class="fa-solid fa-newspaper me-2"></i>Статьи
-          </a>
-          <div class="position-relative" style="display: inline-block;">
-            <a href="{% url 'notifications_list' %}" class="btn btn-outline-light">
-              <i class="fa-regular fa-bell me-2" style="color: white; font-size: 16px;"></i>Уведомления
-            </a>
-            {% if unread_notifications_count > 0 %}
-              <span class="notification-badge" style="position: absolute; top: -8px; right: -8px; z-index: 9999; background: #ef4444 !important; color: white !important; border-radius: 50% !important; width: 22px !important; height: 22px !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.7rem !important; font-weight: bold !important; padding: 0 !important; box-shadow: 0 2px 6px rgba(239, 68, 68, 0.5) !important; min-width: 22px !important;">
-                {{ unread_notifications_count }}
-              </span>
-            {% endif %}
+        {% else %}
+          <div class="d-flex align-items-center gap-2">
+            <a href="{% url 'login' %}" class="btn btn-sm btn-primary" id="loginBtn">Войти</a>
+            <a href="{% url 'register' %}" class="btn btn-sm btn-register" id="registerBtn">Регистрация</a>
           </div>
-          <a href="{% url 'profile' %}" class="btn btn-outline-light">
-            <i class="fa-regular fa-user me-2"></i>Профиль
-          </a>
-          <form method="post" action="{% url 'logout' %}" style="display: inline;">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-sm btn-danger">
-              <i class="fa-solid fa-sign-out-alt me-1"></i>Выйти
-            </button>
-          </form>
-        </div>
+        {% endif %}
       {% else %}
-        <div class="d-flex align-items-center gap-2">
-          <a href="{% url 'login' %}" class="btn btn-sm btn-primary" id="loginBtn">Войти</a>
-          <a href="{% url 'register' %}" class="btn btn-sm btn-register" id="registerBtn">Регистрация</a>
-        </div>
+        <!-- Обычное меню для десктопа -->
+        {% if user.is_authenticated %}
+          <div class="d-flex align-items-center gap-2">
+            <a href="{% url 'toggle_mobile_view' %}" class="btn btn-sm btn-outline-light" title="{% if mobile_view %}Отключить мобильную версию{% else %}Включить мобильную версию{% endif %}">
+              <i class="fa-solid {% if mobile_view %}fa-desktop{% else %}fa-mobile-screen-button{% endif %}"></i>
+            </a>
+            <button class="btn btn-sm btn-outline-light" onclick="toggleTheme()" title="Переключить тему">
+              <i class="fa-solid fa-moon" id="theme-icon"></i>
+            </button>
+            <a href="{% url 'media' %}" class="btn btn-outline-light">
+              <i class="fa-solid fa-newspaper me-2"></i>Статьи
+            </a>
+            <div class="position-relative" style="display: inline-block;">
+              <a href="{% url 'notifications_list' %}" class="btn btn-outline-light">
+                <i class="fa-regular fa-bell me-2" style="color: white; font-size: 16px;"></i>Уведомления
+              </a>
+              {% if unread_notifications_count > 0 %}
+                <span class="notification-badge" style="position: absolute; top: -8px; right: -8px; z-index: 9999; background: #ef4444 !important; color: white !important; border-radius: 50% !important; width: 22px !important; height: 22px !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.7rem !important; font-weight: bold !important; padding: 0 !important; box-shadow: 0 2px 6px rgba(239, 68, 68, 0.5) !important; min-width: 22px !important;">
+                  {{ unread_notifications_count }}
+                </span>
+              {% endif %}
+            </div>
+            <a href="{% url 'profile' %}" class="btn btn-outline-light">
+              <i class="fa-regular fa-user me-2"></i>Профиль
+            </a>
+            <form method="post" action="{% url 'logout' %}" style="display: inline;">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-sm btn-danger">
+                <i class="fa-solid fa-sign-out-alt me-1"></i>Выйти
+              </button>
+            </form>
+          </div>
+        {% else %}
+          <div class="d-flex align-items-center gap-2">
+            <a href="{% url 'login' %}" class="btn btn-sm btn-primary" id="loginBtn">Войти</a>
+            <a href="{% url 'register' %}" class="btn btn-sm btn-register" id="registerBtn">Регистрация</a>
+          </div>
+        {% endif %}
       {% endif %}
     </div>
   </nav>
+
+  <!-- Мобильное боковое меню -->
+  {% if mobile_view and user.is_authenticated %}
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-header">
+      <div class="mobile-menu-user">
+        {% if user.get_avatar_display %}
+          <img src="{{ user.get_avatar_display }}" alt="Avatar" class="mobile-menu-avatar">
+        {% else %}
+          <div class="mobile-menu-avatar-placeholder">
+            <i class="fa-solid fa-user"></i>
+          </div>
+        {% endif %}
+        <div class="mobile-menu-user-info">
+          <div class="mobile-menu-username">{{ user.username }}</div>
+          <div class="mobile-menu-user-level">Уровень {{ user.level }}</div>
+        </div>
+      </div>
+      <button class="mobile-menu-close" onclick="toggleMobileMenu()">
+        <i class="fa-solid fa-times"></i>
+      </button>
+    </div>
+    <div class="mobile-menu-body">
+      <a href="{% url 'profile' %}" class="mobile-menu-item" onclick="toggleMobileMenu()">
+        <i class="fa-regular fa-user"></i>
+        <span>Профиль</span>
+      </a>
+      <a href="{% url 'media' %}" class="mobile-menu-item" onclick="toggleMobileMenu()">
+        <i class="fa-solid fa-newspaper"></i>
+        <span>Статьи</span>
+      </a>
+      <a href="{% url 'notifications_list' %}" class="mobile-menu-item" onclick="toggleMobileMenu()">
+        <i class="fa-regular fa-bell"></i>
+        <span>Уведомления</span>
+        {% if unread_notifications_count > 0 %}
+          <span class="mobile-menu-badge">{{ unread_notifications_count }}</span>
+        {% endif %}
+      </a>
+      <a href="{% url 'dashboard' %}" class="mobile-menu-item" onclick="toggleMobileMenu()">
+        <i class="fa-solid fa-home"></i>
+        <span>Главная</span>
+      </a>
+      <div class="mobile-menu-divider"></div>
+      <a href="{% url 'settings' %}" class="mobile-menu-item" onclick="toggleMobileMenu()">
+        <i class="fa-solid fa-cog"></i>
+        <span>Настройки</span>
+      </a>
+      <div class="mobile-menu-divider"></div>
+      <a href="{% url 'mobile_achievements' %}" class="mobile-menu-item" onclick="toggleMobileMenu()">
+        <i class="fa-solid fa-trophy"></i>
+        <span>Достижения</span>
+        {% if mobile_achievements_count > 0 %}
+          <span class="mobile-menu-badge">{{ mobile_achievements_count }}</span>
+        {% endif %}
+      </a>
+      <!-- Переключатель темы -->
+      <div class="mobile-menu-item mobile-menu-theme-toggle" onclick="toggleTheme(); updateMobileThemeToggle();">
+        <i class="fa-solid fa-moon" id="mobile-theme-icon"></i>
+        <span>Темная тема</span>
+        <label class="mobile-theme-switch">
+          <input type="checkbox" id="mobile-theme-toggle" onchange="toggleTheme(); updateMobileThemeToggle();">
+          <span class="mobile-theme-slider"></span>
+        </label>
+      </div>
+      <div class="mobile-menu-divider"></div>
+      <a href="{% url 'toggle_mobile_view' %}" class="mobile-menu-item" onclick="toggleMobileMenu()">
+        <i class="fa-solid fa-desktop"></i>
+        <span>Перейти на Desktop</span>
+      </a>
+      <form method="post" action="{% url 'logout' %}" style="margin: 0;">
+        {% csrf_token %}
+        <button type="submit" class="mobile-menu-item mobile-menu-logout">
+          <i class="fa-solid fa-sign-out-alt"></i>
+          <span>Выйти</span>
+        </button>
+      </form>
+    </div>
+  </div>
+  {% endif %}
 
   <div class="container mt-3">
     {% block content %}{% endblock %}
@@ -332,17 +438,39 @@
     function toggleTheme() {
       const body = document.body;
       const themeIcon = document.getElementById('theme-icon');
+      const mobileThemeIcon = document.getElementById('mobile-theme-icon');
+      const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
       
       if (body.classList.contains('dark-theme')) {
         // Переключаемся на светлую тему
         body.classList.remove('dark-theme');
-        themeIcon.className = 'fa-solid fa-moon';
+        if (themeIcon) themeIcon.className = 'fa-solid fa-moon';
+        if (mobileThemeIcon) mobileThemeIcon.className = 'fa-solid fa-moon';
+        if (mobileThemeToggle) mobileThemeToggle.checked = false;
         localStorage.setItem('theme', 'light');
       } else {
         // Переключаемся на темную тему
         body.classList.add('dark-theme');
-        themeIcon.className = 'fa-solid fa-sun';
+        if (themeIcon) themeIcon.className = 'fa-solid fa-sun';
+        if (mobileThemeIcon) mobileThemeIcon.className = 'fa-solid fa-sun';
+        if (mobileThemeToggle) mobileThemeToggle.checked = true;
         localStorage.setItem('theme', 'dark');
+      }
+    }
+    
+    // Обновление состояния переключателя темы в мобильном меню
+    function updateMobileThemeToggle() {
+      const body = document.body;
+      const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+      const mobileThemeIcon = document.getElementById('mobile-theme-icon');
+      
+      if (mobileThemeToggle) {
+        mobileThemeToggle.checked = body.classList.contains('dark-theme');
+      }
+      if (mobileThemeIcon) {
+        mobileThemeIcon.className = body.classList.contains('dark-theme') 
+          ? 'fa-solid fa-sun' 
+          : 'fa-solid fa-moon';
       }
     }
     
@@ -350,11 +478,23 @@
     document.addEventListener('DOMContentLoaded', function() {
       const savedTheme = localStorage.getItem('theme');
       const themeIcon = document.getElementById('theme-icon');
+      const mobileThemeIcon = document.getElementById('mobile-theme-icon');
+      const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
       
       if (savedTheme === 'dark') {
         document.body.classList.add('dark-theme');
         if (themeIcon) {
           themeIcon.className = 'fa-solid fa-sun';
+        }
+        if (mobileThemeIcon) {
+          mobileThemeIcon.className = 'fa-solid fa-sun';
+        }
+        if (mobileThemeToggle) {
+          mobileThemeToggle.checked = true;
+        }
+      } else {
+        if (mobileThemeToggle) {
+          mobileThemeToggle.checked = false;
         }
       }
     });
@@ -453,6 +593,37 @@
         }, 3000);
       }
     }
+    
+    // Мобильное меню
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      const overlay = document.getElementById('mobileMenuOverlay');
+      
+      if (menu && overlay) {
+        menu.classList.toggle('active');
+        overlay.classList.toggle('active');
+        
+        // Блокируем прокрутку body когда меню открыто
+        if (menu.classList.contains('active')) {
+          document.body.style.overflow = 'hidden';
+        } else {
+          document.body.style.overflow = '';
+        }
+      }
+    }
+    
+    // Закрываем меню при клике вне его
+    document.addEventListener('click', function(event) {
+      const menu = document.getElementById('mobileMenu');
+      const overlay = document.getElementById('mobileMenuOverlay');
+      const toggle = document.querySelector('.mobile-menu-toggle');
+      
+      if (menu && overlay && menu.classList.contains('active')) {
+        if (!menu.contains(event.target) && event.target !== toggle) {
+          toggleMobileMenu();
+        }
+      }
+    });
   </script>
   
   {% block extra_js %}{% endblock %}
