@@ -287,14 +287,18 @@ body::before {
   background: rgba(255,255,255,0.95);
   backdrop-filter: blur(5px);
   transition: all 0.2s ease;
-  color: var(--game-text);
+  color: #6f42c1 !important; /* Фиолетовый цвет текста */
 }
 
 .form-control:focus {
   border-color: var(--game-primary);
   box-shadow: 0 0 0 0.2rem rgba(79, 70, 229, 0.25);
   background: white;
-  color: var(--game-text);
+  color: #6f42c1 !important; /* Фиолетовый цвет текста */
+}
+
+.form-control::placeholder {
+  color: #9ca3af !important; /* Серый цвет для placeholder */
 }
 
 .form-control-lg {
@@ -578,13 +582,17 @@ body::before {
 .dark-theme .form-control {
   background-color: var(--game-light);
   border-color: var(--game-border);
-  color: var(--game-text);
+  color: #6f42c1 !important; /* Фиолетовый цвет текста */
+}
+
+.dark-theme .form-control::placeholder {
+  color: #9ca3af !important; /* Серый цвет для placeholder */
 }
 
 .dark-theme .form-control:focus {
   background-color: var(--game-light);
   border-color: var(--game-primary);
-  color: var(--game-text);
+  color: #6f42c1 !important; /* Фиолетовый цвет текста */
 }
 
 .dark-theme .btn-outline-primary {

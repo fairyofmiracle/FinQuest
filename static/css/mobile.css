@@ -307,12 +307,18 @@ body.mobile-view .form-select {
   min-height: 36px; /* Уменьшено */
   border-radius: 8px; /* Уменьшено */
   border: 1px solid #e5e7eb;
+  color: #6f42c1 !important; /* Фиолетовый цвет текста */
 }
 
 body.mobile-view .form-control:focus,
 body.mobile-view .form-select:focus {
   border-color: #667eea;
   box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+  color: #6f42c1 !important; /* Фиолетовый цвет текста */
+}
+
+body.mobile-view .form-control::placeholder {
+  color: #9ca3af !important; /* Серый цвет для placeholder */
 }
 
 body.mobile-view .form-label {
@@ -1675,13 +1681,17 @@ body.mobile-view.dark-theme .text-muted {
 body.mobile-view.dark-theme .form-control {
   background-color: #1f2937;
   border-color: #475569;
-  color: #f1f5f9;
+  color: #6f42c1 !important; /* Фиолетовый цвет текста */
+}
+
+body.mobile-view.dark-theme .form-control::placeholder {
+  color: #9ca3af !important; /* Серый цвет для placeholder */
 }
 
 body.mobile-view.dark-theme .form-control:focus {
   background-color: #1f2937;
   border-color: #667eea;
-  color: #f1f5f9;
+  color: #6f42c1 !important; /* Фиолетовый цвет текста */
 }
 
 body.mobile-view.dark-theme .btn-primary {
