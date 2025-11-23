@@ -543,7 +543,7 @@
   transform: none;
 }
 
-/* Мобильная версия карусели */
+/* Мобильная версия карусели и настроек */
 @media (max-width: 768px) {
   .avatar-carousel-container {
     max-width: 100%;
@@ -559,6 +559,140 @@
     width: 100px;
     height: 100px;
   }
+}
+
+/* Мобильная адаптация настроек */
+body.mobile-view .gaming-card {
+  border-radius: 16px !important;
+  margin-bottom: 1rem !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+body.mobile-view .gaming-card .card-header {
+  padding: 1rem !important;
+  border-radius: 16px 16px 0 0 !important;
+}
+
+body.mobile-view .gaming-card .card-header h3 {
+  font-size: 1.1rem !important;
+  margin: 0 !important;
+}
+
+body.mobile-view .gaming-card .card-body {
+  padding: 1rem !important;
+}
+
+body.mobile-view .gaming-card h5 {
+  font-size: 0.95rem !important;
+  margin-bottom: 0.75rem !important;
+  color: #1f2937 !important;
+}
+
+body.mobile-view.dark-theme .gaming-card h5 {
+  color: #f1f5f9 !important;
+}
+
+body.mobile-view .current-avatar {
+  width: 100px !important;
+  height: 100px !important;
+  border-radius: 16px !important;
+}
+
+body.mobile-view .avatar-carousel-btn {
+  width: 32px !important;
+  height: 32px !important;
+  font-size: 0.75rem !important;
+}
+
+body.mobile-view .border-carousel-btn {
+  width: 32px !important;
+  height: 32px !important;
+  font-size: 0.75rem !important;
+}
+
+body.mobile-view .border-preview {
+  width: 80px !important;
+  height: 80px !important;
+}
+
+body.mobile-view .form-label {
+  font-size: 0.875rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+body.mobile-view .form-control {
+  font-size: 0.875rem !important;
+  padding: 0.6rem 0.75rem !important;
+}
+
+body.mobile-view .form-check-input {
+  width: 2rem !important;
+  height: 1.1rem !important;
+}
+
+body.mobile-view .form-check-label {
+  font-size: 0.875rem !important;
+}
+
+body.mobile-view .btn {
+  font-size: 0.875rem !important;
+  padding: 0.6rem 1rem !important;
+  border-radius: 12px !important;
+}
+
+body.mobile-view .btn-primary {
+  background: linear-gradient(135deg, #667eea, #764ba2) !important;
+  border: none !important;
+}
+
+body.mobile-view .btn-outline-secondary {
+  border: 2px solid #e5e7eb !important;
+  color: #6b7280 !important;
+}
+
+body.mobile-view .btn-outline-danger {
+  border: 2px solid #ef4444 !important;
+  color: #ef4444 !important;
+}
+
+body.mobile-view .avatar-name,
+body.mobile-view .border-name {
+  font-size: 0.7rem !important;
+  margin-top: 0.5rem !important;
+}
+
+body.mobile-view .avatar-carousel-dots {
+  margin-top: 0.75rem !important;
+}
+
+body.mobile-view .carousel-dot {
+  width: 8px !important;
+  height: 8px !important;
+}
+
+body.mobile-view .mb-5 {
+  margin-bottom: 2rem !important;
+}
+
+body.mobile-view .mb-4 {
+  margin-bottom: 1.5rem !important;
+}
+
+body.mobile-view .mt-5 {
+  margin-top: 1.5rem !important;
+}
+
+body.mobile-view .text-center {
+  text-align: center !important;
+}
+
+body.mobile-view.dark-theme .gaming-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.92) 100%) !important;
+  border-color: #475569 !important;
+}
+
+body.mobile-view.dark-theme .gaming-card .card-header {
+  background: linear-gradient(135deg, #667eea, #764ba2) !important;
 }
 
 .border-option {
