@@ -242,7 +242,7 @@ def settings_view(request):
         request.user.notifications_enabled = 'notifications' in request.POST
         request.user.save()
         messages.success(request, "Настройки сохранены!")
-        return redirect('profile')
+        return redirect('dashboard')
 
     return render(request, 'accounts/settings.html')
 

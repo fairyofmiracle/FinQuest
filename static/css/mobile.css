@@ -526,10 +526,21 @@ body.mobile-view .nav-tabs .nav-link {
   align-items: center;
 }
 
-/* Футер - скрыт в мобильной версии (как в приложении) */
-body.mobile-view .site-footer {
+/* Футер - полностью скрыт в мобильной версии (как в приложении) */
+body.mobile-view .site-footer,
+body.mobile-view .site-footer *,
+body.mobile-view .footer-bottom,
+body.mobile-view .footer-list,
+body.mobile-view .footer-list li,
+body.mobile-view .footer-list li i {
   display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
+
 
 /* Страницы авторизации - мобильная версия */
 body.mobile-view .hero {

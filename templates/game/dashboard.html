@@ -534,8 +534,20 @@ body.mobile-view .welcome-section {
 /* Категории */
 .categories-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+@media (max-width: 1400px) {
+  .categories-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .categories-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Темная тема */
@@ -590,6 +602,26 @@ body.dark-theme .quick-action-btn:focus {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Убираем быстрые действия в веб-версии */
+body:not(.mobile-view) .quick-actions {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Убираем последние награды в веб-версии */
+body:not(.mobile-view) .recent-achievements {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
 }
 
 /* Адаптация под мобильные */
