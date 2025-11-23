@@ -976,23 +976,43 @@ body.mobile-view .answer-option:active {
 body.mobile-view .article-content {
   font-size: 0.875rem; /* Уменьшено */
   line-height: 1.6;
-  color: #e5e7eb !important; /* Светлый цвет текста для мобилки */
+  color: #ffffff !important; /* Белый цвет текста везде */
 }
 
 body.mobile-view .article-content p {
-  color: #e5e7eb !important;
+  color: #ffffff !important;
 }
 
 body.mobile-view .article-content li {
-  color: #e5e7eb !important;
+  color: #ffffff !important;
 }
 
 body.mobile-view .article-content td {
-  color: #e5e7eb !important;
+  color: #ffffff !important;
 }
 
 body.mobile-view .article-content th {
-  color: white !important;
+  color: #ffffff !important;
+}
+
+body.mobile-view .article-content h2 {
+  color: #ffffff !important;
+}
+
+body.mobile-view .article-content h3 {
+  color: #ffffff !important;
+}
+
+body.mobile-view .article-content h4 {
+  color: #ffffff !important;
+}
+
+body.mobile-view .article-content span {
+  color: #ffffff !important;
+}
+
+body.mobile-view .article-content div {
+  color: #ffffff !important;
 }
 
 body.mobile-view .article-content h2 {

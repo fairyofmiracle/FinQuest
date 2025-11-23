@@ -344,11 +344,16 @@ body::before {
 /* Article Styles */
 .article-content {
   line-height: 1.6;
-  color: var(--game-text);
+  color: #ffffff !important; /* Белый цвет текста везде */
+}
+
+.article-content p {
+  margin-bottom: 0.75rem;
+  color: #ffffff !important;
 }
 
 .article-content h3 {
-  color: var(--game-primary);
+  color: #ffffff !important;
   margin-top: 1.5rem;
   margin-bottom: 0.75rem;
   font-weight: 600;
@@ -356,15 +361,31 @@ body::before {
 }
 
 .article-content h4 {
-  color: var(--game-secondary);
+  color: #ffffff !important;
   margin-top: 1rem;
   margin-bottom: 0.5rem;
   font-weight: 600;
   font-size: 1.1rem;
 }
 
-.article-content p {
-  margin-bottom: 0.75rem;
+.article-content h2 {
+  color: #ffffff !important;
+}
+
+.article-content li {
+  color: #ffffff !important;
+}
+
+.article-content td {
+  color: #ffffff !important;
+}
+
+.article-content span {
+  color: #ffffff !important;
+}
+
+.article-content div {
+  color: #ffffff !important;
 }
 
 .article-content ul {
