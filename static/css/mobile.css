@@ -7,7 +7,7 @@ body.mobile-view {
   max-width: 100%;
   margin: 0 auto;
   padding: 0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #f3f4f6;
   background-attachment: fixed;
   font-size: 14px; /* Уменьшен базовый размер */
   line-height: 1.5;
@@ -24,9 +24,17 @@ body.mobile-view .container {
   margin: 0 auto;
   padding: 0.75rem;
   box-sizing: border-box;
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
 }
 
 body.mobile-view::before {
+  display: none;
+}
+
+/* Убираем декоративные круги на мобильной */
+body.mobile-view .decorative-circle {
   display: none;
 }
 
@@ -316,30 +324,41 @@ body.mobile-view .form-label {
 
 /* Заголовки - уменьшенные */
 body.mobile-view h1 {
-  font-size: 1.5rem; /* Уменьшено */
+  font-size: 1.5rem;
   font-weight: 800;
   line-height: 1.2;
-  margin-bottom: 0.75rem; /* Уменьшено */
+  margin-bottom: 0.75rem;
+  color: #1f2937;
 }
 
 body.mobile-view h2 {
-  font-size: 1.25rem; /* Уменьшено */
+  font-size: 1.25rem;
   font-weight: 700;
   line-height: 1.3;
-  margin-bottom: 0.5rem; /* Уменьшено */
+  margin-bottom: 0.5rem;
+  color: #1f2937;
 }
 
 body.mobile-view h3 {
-  font-size: 1.125rem; /* Уменьшено */
+  font-size: 1.125rem;
   font-weight: 700;
   line-height: 1.4;
   margin-bottom: 0.5rem;
+  color: #1f2937;
 }
 
 body.mobile-view h4 {
-  font-size: 1rem; /* Уменьшено */
+  font-size: 1rem;
   font-weight: 600;
-  margin-bottom: 0.375rem; /* Уменьшено */
+  margin-bottom: 0.375rem;
+  color: #1f2937;
+}
+
+body.mobile-view.dark-theme h1,
+body.mobile-view.dark-theme h2,
+body.mobile-view.dark-theme h3,
+body.mobile-view.dark-theme h4 {
+  color: #f1f5f9;
 }
 
 /* Текст - уменьшенный */
@@ -578,23 +597,7 @@ body.mobile-view .avatar-carousel-dots {
   margin-top: 1.5rem;
 }
 
-/* Настройки - компактные для мобильных */
-body.mobile-view .container.mt-3 {
-  background: white !important;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  padding: 0 !important;
-  margin-top: 0.5rem !important;
-  margin-bottom: 0.5rem !important;
-}
-
-body.mobile-view .gaming-card {
-  margin-bottom: 0;
-  background: white !important;
-  border-radius: 12px;
-  box-shadow: none;
-  border: none;
-}
+/* Настройки - компактные для мобильных (старые настройки удалены, см. выше) */
 
 body.mobile-view .gaming-card .card-header {
   background: linear-gradient(135deg, #6f42c1, #8b5cf6);
@@ -1440,8 +1443,155 @@ body.mobile-view .border-preview {
 
 /* Темная тема для мобильной версии */
 body.mobile-view.dark-theme {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%) !important;
+  background: #0f172a !important;
   color: #f1f5f9;
+}
+
+/* Убираем фоновые накладки для контейнеров в мобильной версии */
+body.mobile-view .container.mt-3 {
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0.75rem !important;
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* Карточки остаются с фоном но более плоские */
+body.mobile-view .card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: none;
+  margin-bottom: 0.75rem;
+}
+
+body.mobile-view.dark-theme .card {
+  background: #1e293b;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Для главной страницы - убираем лишние обертки */
+body.mobile-view .welcome-section {
+  background: white;
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+body.mobile-view.dark-theme .welcome-section {
+  background: #1e293b;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Gaming card стили для мобильной */
+body.mobile-view .gaming-card {
+  background: white !important;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: none;
+  margin-bottom: 0.75rem;
+}
+
+body.mobile-view.dark-theme .gaming-card {
+  background: #1e293b !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Hero секции для мобильной */
+body.mobile-view .hero {
+  background: white;
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+body.mobile-view.dark-theme .hero {
+  background: #1e293b;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Статистические карточки */
+body.mobile-view .stat-card,
+body.mobile-view .quick-action-btn,
+body.mobile-view .achievement-mini {
+  background: white;
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+body.mobile-view.dark-theme .stat-card,
+body.mobile-view.dark-theme .quick-action-btn,
+body.mobile-view.dark-theme .achievement-mini {
+  background: #1e293b;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Категории */
+body.mobile-view .main-category-card {
+  background: white;
+  border: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+body.mobile-view.dark-theme .main-category-card {
+  background: #1e293b;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Исправление текста и изображений */
+body.mobile-view .card-body {
+  padding: 1rem;
+  overflow: visible;
+}
+
+body.mobile-view .text-muted {
+  color: #6b7280 !important;
+}
+
+body.mobile-view.dark-theme .text-muted {
+  color: #9ca3af !important;
+}
+
+/* Исправление таблиц рейтинга */
+body.mobile-view .table {
+  font-size: 0.85rem;
+  width: 100%;
+}
+
+body.mobile-view .table td,
+body.mobile-view .table th {
+  padding: 0.75rem 0.5rem;
+  white-space: nowrap;
+}
+
+body.mobile-view .rank-badge {
+  width: 40px;
+  height: 40px;
+  font-size: 1rem;
+}
+
+/* Исправление карточек заданий */
+body.mobile-view .list-group-item {
+  padding: 1rem;
+  font-size: 0.9rem;
+}
+
+body.mobile-view .progress {
+  height: 8px;
+  margin: 0.5rem 0;
+}
+
+/* Исправление изображений */
+body.mobile-view img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+body.mobile-view .avatar,
+body.mobile-view .profile-avatar {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
 }
 
 body.mobile-view.dark-theme .navbar {
@@ -1567,12 +1717,139 @@ body.mobile-view.dark-theme .gaming-card {
   color: #f1f5f9;
 }
 
-body.mobile-view.dark-theme .container.mt-3 {
-  background: rgba(30, 41, 59, 0.3) !important;
-  color: #f1f5f9;
-}
-
 /* Скрываем кнопки сброса прогресса и повтора обучения в мобильной версии */
 body.mobile-view .mt-5.text-center {
   display: none !important;
+}
+
+/* ============================================
+   ИНТЕГРАЦИЯ С НИЖНЕЙ НАВИГАЦИЕЙ
+   ============================================ */
+
+/* Добавляем отступ снизу для контента */
+body.mobile-view {
+  padding-bottom: 80px;
+}
+
+/* Скрываем верхнюю навигацию когда есть нижняя */
+body.mobile-view .navbar .d-flex.align-items-center.gap-2 {
+  display: flex !important;
+}
+
+/* Улучшаем карточки для тача */
+body.mobile-view .card,
+body.mobile-view .category-card,
+body.mobile-view .topic-card,
+body.mobile-view .main-category-card {
+  cursor: pointer;
+  -webkit-tap-highlight-color: rgba(102, 126, 234, 0.1);
+  transition: all 0.2s ease;
+}
+
+body.mobile-view .card:active,
+body.mobile-view .category-card:active,
+body.mobile-view .topic-card:active,
+body.mobile-view .main-category-card:active {
+  transform: scale(0.98);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* Убираем стандартный outline на фокусе */
+body.mobile-view *:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+}
+
+body.mobile-view button:focus,
+body.mobile-view a:focus {
+  outline: none;
+}
+
+/* Плавная прокрутка */
+body.mobile-view {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Оптимизация для iPhone с вырезом */
+@supports (padding: env(safe-area-inset-bottom)) {
+  body.mobile-view {
+    padding-bottom: calc(80px + env(safe-area-inset-bottom));
+  }
+}
+
+/* Темная тема - дополнительные стили */
+body.mobile-view.dark-theme .progress {
+  background: #374151;
+}
+
+body.mobile-view.dark-theme .badge {
+  background: #4b5563;
+  color: #f1f5f9;
+}
+
+body.mobile-view.dark-theme .badge.bg-primary {
+  background: linear-gradient(135deg, #667eea, #764ba2) !important;
+  color: white;
+}
+
+body.mobile-view.dark-theme .badge.bg-success {
+  background: #10b981 !important;
+  color: white;
+}
+
+/* Анимации появления элементов */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+body.mobile-view .fade-in-up {
+  animation: fadeInUp 0.4s ease;
+}
+
+/* Ripple эффект для кнопок */
+body.mobile-view .btn {
+  position: relative;
+  overflow: hidden;
+}
+
+body.mobile-view .btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+body.mobile-view .btn:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* Улучшенные тени для темной темы */
+body.mobile-view.dark-theme .card,
+body.mobile-view.dark-theme .gaming-card {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Скрываем скроллбары но оставляем функциональность */
+body.mobile-view::-webkit-scrollbar {
+  display: none;
+}
+
+body.mobile-view {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

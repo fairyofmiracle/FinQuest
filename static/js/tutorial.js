@@ -2,7 +2,10 @@
 class FinQuestTutorial {
     constructor() {
         this.currentStep = 0;
-        this.steps = [
+        this.isMobile = document.body.classList.contains('mobile-view') || window.innerWidth <= 768;
+        
+        // Разные подсказки для мобильных и десктопа
+        const desktopSteps = [
             {
                 target: '.user-card',
                 title: '👋 Добро пожаловать!',
@@ -52,6 +55,60 @@ class FinQuestTutorial {
                 position: 'bottom'
             }
         ];
+        
+        // Короткие подсказки для мобильных устройств
+        const mobileSteps = [
+            {
+                target: '.welcome-section',
+                title: '👋 Привет!',
+                content: 'Это твой профиль с аватаром и статусом.',
+                position: 'bottom'
+            },
+            {
+                target: '.stat-card:first-child',
+                title: '⭐ Очки',
+                content: 'Зарабатывай очки за прохождение уровней!',
+                position: 'bottom'
+            },
+            {
+                target: '.stat-card:nth-child(2)',
+                title: '🪙 Монеты',
+                content: 'Трать монеты на подсказки в игре.',
+                position: 'bottom'
+            },
+            {
+                target: '.stat-card:last-child',
+                title: '🏆 Достижения',
+                content: 'Получай награды за успехи!',
+                position: 'bottom'
+            },
+            {
+                target: '.bottom-nav-item:first-child',
+                title: '🏠 Главная',
+                content: 'Здесь твоя статистика и прогресс.',
+                position: 'top'
+            },
+            {
+                target: '.bottom-nav-item:nth-child(2)',
+                title: '📚 Обучение',
+                content: 'Выбери категорию и начни учиться!',
+                position: 'top'
+            },
+            {
+                target: '.bottom-nav-item:nth-child(3)',
+                title: '🏆 Достижения',
+                content: 'Смотри все свои награды здесь.',
+                position: 'top'
+            },
+            {
+                target: '.bottom-nav-item:last-child',
+                title: '👤 Профиль',
+                content: 'Настрой аватар и посмотри статистику.',
+                position: 'top'
+            }
+        ];
+        
+        this.steps = this.isMobile ? mobileSteps : desktopSteps;
         this.isActive = false;
         this.overlay = null;
         this.tooltip = null;
@@ -73,7 +130,42 @@ class FinQuestTutorial {
     showWelcomeModal() {
         const modal = document.createElement('div');
         modal.className = 'tutorial-welcome-modal';
-        modal.innerHTML = `
+        
+        // Разный контент для мобильных и десктопа
+        const welcomeContent = this.isMobile ? `
+            <div class="welcome-content">
+                <div class="welcome-character">
+                    <div class="character-avatar-large">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                </div>
+                <h2 class="welcome-title">Добро пожаловать! 🎉</h2>
+                <div class="welcome-description">
+                    <p><strong>FinQuest</strong> — обучение финансам в игровой форме!</p>
+                    <div class="welcome-features">
+                        <div class="feature-item">
+                            <i class="fa-solid fa-gamepad"></i>
+                            <span>Игровое обучение</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fa-solid fa-trophy"></i>
+                            <span>Награды</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fa-solid fa-chart-line"></i>
+                            <span>Прогресс</span>
+                        </div>
+                    </div>
+                    <p class="mt-3">Покажу, как пользоваться!</p>
+                </div>
+                <button class="btn btn-primary btn-lg welcome-btn" onclick="this.parentElement.parentElement.remove(); tutorialInstance.startTutorial();">
+                    <i class="fa-solid fa-rocket me-2"></i>Поехали!
+                </button>
+                <button class="btn btn-outline-secondary btn-sm mt-2" onclick="this.parentElement.parentElement.remove(); tutorialInstance.complete();">
+                    Пропустить
+                </button>
+            </div>
+        ` : `
             <div class="welcome-content">
                 <div class="welcome-character">
                     <div class="character-avatar-large">
@@ -111,6 +203,8 @@ class FinQuestTutorial {
                 </button>
             </div>
         `;
+        
+        modal.innerHTML = welcomeContent;
         document.body.appendChild(modal);
     }
 

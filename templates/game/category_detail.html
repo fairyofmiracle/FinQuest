@@ -1,130 +1,219 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}{{ category.name }} - FinQuest{% endblock %}
+{% block title %}{{ category.name }} — FinQuest{% endblock %}
+{% block page_title %}<i class="fa-solid {{ category.icon }} me-2"></i>{{ category.name }}{% endblock %}
 
 {% block content %}
-<!-- Навигация -->
-<div class="d-flex justify-content-between align-items-center mb-4">
-  <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-primary">
-    <i class="fa-solid fa-home me-1"></i>Дашборд
+<!-- Заголовок категории -->
+<div class="category-header mb-4 fade-in">
+  <div class="card">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-start">
+        <div>
+          <h5 class="mb-2"><i class="fa-solid {{ category.icon }} me-2"></i>{{ category.name }}</h5>
+          <p class="text-muted small mb-0">{{ category.description }}</p>
+        </div>
+        <a href="{% url 'categories' %}" class="btn btn-sm btn-outline-primary desktop-only">
+          <i class="fa-solid fa-arrow-left me-1"></i>Назад
   </a>
-  <div></div>
 </div>
-
-<!-- Описание категории -->
-<div class="hero mb-4">
-  <div class="hero-overlay"></div>
-  <div class="hero-content text-center">
-    <div class="main-category-icon mb-3">
-      <i class="fa-solid {{ category.icon }}"></i>
     </div>
-    <h2 class="mb-3">{{ category.name }}</h2>
-    <p class="lead">{{ category.description }}</p>
   </div>
 </div>
 
-<!-- Темы в категории -->
+<!-- Список тем -->
 {% if topics %}
-  <div class="row g-4">
+<div class="topics-list mb-4">
     {% for topic in topics %}
-      <div class="col-lg-3 col-md-6">
-        <div class="topic-card h-100">
-          <div class="topic-icon">
+    <a href="{% url 'topic_levels' topic.id %}" class="card mb-3 topic-card-link haptic-light slide-in-up" style="text-decoration: none; color: inherit;">
+      <div class="card-body">
+        <div class="d-flex align-items-center mb-2">
+          <div class="topic-icon-wrapper me-3">
             <i class="fa-solid {{ topic.icon }}"></i>
           </div>
-          <div class="topic-content">
-            <h6 class="topic-name">{{ topic.name }}</h6>
-            <p class="topic-description">{{ topic.description|truncatewords:12 }}</p>
-            <div class="topic-progress">
-              <div class="progress" style="height: 4px;">
-                <div class="progress-bar" role="progressbar" style="width: {{ topic.progress.percent }}%;"></div>
+          <div class="flex-grow-1">
+            <h6 class="mb-0">{{ topic.name }}</h6>
+            <small class="text-muted">{{ topic.description|truncatewords:10 }}</small>
               </div>
-              <small class="text-muted">{{ topic.progress.completed }} из {{ topic.progress.total }}</small>
-            </div>
-            <a href="{% url 'topic_levels' topic.id %}" class="btn btn-outline-primary btn-sm">
-              <i class="fa-solid fa-play me-1"></i>Изучать
-            </a>
+          <div>
+            <span class="badge bg-primary">{{ topic.progress.percent }}%</span>
+            <i class="fa-solid fa-chevron-right ms-2 text-muted" style="font-size: 0.9rem;"></i>
           </div>
         </div>
+        <div class="progress mb-2" style="height: 6px;">
+          <div class="progress-bar bg-gradient topic-bar" 
+               role="progressbar" 
+               style="width: 0%;"
+               data-percent="{{ topic.progress.percent }}"></div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center">
+          <small class="text-muted">
+            <i class="fa-solid fa-check-circle me-1"></i>
+            {{ topic.progress.completed }} из {{ topic.progress.total }} уровней
+          </small>
+          {% if topic.progress.percent == 100 %}
+          <small class="text-success">
+            <i class="fa-solid fa-trophy me-1"></i>Завершено!
+          </small>
+          {% endif %}
+        </div>
       </div>
+    </a>
     {% endfor %}
   </div>
 {% else %}
-  <div class="text-center py-5">
-    <div class="empty-icon mb-3">
-      <i class="fa-solid fa-book-open"></i>
+  <div class="card">
+    <div class="card-body text-center py-4">
+      <div class="text-muted mb-2">📚</div>
+      <p class="text-muted mb-0">В этой категории пока нет тем для изучения.</p>
     </div>
-    <h4 class="empty-title">Темы пока не добавлены</h4>
-    <p class="empty-text">В этой категории пока нет доступных тем для изучения.</p>
   </div>
 {% endif %}
 
 <style>
-.hero {
-  position: relative;
-  background-image: url("{% static 'подкатегории.jpg' %}");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  border-radius: 20px;
-  overflow: hidden;
-  min-height: 120px; /* Компактная высота для баннера */
+/* Стили для страницы тем категории */
+.category-header .card {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+body.dark-theme .category-header .card {
+  background: #1e293b;
+  border: 1px solid #475569;
+}
+
+.topics-list .card {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.topic-card-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+}
+
+.topic-card-link:active {
+  transform: scale(0.98);
+}
+
+body.dark-theme .topics-list .card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.92) 100%);
+  border: 1px solid #475569;
+}
+
+/* Иконки тем */
+.topic-icon-wrapper {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 1.5rem;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  flex-shrink: 0;
 }
 
-.hero-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.7) 0%,
-    rgba(0, 0, 0, 0.5) 50%,
-    rgba(0, 0, 0, 0.3) 100%
-  );
-  z-index: 1;
+.progress {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 
-.hero-content {
-  position: relative;
-  z-index: 2;
-  padding: 3rem 2rem;
+body.dark-theme .progress {
+  background: rgba(255, 255, 255, 0.1);
 }
 
-.main-category-icon {
-  font-size: 4rem;
-  color: #ffffff;
-  margin-bottom: 1.5rem;
-  text-align: center;
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+.progress-bar {
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 10px;
+  transition: width 0.8s ease;
 }
 
-.hero h2 {
-  color: #ffffff;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.8);
-  font-size: 2.5rem;
-  font-weight: 700;
+/* Анимации */
+.fade-in {
+  animation: fadeIn 0.3s ease;
 }
 
-.hero .lead {
-  color: #ffffff;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
-  font-size: 1.2rem;
+.slide-in-up {
+  animation: slideInUp 0.3s ease;
 }
 
-.dark-theme .hero h2 {
-  color: #ffffff;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.dark-theme .hero .lead {
-  color: #ffffff;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+}
+}
+
+/* Мобильные стили */
+@media (max-width: 768px) {
+  body.mobile-view .desktop-only {
+    display: none !important;
+}
+
+  body.mobile-view .category-header .card,
+  body.mobile-view .topics-list .card {
+    border-radius: 16px;
+  }
+  
+  body.mobile-view .card-body {
+    padding: 1rem;
+  }
+  
+  body.mobile-view h5 {
+    font-size: 1.1rem;
+}
+
+  body.mobile-view h6 {
+    font-size: 1rem;
+  }
+  
+  body.mobile-view .topic-icon-wrapper {
+    width: 45px;
+    height: 45px;
+    font-size: 1.3rem;
+}
+
+  body.mobile-view .topic-card-link:hover {
+    transform: none;
+  }
+  
+  body.mobile-view .topic-card-link:active {
+    transform: scale(0.98);
+  }
 }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Анимация прогресс-баров при загрузке
+  const topicBars = document.querySelectorAll('.topic-bar');
+  
+  topicBars.forEach((bar, index) => {
+    const percent = bar.getAttribute('data-percent');
+    setTimeout(() => {
+      bar.style.width = percent + '%';
+    }, index * 150 + 100);
+  });
+  
+  // Задержка анимации появления карточек
+  document.querySelectorAll('.slide-in-up').forEach((el, index) => {
+    el.style.animationDelay = `${index * 0.1}s`;
+  });
+});
+</script>
 {% endblock %}

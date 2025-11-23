@@ -1,0 +1,2389 @@
+/* ========================================
+   MOBILE FIXES V2 - Улучшенная мобильная версия
+   Все стили изолированы для мобильных устройств
+   ======================================== */
+
+/* === ВАЖНО: Все стили применяются только для мобильных устройств === */
+/* Ничего не затрагивает десктопную версию (> 992px) */
+
+/* === CSS ПЕРЕМЕННЫЕ ДЛЯ МОБИЛЬНОЙ ВЕРСИИ === */
+@media (max-width: 991.98px) {
+    :root {
+        /* Цветовые схемы */
+        --mobile-primary: #667eea;
+        --mobile-primary-dark: #5568d3;
+        --mobile-secondary: #764ba2;
+        --mobile-accent: #9f7aea;
+        
+        /* Градиенты */
+        --mobile-gradient-primary: linear-gradient(135deg, #667eea, #764ba2);
+        --mobile-gradient-success: linear-gradient(135deg, #43e97b, #38f9d7);
+        --mobile-gradient-info: linear-gradient(135deg, #4facfe, #00f2fe);
+        --mobile-gradient-warning: linear-gradient(135deg, #fa709a, #fee140);
+        --mobile-gradient-danger: linear-gradient(135deg, #f093fb, #f5576c);
+        
+        /* Фоны карточек */
+        --mobile-card-bg-light: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.88) 100%);
+        --mobile-card-bg-dark: linear-gradient(135deg, rgba(20,25,40,0.98) 0%, rgba(35,45,60,0.95) 100%);
+        
+        /* Тени */
+        --mobile-shadow-xs: 0 1px 4px rgba(0,0,0,0.06);
+        --mobile-shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+        --mobile-shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+        --mobile-shadow-lg: 0 8px 32px rgba(0,0,0,0.2);
+        --mobile-shadow-xl: 0 12px 48px rgba(0,0,0,0.3);
+        
+        /* Радиусы скругления */
+        --mobile-radius-xs: 8px;
+        --mobile-radius-sm: 10px;
+        --mobile-radius-md: 12px;
+        --mobile-radius-lg: 14px;
+        --mobile-radius-xl: 16px;
+        --mobile-radius-2xl: 20px;
+        
+        /* Отступы */
+        --mobile-spacing-xs: 6px;
+        --mobile-spacing-sm: 10px;
+        --mobile-spacing-md: 14px;
+        --mobile-spacing-lg: 18px;
+        --mobile-spacing-xl: 24px;
+        
+        /* Цвета текста */
+        --mobile-text-primary: #0f172a;
+        --mobile-text-secondary: #64748b;
+        --mobile-text-tertiary: #94a3b8;
+        
+        /* Темная тема */
+        --mobile-text-primary-dark: #f7fafc;
+        --mobile-text-secondary-dark: #cbd5e1;
+        --mobile-text-tertiary-dark: #94a3b8;
+    }
+}
+
+/* === 0. ФОН И ОБЩИЕ СТИЛИ === */
+
+@media (max-width: 991.98px) {
+    /* Правильный box-sizing для всех элементов */
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+    
+    /* Фон как в веб-версии - темный градиент */
+    body.mobile-view {
+        background: linear-gradient(135deg, #0a0a1a 0%, #151530 25%, #2a1850 50%, #151530 75%, #0a0a1a 100%) !important;
+        background-attachment: fixed !important;
+        min-height: 100vh;
+        /* Плавный скролл */
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        /* Убираем резиновый эффект на iOS */
+        overscroll-behavior-y: contain;
+        /* Оптимизация рендеринга */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        /* Убираем горизонтальный скролл */
+        overflow-x: hidden;
+        width: 100%;
+    }
+
+    /* Анимированные градиенты поверх фона */
+    body.mobile-view::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+            radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+        animation: mobileBackgroundShift 20s ease-in-out infinite;
+        z-index: -1;
+        pointer-events: none;
+    }
+
+    @keyframes mobileBackgroundShift {
+        0%, 100% { transform: translateX(0) translateY(0); }
+        25% { transform: translateX(-10px) translateY(-5px); }
+        50% { transform: translateX(10px) translateY(5px); }
+        75% { transform: translateX(-5px) translateY(10px); }
+    }
+
+    /* Контейнер с отступом снизу для нижней навигации + safe area */
+    .container,
+    .container-fluid {
+        padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+        padding-bottom: calc(80px + constant(safe-area-inset-bottom, 0px)); /* iOS 11.0-11.2 */
+        background: transparent !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+    
+    /* ВАЖНО: Убираем любые фоны у контейнера */
+    body.mobile-view .container,
+    body.mobile-view .container-fluid {
+        background-color: transparent !important;
+        background-image: none !important;
+    }
+    
+    /* Нижняя навигация - правильные отступы */
+    .bottom-nav {
+        padding: 0 !important;
+    }
+    
+    .bottom-nav-container {
+        padding: 0 8px !important; /* Увеличиваем с 4px до 8px */
+        max-width: 100% !important;
+    }
+    
+    .bottom-nav-item {
+        min-width: 60px; /* Минимальная ширина для удобства */
+        max-width: none !important; /* Убираем ограничение в 20% */
+    }
+    
+    .bottom-nav-label {
+        font-size: 0.65rem; /* Немного увеличиваем текст */
+        white-space: nowrap;
+    }
+}
+
+/* === 1. ХЭДЕР И НАВИГАЦИЯ === */
+
+@media (max-width: 991.98px) {
+    /* Navbar - СВЕТЛАЯ ТЕМА (полупрозрачный светлый на темном фоне) */
+    .gaming-navbar {
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 250, 252, 0.88) 100%) !important;
+        border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15) !important;
+        transition: background 0.3s ease, border-color 0.3s ease;
+        padding: 0.5rem 0 !important;
+    }
+    
+    /* Контейнер внутри navbar */
+    .gaming-navbar .container {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        width: 100% !important;
+    }
+
+    /* Мобильный заголовок - СВЕТЛАЯ ТЕМА */
+    .mobile-page-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--mobile-primary) !important;
+        margin: 0;
+        flex: 1;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 0 0.5rem;
+        transition: color 0.3s ease;
+        min-width: 0; /* Важно для правильного ellipsis */
+    }
+
+    /* Кнопка меню - СВЕТЛАЯ ТЕМА */
+    .mobile-menu-toggle {
+        color: var(--mobile-primary) !important;
+        border-color: rgba(102, 126, 234, 0.3) !important;
+        background: rgba(102, 126, 234, 0.1) !important;
+        transition: all 0.2s ease;
+        -webkit-tap-highlight-color: transparent;
+        flex-shrink: 0; /* Не сжимать */
+        min-width: 44px; /* Минимальная ширина для тапа */
+        padding: 0.5rem !important;
+    }
+
+    .mobile-menu-toggle:hover,
+    .mobile-menu-toggle:active {
+        background: rgba(102, 126, 234, 0.2) !important;
+        border-color: rgba(102, 126, 234, 0.5) !important;
+        transform: scale(0.95);
+    }
+
+    /* === ТЕМНАЯ ТЕМА === */
+    
+    /* Navbar темный */
+    [data-bs-theme="dark"] .gaming-navbar,
+    body.dark-theme .gaming-navbar {
+        background: linear-gradient(135deg, rgba(10, 10, 25, 0.98) 0%, rgba(15, 15, 40, 0.98) 50%, rgba(30, 20, 70, 0.98) 100%) !important;
+        border-bottom: 2px solid rgba(159, 122, 234, 0.5);
+    }
+
+    /* Текст белый */
+    [data-bs-theme="dark"] .mobile-page-title,
+    body.dark-theme .mobile-page-title {
+        color: #ffffff !important;
+    }
+
+    /* Кнопка меню белая */
+    [data-bs-theme="dark"] .mobile-menu-toggle,
+    body.dark-theme .mobile-menu-toggle {
+        color: #ffffff !important;
+        border-color: rgba(255, 255, 255, 0.3) !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    [data-bs-theme="dark"] .mobile-menu-toggle:hover,
+    [data-bs-theme="dark"] .mobile-menu-toggle:active,
+    body.dark-theme .mobile-menu-toggle:hover,
+    body.dark-theme .mobile-menu-toggle:active {
+        background: rgba(255, 255, 255, 0.2) !important;
+        border-color: rgba(255, 255, 255, 0.5) !important;
+    }
+}
+
+/* === 2. ТЕКСТ И ЦВЕТА === */
+
+@media (max-width: 991.98px) {
+    /* Основной текст - темный на карточках */
+    body {
+        color: var(--mobile-text-primary);
+        transition: color 0.3s ease;
+    }
+
+    /* Текст в карточках - сохраняем темный */
+    .card {
+        color: var(--mobile-text-primary);
+    }
+
+    .card-title,
+    .card-text,
+    .card-body {
+        color: var(--mobile-text-primary) !important;
+        transition: color 0.3s ease;
+    }
+
+    /* Заголовки - темные для контраста */
+    h1, h2, h3, h4, h5, h6 {
+        color: var(--mobile-text-primary) !important;
+        transition: color 0.3s ease;
+    }
+
+    /* Текст на приветствии */
+    .welcome-section h4 {
+        color: #ffffff !important;
+    }
+
+    .welcome-section .text-muted {
+        color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    /* === ТЕМНАЯ ТЕМА === */
+    
+    [data-bs-theme="dark"],
+    body.dark-theme,
+    body.dark-theme body {
+        color: var(--mobile-text-primary-dark) !important;
+    }
+
+    [data-bs-theme="dark"] .card,
+    [data-bs-theme="dark"] .card-title,
+    [data-bs-theme="dark"] .card-text,
+    [data-bs-theme="dark"] .card-body,
+    body.dark-theme .card,
+    body.dark-theme .card-title,
+    body.dark-theme .card-text,
+    body.dark-theme .card-body {
+        color: var(--mobile-text-primary-dark) !important;
+    }
+
+    [data-bs-theme="dark"] h1,
+    [data-bs-theme="dark"] h2,
+    [data-bs-theme="dark"] h3,
+    [data-bs-theme="dark"] h4,
+    [data-bs-theme="dark"] h5,
+    [data-bs-theme="dark"] h6,
+    body.dark-theme h1,
+    body.dark-theme h2,
+    body.dark-theme h3,
+    body.dark-theme h4,
+    body.dark-theme h5,
+    body.dark-theme h6 {
+        color: #f7fafc !important;
+    }
+
+    /* Ссылки */
+    a {
+        color: var(--mobile-primary);
+        transition: color 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] a,
+    body.dark-theme a {
+        color: var(--mobile-accent);
+    }
+
+    /* Бэйджи */
+    .badge {
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    /* Иконки */
+    .fas, .fab, .far {
+        color: inherit;
+    }
+}
+
+/* === 3. КАРТОЧКИ И КОНТЕЙНЕРЫ === */
+
+@media (max-width: 991.98px) {
+    /* Красивые карточки БЕЗ рамок */
+    .card {
+        border: none;
+        background: var(--mobile-card-bg-light);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: var(--mobile-radius-xl);
+        box-shadow: 
+            var(--mobile-shadow-md),
+            0 0 40px rgba(120, 119, 198, 0.1);
+        margin-bottom: var(--mobile-spacing-md);
+        overflow: hidden;
+        position: relative;
+        /* Плавное появление */
+        animation: mobileFadeInUp 0.4s ease forwards;
+        opacity: 0;
+        /* Улучшенный тактильный отклик */
+        -webkit-tap-highlight-color: rgba(102, 126, 234, 0.2);
+        transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.3s ease;
+        /* Не вылезаем за пределы */
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    /* Каскадное появление карточек */
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.1s; }
+    .card:nth-child(3) { animation-delay: 0.15s; }
+    .card:nth-child(4) { animation-delay: 0.2s; }
+    .card:nth-child(5) { animation-delay: 0.25s; }
+    
+    @keyframes mobileFadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Отключаем анимацию для пользователей с motion sensitivity */
+    @media (prefers-reduced-motion: reduce) {
+        .card {
+            animation: none;
+            opacity: 1;
+        }
+    }
+    
+    /* Активное состояние при нажатии */
+    .card:active {
+        transform: scale(0.98);
+        box-shadow: var(--mobile-shadow-sm);
+    }
+
+    /* Темная тема для карточек */
+    [data-bs-theme="dark"] .card,
+    body.dark-theme .card {
+        background: var(--mobile-card-bg-dark);
+        box-shadow: 
+            0 8px 32px rgba(0,0,0,0.6),
+            0 0 0 1px rgba(102, 126, 234, 0.1);
+    }
+
+    .card-body {
+        padding: var(--mobile-spacing-md);
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Убираем видимые границы у карточек профиля */
+    .profile-card,
+    .settings-card,
+    .info-card {
+        border: none !important;
+    }
+
+    /* Делаем контейнеры ПОЛНОСТЬЮ ПРОЗРАЧНЫМИ - без эффекта коробки */
+    body.mobile-view .container:not(.gaming-navbar .container),
+    body.mobile-view .container-fluid:not(.gaming-navbar .container) {
+        background: transparent !important;
+        background-color: transparent !important;
+        background-image: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        /* Отступы стандартные */
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        padding-top: 12px !important;
+        margin-top: 0 !important;
+    }
+    
+    /* Для профиля - минимальные отступы */
+    body.mobile-view .container-fluid.profile-page {
+        background: transparent !important;
+        background-color: transparent !important;
+        background-image: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+        padding-top: 8px !important;
+        margin-top: 0 !important;
+    }
+    
+    /* Для очень маленьких экранов уменьшаем отступы */
+    @media (max-width: 380px) {
+        body.mobile-view .container:not(.gaming-navbar .container),
+        body.mobile-view .container-fluid:not(.gaming-navbar .container) {
+            padding-left: 8px !important;
+            padding-right: 8px !important;
+        }
+        
+        body.mobile-view .container-fluid.profile-page {
+            padding-left: 4px !important;
+            padding-right: 4px !important;
+        }
+    }
+    
+    /* Плавный скролл для профиля */
+    .gaming-profile-card {
+        scroll-behavior: smooth;
+    }
+    
+    /* Улучшаем отображение overflow контента */
+    .gaming-profile-card .card-body {
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Скрываем скроллбар но оставляем функциональность */
+    .gaming-profile-card .card-body::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+    }
+
+    /* === ПРОФИЛЬ - бесшовный дизайн === */
+    
+    /* Убираем видимый контейнер у профиля - БЕЗ ДОПОЛНИТЕЛЬНЫХ ОТСТУПОВ */
+    .profile-page {
+        background: transparent !important;
+    }
+    
+    .profile-page .row {
+        margin: 0 !important;
+    }
+
+    .profile-page .col-lg-4,
+    .profile-page .col-lg-8,
+    .profile-page .col-md-5,
+    .profile-page .col-md-7 {
+        max-width: 100% !important;
+        padding: 0 !important;
+    }
+    
+    /* Карточка профиля - на всю доступную ширину */
+    .profile-page .gaming-profile-card {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        width: 100% !important;
+    }
+    
+    /* На мобилке достижения скрываем (есть отдельная страница) */
+    .mobile-achievements-hidden {
+        display: none !important;
+    }
+    
+    /* Карточка достижений (если видна) */
+    .gaming-achievements-card {
+        background: var(--mobile-card-bg-light) !important;
+        border: none !important;
+        border-radius: var(--mobile-radius-2xl);
+        box-shadow: var(--mobile-shadow-md);
+        transition: background 0.3s ease;
+    }
+    
+    [data-bs-theme="dark"] .gaming-achievements-card,
+    body.dark-theme .gaming-achievements-card {
+        background: var(--mobile-card-bg-dark) !important;
+    }
+    
+    .gaming-achievements-card .card-header {
+        background: transparent !important;
+        border-bottom: 1px solid rgba(102, 126, 234, 0.15);
+        padding: var(--mobile-spacing-md);
+    }
+    
+    .gaming-achievements-card .card-header h4 {
+        font-size: 16px;
+        font-weight: 700;
+        margin: 0;
+        color: var(--mobile-text-primary);
+        transition: color 0.3s ease;
+    }
+    
+    [data-bs-theme="dark"] .gaming-achievements-card .card-header h4,
+    body.dark-theme .gaming-achievements-card .card-header h4 {
+        color: var(--mobile-text-primary-dark);
+    }
+    
+    /* Сетка достижений на мобилке - 2 колонки */
+    .achievements-container {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: var(--mobile-spacing-sm) !important;
+    }
+    
+    .achievement-card {
+        height: 160px !important;
+        border-radius: var(--mobile-radius-lg) !important;
+    }
+    
+    /* Улучшаем карточки достижений */
+    .achievement-front,
+    .achievement-back {
+        background: var(--mobile-card-bg-light) !important;
+        border: 1px solid rgba(102, 126, 234, 0.15) !important;
+        transition: background 0.3s ease;
+    }
+    
+    [data-bs-theme="dark"] .achievement-front,
+    [data-bs-theme="dark"] .achievement-back,
+    body.dark-theme .achievement-front,
+    body.dark-theme .achievement-back {
+        background: var(--mobile-card-bg-dark) !important;
+        border-color: rgba(102, 126, 234, 0.2) !important;
+    }
+    
+    /* Заблокированные достижения */
+    .achievement-locked {
+        opacity: 0.5;
+        filter: grayscale(50%);
+    }
+    
+    .achievement-locked .achievement-icon {
+        opacity: 0.6;
+    }
+
+    /* Карточки профиля - более яркие и выразительные */
+    .gaming-profile-card {
+        background: var(--mobile-card-bg-light) !important;
+        border: none !important;
+        border-radius: var(--mobile-radius-xl);
+        margin: 0 !important;
+        box-shadow: var(--mobile-shadow-lg);
+        height: auto !important;
+        overflow: visible !important;
+        transition: background 0.3s ease, transform 0.2s ease;
+        position: relative;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    /* Красивый градиентный border сверху для профиля */
+    .gaming-profile-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--mobile-gradient-primary);
+        border-radius: var(--mobile-radius-xl) var(--mobile-radius-xl) 0 0;
+    }
+
+    [data-bs-theme="dark"] .gaming-profile-card,
+    body.dark-theme .gaming-profile-card {
+        background: var(--mobile-card-bg-dark) !important;
+        box-shadow: 
+            var(--mobile-shadow-lg),
+            0 0 0 1px rgba(102, 126, 234, 0.2);
+    }
+
+    /* Аватар - БОЛЬШОЙ и выразительный */
+    .profile-avatar,
+    .profile-avatar-placeholder {
+        width: 160px !important;
+        height: 160px !important;
+        margin: 0 auto 16px !important;
+        transition: transform 0.3s ease;
+        box-shadow: 
+            0 12px 32px rgba(0, 0, 0, 0.2),
+            0 0 0 5px rgba(102, 126, 234, 0.15);
+        border-radius: 24px !important; /* Более закругленный */
+    }
+    
+    .profile-avatar:active,
+    .profile-avatar-placeholder:active {
+        transform: scale(0.95);
+    }
+    
+    /* Градиентная граница для placeholder аватара */
+    .profile-avatar-placeholder {
+        background: var(--mobile-gradient-primary) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 64px !important; /* Увеличиваем букву */
+        font-weight: 700 !important;
+    }
+    
+    /* Секция навыков - улучшаем отступы */
+    .profile-skills {
+        margin-top: var(--mobile-spacing-lg);
+        padding-top: var(--mobile-spacing-lg);
+        border-top: 1px solid rgba(102, 126, 234, 0.15);
+    }
+    
+    .skills-title {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--mobile-text-primary);
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        transition: color 0.3s ease;
+        line-height: 1.4;
+        margin-bottom: 12px !important;
+    }
+    
+    [data-bs-theme="dark"] .skills-title,
+    body.dark-theme .skills-title {
+        color: var(--mobile-text-primary-dark);
+    }
+    
+    /* Отдельные навыки */
+    .skill-progress-item {
+        padding: 8px 0;
+        margin-bottom: 8px;
+    }
+    
+    .skill-name {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--mobile-text-primary);
+        transition: color 0.3s ease;
+        line-height: 1.3;
+    }
+    
+    [data-bs-theme="dark"] .skill-name,
+    body.dark-theme .skill-name {
+        color: var(--mobile-text-primary-dark);
+    }
+    
+    .skill-percent {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--mobile-primary);
+        transition: color 0.3s ease;
+    }
+    
+    [data-bs-theme="dark"] .skill-percent,
+    body.dark-theme .skill-percent {
+        color: var(--mobile-accent);
+    }
+    
+    /* Прогресс бар навыков */
+    .skill-progress-bar {
+        background: rgba(226, 232, 240, 0.5);
+        border-radius: 10px;
+        overflow: hidden;
+        transition: background 0.3s ease;
+        height: 6px !important;
+        margin: 4px 0 !important;
+    }
+    
+    [data-bs-theme="dark"] .skill-progress-bar,
+    body.dark-theme .skill-progress-bar {
+        background: rgba(71, 85, 105, 0.5);
+    }
+    
+    .skill-bar {
+        background: var(--mobile-gradient-primary);
+        transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 0 10px rgba(102, 126, 234, 0.4);
+    }
+    
+    /* Текст под прогресс-баром */
+    .skill-progress-item small {
+        font-size: 10px !important;
+        line-height: 1.2;
+    }
+    
+    /* Действия профиля */
+    .profile-actions {
+        margin-top: var(--mobile-spacing-lg);
+        padding-top: var(--mobile-spacing-md);
+        border-top: 1px solid rgba(102, 126, 234, 0.15);
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    
+    .profile-actions .btn {
+        flex: 1;
+        min-width: 100px;
+        font-size: 13px !important;
+        padding: 10px 16px !important;
+    }
+
+    /* Имя пользователя */
+    .profile-name {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--mobile-text-primary);
+        transition: color 0.3s ease;
+        margin-bottom: 8px !important;
+        line-height: 1.2;
+    }
+
+    [data-bs-theme="dark"] .profile-name,
+    body.dark-theme .profile-name {
+        color: #ffffff;
+    }
+
+    /* Звание */
+    .profile-title {
+        font-size: 14px;
+        color: var(--mobile-primary);
+        font-weight: 600;
+        transition: color 0.3s ease;
+        padding: 8px 20px;
+        background: rgba(102, 126, 234, 0.1);
+        border-radius: 24px;
+        display: inline-block;
+        margin-bottom: 20px !important;
+        line-height: 1.3;
+    }
+
+    [data-bs-theme="dark"] .profile-title,
+    body.dark-theme .profile-title {
+        color: var(--mobile-accent);
+        background: rgba(159, 122, 234, 0.15);
+    }
+    
+    /* Текст muted в профиле */
+    .gaming-profile-card .text-muted {
+        color: var(--mobile-text-secondary) !important;
+        transition: color 0.3s ease;
+    }
+    
+    [data-bs-theme="dark"] .gaming-profile-card .text-muted,
+    body.dark-theme .gaming-profile-card .text-muted {
+        color: var(--mobile-text-secondary-dark) !important;
+    }
+    
+    /* Card body профиля - нормальные отступы */
+    .gaming-profile-card .card-body {
+        padding: var(--mobile-spacing-lg) var(--mobile-spacing-md) !important;
+    }
+
+    /* Статистика в профиле - компактная сетка */
+    .profile-stats {
+        width: 100%;
+    }
+    
+    .profile-stats .row {
+        margin: 0 -4px !important;
+    }
+    
+    .profile-stats .col-4 {
+        padding: 0 4px !important;
+    }
+    
+    .profile-stats .stat-item {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.05) 100%);
+        border-radius: var(--mobile-radius-md);
+        padding: 10px 6px;
+        border: none;
+        transition: all 0.2s ease;
+        -webkit-tap-highlight-color: transparent;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 80px;
+    }
+    
+    .profile-stats .stat-item:active {
+        transform: scale(0.97);
+    }
+
+    [data-bs-theme="dark"] .profile-stats .stat-item,
+    body.dark-theme .profile-stats .stat-item {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.1) 100%);
+    }
+
+    .profile-stats .stat-icon {
+        font-size: 22px;
+        margin-bottom: 4px;
+        line-height: 1;
+    }
+
+    .profile-stats .stat-value {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--mobile-text-primary);
+        transition: color 0.3s ease;
+        line-height: 1.2;
+        margin: 2px 0;
+    }
+
+    [data-bs-theme="dark"] .profile-stats .stat-value,
+    body.dark-theme .profile-stats .stat-value {
+        color: #ffffff;
+    }
+
+    .profile-stats .stat-label {
+        font-size: 10px;
+        color: var(--mobile-text-secondary);
+        text-transform: uppercase;
+        font-weight: 600;
+        transition: color 0.3s ease;
+        line-height: 1.2;
+        white-space: nowrap;
+    }
+
+    [data-bs-theme="dark"] .profile-stats .stat-label,
+    body.dark-theme .profile-stats .stat-label {
+        color: var(--mobile-text-secondary-dark);
+    }
+
+    /* Прогресс-бар в профиле */
+    .profile-progress-bar {
+        height: 12px;
+        border-radius: 6px;
+        overflow: hidden;
+        background: rgba(226, 232, 240, 0.5);
+        transition: background 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .profile-progress-bar,
+    body.dark-theme .profile-progress-bar {
+        background: rgba(71, 85, 105, 0.5);
+    }
+
+    .profile-progress-bar .progress-bar {
+        background: var(--mobile-gradient-primary);
+        box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+    }
+
+    /* Кнопки в профиле */
+    .profile-btn {
+        width: 100%;
+        margin-bottom: 10px;
+        border-radius: var(--mobile-radius-md);
+        padding: 12px;
+        font-weight: 600;
+        border: none;
+        box-shadow: var(--mobile-shadow-sm);
+        transition: all 0.2s ease;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .profile-btn:active {
+        transform: scale(0.97);
+    }
+
+    /* Списки в профиле */
+    .profile-info-list,
+    .profile-achievements-list {
+        border: none !important;
+    }
+
+    .profile-info-list .list-group-item,
+    .profile-achievements-list .list-group-item {
+        background: var(--mobile-card-bg-light);
+        border: none !important;
+        border-radius: var(--mobile-radius-md);
+        margin-bottom: var(--mobile-spacing-xs);
+        padding: 14px;
+        transition: all 0.2s ease;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .profile-info-list .list-group-item:active,
+    .profile-achievements-list .list-group-item:active {
+        transform: scale(0.98);
+    }
+
+    [data-bs-theme="dark"] .profile-info-list .list-group-item,
+    [data-bs-theme="dark"] .profile-achievements-list .list-group-item,
+    body.dark-theme .profile-info-list .list-group-item,
+    body.dark-theme .profile-achievements-list .list-group-item {
+        background: var(--mobile-card-bg-dark);
+    }
+}
+
+/* === 4. КАРТИНКИ И ИЗОБРАЖЕНИЯ === */
+
+@media (max-width: 991.98px) {
+    /* Фиксим размер аватаров */
+    .rounded-circle {
+        width: 40px !important;
+        height: 40px !important;
+        object-fit: cover;
+        flex-shrink: 0;
+    }
+
+    /* Иконки категорий */
+    .card img {
+        max-width: 100%;
+        height: auto;
+        object-fit: contain;
+    }
+
+    .category-icon {
+        width: 48px;
+        height: 48px;
+        object-fit: contain;
+        margin-bottom: var(--mobile-spacing-xs);
+    }
+
+    /* Изображения в списках */
+    .list-group-item img {
+        width: 32px;
+        height: 32px;
+        object-fit: cover;
+        border-radius: 6px;
+        margin-right: 12px;
+        flex-shrink: 0;
+    }
+
+    /* Изображения достижений */
+    .achievement-icon {
+        width: 56px;
+        height: 56px;
+        object-fit: contain;
+    }
+
+    /* Изображения в медиа */
+    .media-img {
+        width: 100%;
+        max-height: 200px;
+        object-fit: cover;
+        border-radius: var(--mobile-radius-xs);
+    }
+}
+
+/* === 5. РЕЙТИНГ И СПИСОК ЛИДЕРОВ === */
+
+@media (max-width: 991.98px) {
+    /* Компактный рейтинг */
+    .leaderboard-item {
+        background: var(--mobile-card-bg-light);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        padding: 14px;
+        margin-bottom: 10px;
+        border-radius: var(--mobile-radius-lg);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: var(--mobile-shadow-sm);
+        border: none;
+        transition: all 0.2s ease;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .leaderboard-item:active {
+        transform: scale(0.98);
+    }
+
+    [data-bs-theme="dark"] .leaderboard-item,
+    body.dark-theme .leaderboard-item {
+        background: var(--mobile-card-bg-dark);
+        border: none;
+    }
+
+    .leaderboard-rank {
+        font-size: 18px;
+        font-weight: 700;
+        min-width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--mobile-gradient-primary);
+        color: #ffffff;
+        border-radius: 10px;
+        flex-shrink: 0;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .leaderboard-avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        object-fit: cover;
+        flex-shrink: 0;
+        border: 2px solid rgba(102, 126, 234, 0.3);
+    }
+
+    .leaderboard-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .leaderboard-name {
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: var(--mobile-text-primary);
+        transition: color 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .leaderboard-name,
+    body.dark-theme .leaderboard-name {
+        color: #ffffff;
+    }
+
+    .leaderboard-points {
+        font-size: 13px;
+        color: var(--mobile-primary);
+        font-weight: 600;
+        transition: color 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .leaderboard-points,
+    body.dark-theme .leaderboard-points {
+        color: var(--mobile-accent);
+    }
+
+    /* Топ 3 с медалями */
+    .leaderboard-item:nth-child(1) .leaderboard-rank {
+        background: linear-gradient(135deg, #ffd700, #ffed4e);
+        color: #854d0e;
+        box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+    }
+
+    .leaderboard-item:nth-child(2) .leaderboard-rank {
+        background: linear-gradient(135deg, #c0c0c0, #e8e8e8);
+        color: #4a5568;
+        box-shadow: 0 4px 12px rgba(192, 192, 192, 0.4);
+    }
+
+    .leaderboard-item:nth-child(3) .leaderboard-rank {
+        background: linear-gradient(135deg, #cd7f32, #e49b5a);
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(205, 127, 50, 0.4);
+    }
+}
+
+/* === 6. ЕЖЕДНЕВНЫЕ ЗАДАНИЯ === */
+
+@media (max-width: 991.98px) {
+    /* Красивые задания */
+    .quest-item {
+        background: var(--mobile-card-bg-light);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        padding: var(--mobile-spacing-md);
+        margin-bottom: var(--mobile-spacing-sm);
+        border-radius: var(--mobile-radius-lg);
+        box-shadow: var(--mobile-shadow-sm);
+        border: none;
+        transition: all 0.2s ease;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .quest-item:active {
+        transform: scale(0.98);
+    }
+
+    [data-bs-theme="dark"] .quest-item,
+    body.dark-theme .quest-item {
+        background: var(--mobile-card-bg-dark);
+        border: none;
+    }
+
+    .quest-title {
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: var(--mobile-text-primary);
+        transition: color 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .quest-title,
+    body.dark-theme .quest-title {
+        color: #ffffff;
+    }
+
+    .quest-description {
+        font-size: 13px;
+        color: var(--mobile-text-secondary);
+        margin-bottom: 10px;
+        line-height: 1.4;
+        transition: color 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .quest-description,
+    body.dark-theme .quest-description {
+        color: var(--mobile-text-secondary-dark);
+    }
+
+    .quest-progress {
+        height: 8px;
+        border-radius: 4px;
+        overflow: hidden;
+        background: rgba(226, 232, 240, 0.5);
+        margin-bottom: var(--mobile-spacing-xs);
+        transition: background 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .quest-progress,
+    body.dark-theme .quest-progress {
+        background: rgba(71, 85, 105, 0.5);
+    }
+
+    .quest-progress-bar {
+        height: 100%;
+        background: var(--mobile-gradient-primary);
+        transition: width 0.3s ease;
+        box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+    }
+
+    .quest-reward {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--mobile-primary);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: color 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .quest-reward,
+    body.dark-theme .quest-reward {
+        color: var(--mobile-accent);
+    }
+
+    .quest-reward i {
+        font-size: 14px;
+    }
+}
+
+/* === 7. КАТЕГОРИИ ОБУЧЕНИЯ === */
+
+@media (max-width: 991.98px) {
+    /* Сетка категорий с адаптивными колонками */
+    .categories-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: var(--mobile-spacing-sm);
+        padding: 0;
+    }
+    
+    /* Для маленьких экранов (iPhone SE) */
+    @media (max-width: 380px) {
+        .categories-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+    }
+
+    /* Красивые карточки категорий */
+    .category-card {
+        background: var(--mobile-card-bg-light);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        padding: 16px 12px;
+        border-radius: var(--mobile-radius-lg);
+        text-align: center;
+        transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.3s ease;
+        box-shadow: var(--mobile-shadow-sm);
+        border: none;
+        text-decoration: none;
+        display: block;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    [data-bs-theme="dark"] .category-card,
+    body.dark-theme .category-card {
+        background: var(--mobile-card-bg-dark);
+        border: none;
+    }
+
+    .category-card:active {
+        transform: scale(0.95);
+        box-shadow: var(--mobile-shadow-xs);
+    }
+
+    .category-card .category-icon {
+        width: 48px;
+        height: 48px;
+        margin: 0 auto 10px;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+    }
+
+    .category-card h3 {
+        font-size: 14px !important;
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: var(--mobile-text-primary);
+        line-height: 1.3;
+        transition: color 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .category-card h3,
+    body.dark-theme .category-card h3 {
+        color: #ffffff;
+    }
+
+    .category-card p {
+        font-size: 11px;
+        color: var(--mobile-text-secondary);
+        margin-bottom: var(--mobile-spacing-xs);
+        line-height: 1.3;
+        transition: color 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .category-card p,
+    body.dark-theme .category-card p {
+        color: var(--mobile-text-secondary-dark);
+    }
+
+    .category-card .badge {
+        font-size: 10px;
+        padding: 4px 10px;
+        background: var(--mobile-gradient-primary);
+        border: none;
+        color: #ffffff;
+        font-weight: 600;
+    }
+}
+
+/* === 8. ПРОГРЕСС БАРЫ === */
+
+@media (max-width: 991.98px) {
+    .progress {
+        height: 10px;
+        border-radius: 5px;
+        overflow: hidden;
+        background: rgba(226, 232, 240, 0.5);
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        transition: background 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .progress,
+    body.dark-theme .progress {
+        background: rgba(71, 85, 105, 0.5);
+    }
+
+    .progress-bar {
+        background: var(--mobile-gradient-primary);
+        transition: width 0.3s ease;
+        box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+    }
+
+    /* Разные цвета прогресс-баров */
+    .progress-bar.bg-success {
+        background: var(--mobile-gradient-success) !important;
+        box-shadow: 0 0 10px rgba(67, 233, 123, 0.5);
+    }
+
+    .progress-bar.bg-info {
+        background: var(--mobile-gradient-info) !important;
+        box-shadow: 0 0 10px rgba(79, 172, 254, 0.5);
+    }
+
+    .progress-bar.bg-warning {
+        background: var(--mobile-gradient-warning) !important;
+        box-shadow: 0 0 10px rgba(250, 112, 154, 0.5);
+    }
+}
+
+/* === 9. СТАТИСТИКА И ЦИФРЫ === */
+
+@media (max-width: 991.98px) {
+    /* Приветствие */
+    .welcome-section {
+        background: var(--mobile-gradient-primary);
+        padding: 20px;
+        border-radius: var(--mobile-radius-xl);
+        box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+        margin-bottom: var(--mobile-spacing-md);
+    }
+
+    [data-bs-theme="dark"] .welcome-section,
+    body.dark-theme .welcome-section {
+        background: linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%);
+        box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+    }
+
+    /* Статистика */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--mobile-spacing-sm);
+        margin-bottom: var(--mobile-spacing-md);
+    }
+
+    .stat-card {
+        background: var(--mobile-card-bg-light);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: var(--mobile-radius-lg);
+        padding: var(--mobile-spacing-md);
+        box-shadow: var(--mobile-shadow-md);
+        border: none;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: all 0.2s ease, background 0.3s ease;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .stat-card:active {
+        transform: scale(0.97);
+    }
+
+    [data-bs-theme="dark"] .stat-card,
+    body.dark-theme .stat-card {
+        background: var(--mobile-card-bg-dark);
+        border: none;
+    }
+
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: var(--mobile-radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        box-shadow: var(--mobile-shadow-sm);
+    }
+
+    .stat-icon i {
+        color: #ffffff;
+        font-size: 20px;
+    }
+
+    .stat-content {
+        flex: 1;
+    }
+
+    .stat-value {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--mobile-text-primary);
+        display: block;
+        line-height: 1;
+        margin-bottom: 4px;
+        transition: color 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .stat-value,
+    body.dark-theme .stat-value {
+        color: #ffffff;
+    }
+
+    .stat-label {
+        font-size: 11px;
+        color: var(--mobile-text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 600;
+        transition: color 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .stat-label,
+    body.dark-theme .stat-label {
+        color: var(--mobile-text-secondary-dark);
+    }
+
+    /* Быстрые действия */
+    .quick-actions {
+        margin-bottom: var(--mobile-spacing-md);
+    }
+
+    .quick-actions-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+    }
+
+    .quick-action-btn {
+        background: var(--mobile-card-bg-light);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: var(--mobile-radius-md);
+        padding: 14px 8px;
+        text-align: center;
+        text-decoration: none;
+        box-shadow: var(--mobile-shadow-sm);
+        border: none;
+        transition: all 0.15s ease, background 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    [data-bs-theme="dark"] .quick-action-btn,
+    body.dark-theme .quick-action-btn {
+        background: var(--mobile-card-bg-dark);
+        border: none;
+    }
+
+    .quick-action-btn i {
+        font-size: 20px;
+        color: var(--mobile-primary);
+        transition: color 0.3s ease;
+    }
+    
+    [data-bs-theme="dark"] .quick-action-btn i,
+    body.dark-theme .quick-action-btn i {
+        color: var(--mobile-accent);
+    }
+
+    .quick-action-btn span {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--mobile-text-primary);
+        transition: color 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .quick-action-btn span,
+    body.dark-theme .quick-action-btn span {
+        color: var(--mobile-text-secondary-dark);
+    }
+
+    .quick-action-btn:active {
+        transform: scale(0.92);
+    }
+
+    /* Секция прогресса */
+    .progress-section .card {
+        margin-bottom: var(--mobile-spacing-md);
+    }
+
+    .section-title {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: var(--mobile-spacing-sm);
+        color: var(--mobile-text-primary);
+        display: flex;
+        align-items: center;
+        gap: var(--mobile-spacing-xs);
+        transition: color 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .section-title,
+    body.dark-theme .section-title {
+        color: #f7fafc;
+    }
+
+    .section-title i {
+        color: var(--mobile-primary);
+    }
+}
+
+/* === 10. КНОПКИ === */
+
+@media (max-width: 991.98px) {
+    .btn {
+        font-size: 14px;
+        padding: 12px 24px;
+        border-radius: var(--mobile-radius-sm);
+        font-weight: 600;
+        border: none;
+        transition: all 0.15s ease;
+        box-shadow: var(--mobile-shadow-sm);
+        /* Минимальный размер для удобства тапа (Apple HIG) */
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-primary {
+        background: var(--mobile-gradient-primary);
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #5568d3, #6a3f8f);
+    }
+    
+    .btn-primary:active {
+        transform: scale(0.96);
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-success {
+        background: var(--mobile-gradient-success);
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(67, 233, 123, 0.4);
+    }
+    
+    .btn-success:active {
+        transform: scale(0.96);
+    }
+
+    .btn-info {
+        background: var(--mobile-gradient-info);
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(79, 172, 254, 0.4);
+    }
+    
+    .btn-info:active {
+        transform: scale(0.96);
+    }
+
+    .btn-warning {
+        background: var(--mobile-gradient-warning);
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(250, 112, 154, 0.4);
+    }
+    
+    .btn-warning:active {
+        transform: scale(0.96);
+    }
+
+    .btn-danger {
+        background: var(--mobile-gradient-danger);
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(240, 147, 251, 0.4);
+    }
+    
+    .btn-danger:active {
+        transform: scale(0.96);
+    }
+
+    .btn-sm {
+        font-size: 12px;
+        padding: 8px 16px;
+        border-radius: var(--mobile-radius-xs);
+        min-height: 36px;
+    }
+
+    .btn-lg {
+        font-size: 16px;
+        padding: 16px 32px;
+        border-radius: var(--mobile-radius-md);
+        min-height: 52px;
+    }
+
+    /* Кнопки на всю ширину */
+    .btn-mobile-full {
+        width: 100%;
+        margin-bottom: var(--mobile-spacing-sm);
+    }
+}
+
+/* === 11. ДОСТИЖЕНИЯ === */
+
+@media (max-width: 991.98px) {
+    .achievement-item {
+        background: var(--mobile-card-bg-light);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px;
+        margin-bottom: var(--mobile-spacing-sm);
+        border-radius: var(--mobile-radius-lg);
+        box-shadow: var(--mobile-shadow-sm);
+        border: none;
+        transition: all 0.2s ease, background 0.3s ease;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .achievement-item:active {
+        transform: scale(0.98);
+    }
+
+    [data-bs-theme="dark"] .achievement-item,
+    body.dark-theme .achievement-item {
+        background: var(--mobile-card-bg-dark);
+        border: none;
+    }
+
+    .achievement-icon {
+        width: 56px;
+        height: 56px;
+        flex-shrink: 0;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+    }
+
+    .achievement-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .achievement-title {
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: var(--mobile-text-primary);
+        transition: color 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .achievement-title,
+    body.dark-theme .achievement-title {
+        color: #ffffff;
+    }
+
+    .achievement-description {
+        font-size: 13px;
+        color: var(--mobile-text-secondary);
+        line-height: 1.4;
+        transition: color 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .achievement-description,
+    body.dark-theme .achievement-description {
+        color: var(--mobile-text-secondary-dark);
+    }
+
+    /* Заблокированные достижения */
+    .achievement-item.locked {
+        opacity: 0.6;
+        background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.6) 100%);
+    }
+
+    [data-bs-theme="dark"] .achievement-item.locked,
+    body.dark-theme .achievement-item.locked {
+        background: linear-gradient(135deg, rgba(30,41,59,0.7) 0%, rgba(51,65,85,0.7) 100%);
+    }
+
+    .achievement-item.locked .achievement-icon {
+        filter: grayscale(100%) brightness(0.7);
+    }
+
+    .achievement-item.locked .achievement-title,
+    .achievement-item.locked .achievement-description {
+        opacity: 0.7;
+    }
+    
+    /* Новые достижения с анимацией блеска */
+    .achievement-new {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .achievement-new::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        animation: mobileAchievementShine 3s ease-in-out infinite;
+    }
+    
+    @keyframes mobileAchievementShine {
+        0% { left: -100%; }
+        20%, 100% { left: 100%; }
+    }
+}
+
+/* === 12. УВЕДОМЛЕНИЯ === */
+
+@media (max-width: 991.98px) {
+    .notification-item {
+        background: var(--mobile-card-bg-light);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        padding: var(--mobile-spacing-md);
+        margin-bottom: var(--mobile-spacing-sm);
+        border-radius: var(--mobile-radius-lg);
+        box-shadow: var(--mobile-shadow-sm);
+        border: none;
+        border-left: 4px solid var(--mobile-primary);
+        transition: all 0.2s ease, background 0.3s ease;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .notification-item:active {
+        transform: scale(0.98);
+    }
+
+    [data-bs-theme="dark"] .notification-item,
+    body.dark-theme .notification-item {
+        background: var(--mobile-card-bg-dark);
+        border: none;
+        border-left: 4px solid var(--mobile-accent);
+    }
+
+    .notification-item.unread {
+        background: linear-gradient(135deg, rgba(102,126,234,0.1) 0%, rgba(118,75,162,0.05) 100%);
+        box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
+    }
+
+    [data-bs-theme="dark"] .notification-item.unread,
+    body.dark-theme .notification-item.unread {
+        background: linear-gradient(135deg, rgba(102,126,234,0.15) 0%, rgba(118,75,162,0.1) 100%);
+    }
+
+    .notification-title {
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: var(--mobile-text-primary);
+        transition: color 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .notification-title,
+    body.dark-theme .notification-title {
+        color: #ffffff;
+    }
+
+    .notification-text {
+        font-size: 13px;
+        color: var(--mobile-text-secondary);
+        margin-bottom: var(--mobile-spacing-xs);
+        line-height: 1.4;
+        transition: color 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .notification-text,
+    body.dark-theme .notification-text {
+        color: var(--mobile-text-secondary-dark);
+    }
+
+    .notification-time {
+        font-size: 11px;
+        color: var(--mobile-text-tertiary);
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .notification-time,
+    body.dark-theme .notification-time {
+        color: var(--mobile-text-tertiary-dark);
+    }
+    
+    /* Пульсация для бэйджа уведомлений */
+    .notification-badge {
+        animation: mobileNotificationPulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes mobileNotificationPulse {
+        0%, 100% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+        }
+        50% {
+            transform: scale(1.05);
+            box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+        }
+    }
+}
+
+/* === 13. ФОРМЫ === */
+
+@media (max-width: 991.98px) {
+    /* Минимум 16px чтобы iOS не зумил страницу */
+    input,
+    select,
+    textarea {
+        font-size: 16px !important;
+    }
+
+    .form-control {
+        font-size: 16px !important; /* Критично для iOS */
+        padding: 14px 16px;
+        border-radius: var(--mobile-radius-sm);
+        border: 2px solid rgba(226, 232, 240, 0.5);
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        color: var(--mobile-text-primary);
+        transition: all 0.3s ease;
+        /* Убираем синюю подсветку на iOS */
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .form-control:focus {
+        border-color: var(--mobile-primary);
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        background: #ffffff;
+    }
+
+    [data-bs-theme="dark"] .form-control,
+    body.dark-theme .form-control {
+        background: rgba(30, 30, 50, 0.9);
+        border-color: rgba(120, 119, 198, 0.3);
+        color: var(--mobile-text-primary-dark);
+    }
+
+    [data-bs-theme="dark"] .form-control:focus,
+    body.dark-theme .form-control:focus {
+        border-color: var(--mobile-accent);
+        box-shadow: 0 0 0 3px rgba(159, 122, 234, 0.1);
+        background: rgba(30, 30, 50, 1);
+    }
+
+    .form-label {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: var(--mobile-spacing-xs);
+        color: var(--mobile-text-primary);
+        transition: color 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .form-label,
+    body.dark-theme .form-label {
+        color: #ffffff;
+    }
+
+    .form-text {
+        font-size: 12px;
+        color: var(--mobile-text-secondary);
+        margin-top: 6px;
+        transition: color 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .form-text,
+    body.dark-theme .form-text {
+        color: var(--mobile-text-secondary-dark);
+    }
+
+    /* Чекбоксы и радио */
+    .form-check-input {
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(226, 232, 240, 0.5);
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .form-check-input:checked {
+        background-color: var(--mobile-primary);
+        border-color: var(--mobile-primary);
+    }
+}
+
+/* === 14. МЕДИА И СТАТЬИ === */
+
+@media (max-width: 991.98px) {
+    .media-item {
+        background: var(--mobile-card-bg-light);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        margin-bottom: var(--mobile-spacing-md);
+        border-radius: var(--mobile-radius-xl);
+        overflow: hidden;
+        box-shadow: var(--mobile-shadow-sm);
+        border: none;
+        transition: all 0.2s ease, background 0.3s ease;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .media-item:active {
+        transform: scale(0.98);
+    }
+
+    [data-bs-theme="dark"] .media-item,
+    body.dark-theme .media-item {
+        background: var(--mobile-card-bg-dark);
+        border: none;
+    }
+
+    .media-thumbnail {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+    }
+
+    .media-content {
+        padding: var(--mobile-spacing-md);
+    }
+
+    .media-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: var(--mobile-spacing-xs);
+        color: var(--mobile-text-primary);
+        line-height: 1.4;
+        transition: color 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .media-title,
+    body.dark-theme .media-title {
+        color: #ffffff;
+    }
+
+    .media-description {
+        font-size: 13px;
+        color: var(--mobile-text-secondary);
+        line-height: 1.5;
+        margin-bottom: var(--mobile-spacing-sm);
+        transition: color 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .media-description,
+    body.dark-theme .media-description {
+        color: var(--mobile-text-secondary-dark);
+    }
+
+    .media-meta {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 12px;
+        color: var(--mobile-text-tertiary);
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .media-meta,
+    body.dark-theme .media-meta {
+        color: var(--mobile-text-tertiary-dark);
+    }
+
+    .media-meta i {
+        color: var(--mobile-primary);
+        transition: color 0.3s ease;
+    }
+    
+    [data-bs-theme="dark"] .media-meta i,
+    body.dark-theme .media-meta i {
+        color: var(--mobile-accent);
+    }
+}
+
+/* === 15. СПИСКИ === */
+
+@media (max-width: 991.98px) {
+    .list-group-item {
+        background: var(--mobile-card-bg-light);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: none;
+        box-shadow: var(--mobile-shadow-xs);
+        padding: 12px;
+        border-radius: var(--mobile-radius-xs);
+        margin-bottom: var(--mobile-spacing-xs);
+        font-size: 14px;
+        transition: all 0.2s ease, background 0.3s ease;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .list-group-item:active {
+        transform: scale(0.98);
+    }
+
+    [data-bs-theme="dark"] .list-group-item,
+    body.dark-theme .list-group-item {
+        background: var(--mobile-card-bg-dark);
+        border: none;
+        color: var(--mobile-text-primary-dark);
+    }
+}
+
+/* === 16. ДОПОЛНИТЕЛЬНЫЕ ИСПРАВЛЕНИЯ === */
+
+@media (max-width: 991.98px) {
+    /* Таблицы */
+    .table {
+        font-size: 13px;
+        background: transparent;
+    }
+
+    .table thead th {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        color: var(--mobile-text-primary);
+        font-weight: 600;
+        border: none;
+        padding: 12px 10px;
+        transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .table thead th,
+    body.dark-theme .table thead th {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+        color: #ffffff;
+    }
+
+    .table tbody tr {
+        background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.92) 100%);
+        border: none;
+        transition: background 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .table tbody tr,
+    body.dark-theme .table tbody tr {
+        background: linear-gradient(135deg, rgba(30,41,59,0.95) 0%, rgba(51,65,85,0.88) 100%);
+    }
+
+    .table td,
+    .table th {
+        padding: 12px 10px;
+        border: none;
+        color: var(--mobile-text-primary);
+        transition: color 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .table td,
+    [data-bs-theme="dark"] .table th,
+    body.dark-theme .table td,
+    body.dark-theme .table th {
+        color: var(--mobile-text-primary-dark);
+    }
+
+    .table tbody tr + tr {
+        border-top: 1px solid rgba(226, 232, 240, 0.3);
+    }
+
+    [data-bs-theme="dark"] .table tbody tr + tr,
+    body.dark-theme .table tbody tr + tr {
+        border-top: 1px solid rgba(120, 119, 198, 0.2);
+    }
+
+    /* Модальные окна */
+    .modal-dialog {
+        margin: 0;
+        max-width: 100%;
+        height: 100%;
+    }
+
+    .modal-content {
+        height: 100%;
+        border-radius: 0;
+    }
+
+    /* Алерты */
+    .alert {
+        font-size: 14px;
+        padding: 14px 16px;
+        border-radius: var(--mobile-radius-md);
+        border: none;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        box-shadow: var(--mobile-shadow-sm);
+        transition: all 0.3s ease;
+    }
+
+    .alert-success {
+        background: linear-gradient(135deg, rgba(67, 233, 123, 0.2) 0%, rgba(56, 249, 215, 0.1) 100%);
+        color: #047857;
+        border: 1px solid rgba(67, 233, 123, 0.3);
+    }
+
+    [data-bs-theme="dark"] .alert-success,
+    body.dark-theme .alert-success {
+        background: linear-gradient(135deg, rgba(67, 233, 123, 0.15) 0%, rgba(56, 249, 215, 0.1) 100%);
+        color: #6ee7b7;
+    }
+
+    .alert-info {
+        background: linear-gradient(135deg, rgba(79, 172, 254, 0.2) 0%, rgba(0, 242, 254, 0.1) 100%);
+        color: #0369a1;
+        border: 1px solid rgba(79, 172, 254, 0.3);
+    }
+
+    [data-bs-theme="dark"] .alert-info,
+    body.dark-theme .alert-info {
+        background: linear-gradient(135deg, rgba(79, 172, 254, 0.15) 0%, rgba(0, 242, 254, 0.1) 100%);
+        color: #7dd3fc;
+    }
+
+    .alert-warning {
+        background: linear-gradient(135deg, rgba(250, 112, 154, 0.2) 0%, rgba(254, 225, 64, 0.1) 100%);
+        color: #c2410c;
+        border: 1px solid rgba(250, 112, 154, 0.3);
+    }
+
+    [data-bs-theme="dark"] .alert-warning,
+    body.dark-theme .alert-warning {
+        background: linear-gradient(135deg, rgba(250, 112, 154, 0.15) 0%, rgba(254, 225, 64, 0.1) 100%);
+        color: #fdba74;
+    }
+
+    .alert-danger {
+        background: linear-gradient(135deg, rgba(240, 147, 251, 0.2) 0%, rgba(245, 87, 108, 0.1) 100%);
+        color: #b91c1c;
+        border: 1px solid rgba(240, 147, 251, 0.3);
+    }
+
+    [data-bs-theme="dark"] .alert-danger,
+    body.dark-theme .alert-danger {
+        background: linear-gradient(135deg, rgba(240, 147, 251, 0.15) 0%, rgba(245, 87, 108, 0.1) 100%);
+        color: #fca5a5;
+    }
+
+    /* Разделители */
+    hr {
+        margin: 20px 0;
+        border: none;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.3), transparent);
+    }
+
+    [data-bs-theme="dark"] hr,
+    body.dark-theme hr {
+        background: linear-gradient(90deg, transparent, rgba(159, 122, 234, 0.3), transparent);
+    }
+
+    /* Отступы секций */
+    section {
+        margin-bottom: var(--mobile-spacing-xl);
+    }
+
+    /* Пустые состояния */
+    .empty-state {
+        background: var(--mobile-card-bg-light);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        text-align: center;
+        padding: 48px 24px;
+        border-radius: var(--mobile-radius-xl);
+        box-shadow: var(--mobile-shadow-sm);
+        border: none;
+        transition: background 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .empty-state,
+    body.dark-theme .empty-state {
+        background: var(--mobile-card-bg-dark);
+        border: none;
+    }
+
+    .empty-state-icon {
+        font-size: 56px;
+        margin-bottom: var(--mobile-spacing-md);
+        color: var(--mobile-primary);
+        opacity: 0.6;
+        transition: color 0.3s ease;
+    }
+    
+    [data-bs-theme="dark"] .empty-state-icon,
+    body.dark-theme .empty-state-icon {
+        color: var(--mobile-accent);
+    }
+
+    .empty-state-text {
+        font-size: 15px;
+        color: var(--mobile-text-secondary);
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+
+    [data-bs-theme="dark"] .empty-state-text,
+    body.dark-theme .empty-state-text {
+        color: var(--mobile-text-secondary-dark);
+    }
+}
+
+/* === 17. SKELETON LOADER (Загрузочные состояния) === */
+
+@media (max-width: 991.98px) {
+    .skeleton {
+        background: linear-gradient(
+            90deg,
+            rgba(226, 232, 240, 0.4) 25%,
+            rgba(226, 232, 240, 0.6) 50%,
+            rgba(226, 232, 240, 0.4) 75%
+        );
+        background-size: 200% 100%;
+        animation: mobileSkeletonLoading 1.5s ease-in-out infinite;
+        border-radius: var(--mobile-radius-xs);
+    }
+    
+    body.dark-theme .skeleton,
+    [data-bs-theme="dark"] .skeleton {
+        background: linear-gradient(
+            90deg,
+            rgba(51, 65, 85, 0.4) 25%,
+            rgba(71, 85, 105, 0.6) 50%,
+            rgba(51, 65, 85, 0.4) 75%
+        );
+        background-size: 200% 100%;
+    }
+    
+    @keyframes mobileSkeletonLoading {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+    }
+    
+    .skeleton-card {
+        height: 120px;
+        margin-bottom: var(--mobile-spacing-sm);
+    }
+    
+    .skeleton-text {
+        height: 16px;
+        width: 100%;
+        margin-bottom: var(--mobile-spacing-xs);
+    }
+    
+    .skeleton-text.short {
+        width: 60%;
+    }
+    
+    .skeleton-circle {
+        border-radius: 50%;
+    }
+}
+
+/* === 18. ОПТИМИЗАЦИЯ TOUCH И ВЗАИМОДЕЙСТВИЯ === */
+
+@media (max-width: 991.98px) {
+    /* Убираем выделение текста где не нужно */
+    button,
+    .btn,
+    .card,
+    .category-card,
+    .bottom-nav-item {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+    }
+    
+    /* Разрешаем выделение текста где нужно */
+    p,
+    span:not(.bottom-nav-label),
+    div:not(.card):not(.category-card),
+    input,
+    textarea,
+    .card-text,
+    .media-description,
+    .quest-description,
+    .achievement-description {
+        -webkit-user-select: text;
+        user-select: text;
+    }
+    
+    /* Оптимизация hover для тач-устройств */
+    @media (hover: none) and (pointer: coarse) {
+        .btn:hover,
+        .card:hover,
+        .category-card:hover {
+            transform: none;
+        }
+    }
+}
+
+/* === 19. SAFE AREA INSETS (iPhone с вырезом) === */
+
+@media (max-width: 991.98px) {
+    @supports (padding: env(safe-area-inset-bottom)) {
+        body.mobile-view {
+            padding-bottom: calc(60px + env(safe-area-inset-bottom));
+        }
+    }
+    
+    @supports (padding: constant(safe-area-inset-bottom)) {
+        body.mobile-view {
+            padding-bottom: calc(60px + constant(safe-area-inset-bottom));
+        }
+    }
+}
+
+/* === 20. АДАПТАЦИЯ ДЛЯ МАЛЫХ ЭКРАНОВ (iPhone SE) === */
+
+@media (max-width: 380px) {
+    :root {
+        --mobile-spacing-xs: 4px;
+        --mobile-spacing-sm: 8px;
+        --mobile-spacing-md: 10px;
+        --mobile-spacing-lg: 14px;
+        --mobile-spacing-xl: 18px;
+    }
+    
+    .card-body {
+        padding: 12px;
+    }
+    
+    .btn {
+        font-size: 13px;
+        padding: 10px 20px;
+    }
+    
+    .stat-value {
+        font-size: 20px !important;
+    }
+    
+    .mobile-page-title {
+        font-size: 1rem !important;
+    }
+}
+
+/* === 21. ЛАНДШАФТНАЯ ОРИЕНТАЦИЯ === */
+
+@media (max-width: 991.98px) and (orientation: landscape) and (max-height: 500px) {
+    .welcome-section {
+        padding: 12px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--mobile-spacing-xs);
+    }
+    
+    .stat-card {
+        padding: 10px;
+    }
+    
+    .stat-icon {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .stat-value {
+        font-size: 18px !important;
+    }
+    
+    .profile-avatar,
+    .profile-avatar-placeholder {
+        width: 80px !important;
+        height: 80px !important;
+    }
+}
+
+/* === 22. ACCESSIBILITY (Доступность) === */
+
+@media (max-width: 991.98px) {
+    /* Для пользователей с motion sensitivity */
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+    
+    /* Увеличиваем контраст для prefers-contrast */
+    @media (prefers-contrast: high) {
+        .card {
+            border: 2px solid rgba(102, 126, 234, 0.5) !important;
+        }
+        
+        .btn {
+            border: 2px solid currentColor !important;
+        }
+    }
+}
+
+/* === КОНЕЦ ФАЙЛА === */

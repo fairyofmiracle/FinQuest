@@ -1,0 +1,325 @@
+{% extends 'base.html' %}
+
+{% block title %}Установка приложения - FinQuest{% endblock %}
+{% block page_title %}📱 Установка{% endblock %}
+
+{% block content %}
+<div class="install-page">
+  <!-- Главный баннер -->
+  <div class="install-hero mb-4">
+    <div class="install-icon mb-3">
+      <i class="fa-solid fa-mobile-screen-button"></i>
+    </div>
+    <h2 class="install-title mb-2">Установите FinQuest</h2>
+    <p class="install-subtitle">Получите быстрый доступ к обучению прямо с домашнего экрана</p>
+  </div>
+
+  <!-- Преимущества -->
+  <div class="install-benefits mb-4">
+    <h3 class="section-title mb-3">Почему стоит установить?</h3>
+    <div class="benefit-item">
+      <div class="benefit-icon">⚡</div>
+      <div class="benefit-content">
+        <div class="benefit-title">Быстрый запуск</div>
+        <div class="benefit-description">Открывайте приложение одним касанием</div>
+      </div>
+    </div>
+    <div class="benefit-item">
+      <div class="benefit-icon">📴</div>
+      <div class="benefit-content">
+        <div class="benefit-title">Работа офлайн</div>
+        <div class="benefit-description">Учитесь даже без интернета</div>
+      </div>
+    </div>
+    <div class="benefit-item">
+      <div class="benefit-icon">🔔</div>
+      <div class="benefit-content">
+        <div class="benefit-title">Уведомления</div>
+        <div class="benefit-description">Получайте напоминания о заданиях</div>
+      </div>
+    </div>
+    <div class="benefit-item">
+      <div class="benefit-icon">💾</div>
+      <div class="benefit-content">
+        <div class="benefit-title">Экономия памяти</div>
+        <div class="benefit-description">Не занимает много места</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Кнопка установки -->
+  <div id="installButtonContainer" class="install-button-container mb-4" style="display: none;">
+    <button class="btn btn-primary btn-lg w-100 install-main-btn" onclick="installPWAFromPage()">
+      <i class="fa-solid fa-download me-2"></i>Установить приложение
+    </button>
+  </div>
+
+  <!-- Инструкции -->
+  <div class="install-instructions mb-4">
+    <h3 class="section-title mb-3">Как установить?</h3>
+    
+    <!-- Android -->
+    <div class="instruction-card mb-3">
+      <div class="instruction-header">
+        <i class="fa-brands fa-android me-2"></i>
+        <strong>Android (Chrome)</strong>
+      </div>
+      <ol class="instruction-steps">
+        <li>Откройте это меню (три точки в правом верхнем углу)</li>
+        <li>Выберите "Установить приложение" или "Добавить на главный экран"</li>
+        <li>Нажмите "Установить"</li>
+        <li>Готово! Иконка появится на главном экране</li>
+      </ol>
+    </div>
+
+    <!-- iOS -->
+    <div class="instruction-card mb-3">
+      <div class="instruction-header">
+        <i class="fa-brands fa-apple me-2"></i>
+        <strong>iPhone/iPad (Safari)</strong>
+      </div>
+      <ol class="instruction-steps">
+        <li>Нажмите кнопку "Поделиться" <i class="fa-solid fa-square-arrow-up-right"></i></li>
+        <li>Прокрутите вниз и найдите "На экран «Домой»"</li>
+        <li>Нажмите "Добавить"</li>
+        <li>Готово! Иконка появится на домашнем экране</li>
+      </ol>
+    </div>
+
+    <!-- Desktop -->
+    <div class="instruction-card">
+      <div class="instruction-header">
+        <i class="fa-solid fa-desktop me-2"></i>
+        <strong>Компьютер (Chrome/Edge)</strong>
+      </div>
+      <ol class="instruction-steps">
+        <li>Найдите иконку <i class="fa-solid fa-plus"></i> в адресной строке</li>
+        <li>Нажмите "Установить FinQuest"</li>
+        <li>Подтвердите установку</li>
+        <li>Готово! Приложение откроется в отдельном окне</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="install-faq">
+    <h3 class="section-title mb-3">Частые вопросы</h3>
+    
+    <div class="faq-item">
+      <div class="faq-question">Это безопасно?</div>
+      <div class="faq-answer">Да, полностью безопасно. Приложение устанавливается из официального источника.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Сколько места займет?</div>
+      <div class="faq-answer">Около 5-10 МБ. Намного меньше обычного приложения!</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Можно ли удалить?</div>
+      <div class="faq-answer">Да, удаляется как обычное приложение через настройки устройства.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Нужен ли постоянный интернет?</div>
+      <div class="faq-answer">Нет, многие функции работают офлайн после первой загрузки.</div>
+    </div>
+  </div>
+</div>
+
+<style>
+.install-page {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.install-hero {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  padding: 2rem;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.install-icon {
+  font-size: 4rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.install-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.install-subtitle {
+  font-size: 1rem;
+  opacity: 0.9;
+  margin: 0;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: white;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.benefit-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.benefit-content {
+  flex: 1;
+}
+
+.benefit-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+}
+
+.benefit-description {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.install-main-btn {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  transition: all 0.2s ease;
+}
+
+.install-main-btn:active {
+  transform: scale(0.98);
+}
+
+.instruction-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.instruction-header {
+  font-size: 1rem;
+  color: #667eea;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.instruction-steps {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: #374151;
+}
+
+.instruction-steps li {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.faq-item {
+  background: white;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.faq-question {
+  font-weight: 700;
+  color: #1f2937;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.faq-answer {
+  font-size: 0.85rem;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+/* Темная тема */
+body.dark-theme .benefit-item,
+body.dark-theme .instruction-card,
+body.dark-theme .faq-item {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.92) 100%);
+  border: 1px solid #475569;
+}
+
+body.dark-theme .benefit-title,
+body.dark-theme .faq-question,
+body.dark-theme .section-title {
+  color: #f1f5f9;
+}
+
+body.dark-theme .benefit-description,
+body.dark-theme .faq-answer,
+body.dark-theme .instruction-steps {
+  color: #9ca3af;
+}
+
+body.dark-theme .instruction-header {
+  color: #a5b4fc;
+}
+</style>
+
+<script>
+// Показываем кнопку установки если доступна
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  window.deferredPWAPromptPage = e;
+  
+  const container = document.getElementById('installButtonContainer');
+  if (container) {
+    container.style.display = 'block';
+  }
+});
+
+async function installPWAFromPage() {
+  if (!window.deferredPWAPromptPage) {
+    showManualInstallInstructions();
+    return;
+  }
+  
+  window.deferredPWAPromptPage.prompt();
+  const { outcome } = await window.deferredPWAPromptPage.userChoice;
+  
+  if (outcome === 'accepted') {
+    alert('Спасибо! Приложение установлено 🎉');
+  }
+  
+  window.deferredPWAPromptPage = null;
+  
+  const container = document.getElementById('installButtonContainer');
+  if (container) {
+    container.style.display = 'none';
+  }
+}
+</script>
+{% endblock %}
+

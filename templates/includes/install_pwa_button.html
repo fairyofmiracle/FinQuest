@@ -1,0 +1,27 @@
+<!-- Кнопка установки PWA (Progressive Web App) -->
+{% if mobile_view %}
+<button id="installBtn" class="fab" style="display: none;" title="Установить приложение">
+  <i class="fa-solid fa-download"></i>
+</button>
+
+<style>
+  #installBtn {
+    animation: bounce-in 0.5s ease;
+  }
+  
+  @keyframes bounce-in {
+    0% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+</style>
+{% endif %}
+

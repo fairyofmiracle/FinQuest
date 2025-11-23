@@ -58,12 +58,15 @@ class Command(BaseCommand):
                 defaults=quest_data
             )
             if created:
+                # Убираем emoji для вывода в консоль Windows
+                title_clean = quest_data['description']
                 self.stdout.write(
-                    self.style.SUCCESS(f'Создано задание: {quest.title}')
+                    self.style.SUCCESS(f'Создано задание: {title_clean}')
                 )
             else:
+                title_clean = quest_data['description']
                 self.stdout.write(
-                    self.style.WARNING(f'Задание уже существует: {quest.title}')
+                    self.style.WARNING(f'Задание уже существует: {title_clean}')
                 )
         
         self.stdout.write(

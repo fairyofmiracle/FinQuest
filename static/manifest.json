@@ -1,0 +1,30 @@
+{
+  "name": "FinQuest - Финансовая грамотность",
+  "short_name": "FinQuest",
+  "description": "Изучайте финансовую грамотность в игровой форме",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#667eea",
+  "theme_color": "#667eea",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/static/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><circle cx='256' cy='256' r='200' fill='%236366f1' stroke='%234f46e5' stroke-width='8'/><circle cx='200' cy='200' r='25' fill='%23fbbf24' stroke='%23f59e0b' stroke-width='3'/><circle cx='312' cy='200' r='25' fill='%23fbbf24' stroke='%23f59e0b' stroke-width='3'/><circle cx='200' cy='312' r='25' fill='%23fbbf24' stroke='%23f59e0b' stroke-width='3'/><circle cx='312' cy='312' r='25' fill='%23fbbf24' stroke='%23f59e0b' stroke-width='3'/><circle cx='256' cy='256' r='30' fill='%23fbbf24' stroke='%23f59e0b' stroke-width='4'/><text x='256' y='265' text-anchor='middle' font-family='Arial' font-size='20' font-weight='bold' fill='%23d97706'>₽</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "finance", "games"],
+  "screenshots": [],
+  "lang": "ru",
+  "dir": "ltr",
+  "scope": "/",
+  "prefer_related_applications": false
+}
+

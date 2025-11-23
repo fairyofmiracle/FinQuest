@@ -2,14 +2,9 @@
 {% load static %}
 
 {% block title %}Турнирная таблица — FinQuest{% endblock %}
+{% block page_title %}🏆 Рейтинг{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-  <h4 class="section-title"><i class="fa-solid fa-trophy"></i> Турнирная таблица</h4>
-  <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-primary">
-    <i class="fa-solid fa-home me-1"></i>Дашборд
-  </a>
-</div>
 
 <!-- Статистика текущего пользователя -->
 {% if current_user_entry %}

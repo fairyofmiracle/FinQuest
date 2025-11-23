@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="d-flex justify-content-between align-items-center mb-3 desktop-nav">
   <a href="{% url 'topic_levels' level.topic.id %}" class="btn btn-sm btn-outline-secondary">
     <i class="fa-solid fa-arrow-left me-1"></i>К теме
   </a>
@@ -14,33 +14,44 @@
 
 <!-- Заголовок уровня с иконкой типа -->
 <div class="level-header mb-4">
-  <div class="d-flex align-items-center mb-2">
-    <span class="level-type-badge me-3">
-      {% if level.type == 'quiz' %}📝
-      {% elif level.type == 'scenario' %}🎭
-      {% elif level.type == 'calculation' %}🧮
-      {% elif level.type == 'matching' %}🔗
-      {% elif level.type == 'sorting' %}📊
-      {% elif level.type == 'simulation' %}🎮
-      {% else %}❓{% endif %}
-    </span>
-    <h4 class="mb-0">{{ level.title }}</h4>
+  <div class="d-flex align-items-center justify-content-between mb-2">
+    <div class="d-flex align-items-center">
+      <span class="level-type-badge me-3">
+        {% if level.type == 'quiz' %}📝
+        {% elif level.type == 'scenario' %}🎭
+        {% elif level.type == 'calculation' %}🧮
+        {% elif level.type == 'matching' %}🔗
+        {% elif level.type == 'sorting' %}📊
+        {% elif level.type == 'simulation' %}🎮
+        {% else %}❓{% endif %}
+      </span>
+      <h4 class="mb-0">{{ level.title }}</h4>
+    </div>
+    
+    <!-- Подсказка справа (компактная кнопка) -->
+    {% if hint %}
+      {% if not hint_shown %}
+        <form method="post" style="margin: 0;">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="buy_hint">
+          <button type="submit" class="btn btn-sm btn-outline-info hint-btn-compact haptic-medium" title="Подсказка">
+            <i class="fa-solid fa-lightbulb"></i>
+            <span class="badge bg-warning text-dark ms-1">{{ hint.cost_coins }}</span>
+          </button>
+        </form>
+      {% endif %}
+    {% endif %}
   </div>
   <p class="text-muted">{{ level.description|linebreaks }}</p>
-</div>
-
-<!-- Подсказки -->
-{% if hint %}
-  {% if hint_shown %}
-    <div class="alert alert-info">💡 {{ hint.text }}</div>
-  {% else %}
-    <form method="post" class="mb-3">
-      {% csrf_token %}
-      <input type="hidden" name="action" value="buy_hint">
-      <button type="submit" class="btn btn-outline-info btn-sm">Показать подсказку (−{{ hint.cost_coins }} 🪙)</button>
-    </form>
+  
+  <!-- Показанная подсказка под заголовком -->
+  {% if hint and hint_shown %}
+    <div class="alert alert-info hint-shown mt-3">
+      <div class="hint-icon">💡</div>
+      <div class="hint-text">{{ hint.text }}</div>
+    </div>
   {% endif %}
-{% endif %}
+</div>
 
 <!-- Контент уровня в зависимости от типа -->
 {% if level.type == 'quiz' %}
@@ -55,8 +66,8 @@
     {% empty %}
       <p class="text-muted">Нет вариантов ответа.</p>
     {% endfor %}
-    <button type="submit" class="btn btn-success btn-lg mt-3 w-100">
-      <i class="fa-solid fa-check me-2"></i>Проверить
+    <button type="submit" class="btn btn-success btn-lg mt-3 w-100 haptic-medium">
+      <i class="fa-solid fa-check me-2"></i>Ответить
     </button>
   </form>
 
@@ -93,8 +104,8 @@
           </label>
         </div>
       {% endfor %}
-      <button type="submit" class="btn btn-success btn-lg mt-3 w-100">
-        <i class="fa-solid fa-check me-2"></i>Выбрать
+      <button type="submit" class="btn btn-success btn-lg mt-3 w-100 haptic-medium">
+        <i class="fa-solid fa-check me-2"></i>Ответить
       </button>
     </form>
   </div>
@@ -139,8 +150,8 @@
         <input type="number" class="form-control form-control-lg" id="calculation_answer" name="calculation_answer" step="0.01" required>
         <div class="form-text">Введите числовой ответ (допустимая погрешность: ±{{ level.content.tolerance|floatformat:0 }})</div>
       </div>
-      <button type="submit" class="btn btn-success btn-lg w-100">
-        <i class="fa-solid fa-calculator me-2"></i>Проверить расчет
+      <button type="submit" class="btn btn-success btn-lg w-100 haptic-medium">
+        <i class="fa-solid fa-calculator me-2"></i>Ответить
       </button>
     </form>
   </div>
@@ -148,32 +159,36 @@
 {% elif level.type == 'matching' %}
   <!-- Сопоставление -->
   <div class="matching-level">
-    <h5>{{ level.content.instruction }}</h5>
+    <div class="matching-instruction mb-3">
+      <h5>{{ level.content.instruction }}</h5>
+      <p class="text-muted small mb-0">Выберите подходящее описание для каждого термина</p>
+    </div>
     <form method="post">
       {% csrf_token %}
-      <div class="row">
-        <div class="col-md-6">
-          <h6>Термины:</h6>
-          {% for item in level.content.items %}
-            <div class="matching-item p-2 border rounded mb-2" data-left="{{ forloop.counter0 }}">
-              {{ item.left }}
+      
+      <!-- Мобильная версия: карточки с выпадающими списками -->
+      <div class="matching-cards">
+        {% for item in level.content.items %}
+          <div class="matching-card mb-3">
+            <div class="matching-term">
+              <span class="term-number">{{ forloop.counter }}</span>
+              <span class="term-text">{{ item.left }}</span>
             </div>
-          {% endfor %}
-        </div>
-        <div class="col-md-6">
-          <h6>Описания:</h6>
-          {% for item in level.content.items %}
-            <select name="match_{{ forloop.counter0 }}" class="form-select mb-2" required>
-              <option value="">Выберите описание</option>
-              {% for desc_item in level.content.items %}
-                <option value="{{ forloop.counter0 }}">{{ desc_item.right }}</option>
-              {% endfor %}
-            </select>
-          {% endfor %}
-        </div>
+            <div class="matching-select-wrapper">
+              <label class="form-label small text-muted">Выберите описание:</label>
+              <select name="match_{{ forloop.counter0 }}" class="form-select" required>
+                <option value="">Выберите...</option>
+                {% for desc_item in level.content.items %}
+                  <option value="{{ forloop.counter0 }}">{{ desc_item.right }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        {% endfor %}
       </div>
-      <button type="submit" class="btn btn-success btn-lg mt-3 w-100">
-        <i class="fa-solid fa-link me-2"></i>Проверить сопоставление
+      
+      <button type="submit" class="btn btn-success btn-lg mt-3 w-100 haptic-medium">
+        <i class="fa-solid fa-link me-2"></i>Ответить
       </button>
     </form>
   </div>
@@ -199,8 +214,8 @@
           </div>
         {% endfor %}
       </div>
-      <button type="submit" class="btn btn-success btn-lg mt-3 w-100">
-        <i class="fa-solid fa-sort me-2"></i>Проверить порядок
+      <button type="submit" class="btn btn-success btn-lg mt-3 w-100 haptic-medium">
+        <i class="fa-solid fa-sort me-2"></i>Ответить
       </button>
     </form>
   </div>
@@ -237,7 +252,7 @@
           </div>
         {% endfor %}
       {% endfor %}
-      <button type="submit" class="btn btn-success btn-lg mt-3 w-100">
+      <button type="submit" class="btn btn-success btn-lg mt-3 w-100 haptic-medium">
         <i class="fa-solid fa-play me-2"></i>Ответить
       </button>
     </form>
@@ -259,4 +274,291 @@
     </div>
   {% endfor %}
 {% endif %}
+
+<style>
+/* Мобильные стили для страницы прохождения уровня */
+@media (max-width: 768px) {
+  /* Скрываем навигационные кнопки на мобильных */
+  body.mobile-view .desktop-nav {
+    display: none !important;
+  }
+  
+  /* Заголовок уровня */
+  body.mobile-view .level-header {
+    padding: 1rem;
+    margin: 0 -0.5rem 1rem -0.5rem;
+  }
+  
+  body.mobile-view .level-header h4 {
+    font-size: 1.1rem;
+  }
+  
+  body.mobile-view .level-type-badge {
+    font-size: 1.5rem;
+  }
+  
+  /* Уменьшаем padding у карточек */
+  body.mobile-view .option-card,
+  body.mobile-view .response-card,
+  body.mobile-view .situation-info,
+  body.mobile-view .formula-box,
+  body.mobile-view .given-data,
+  body.mobile-view .steps,
+  body.mobile-view .dialogue-box {
+    padding: 0.75rem !important;
+    border-radius: 12px !important;
+  }
+  
+  body.mobile-view .option-card h6,
+  body.mobile-view .response-card h6 {
+    font-size: 0.95rem !important;
+  }
+  
+  /* Формы */
+  body.mobile-view .form-check {
+    margin-bottom: 0.75rem !important;
+  }
+  
+  body.mobile-view .form-check-label {
+    font-size: 0.95rem;
+  }
+  
+  body.mobile-view .form-control,
+  body.mobile-view .form-select {
+    font-size: 1rem !important;
+    padding: 0.75rem !important;
+    border-radius: 12px !important;
+  }
+  
+  /* Кнопки отправки - по центру */
+  body.mobile-view .btn-success,
+  body.mobile-view .btn-primary {
+    padding: 1rem !important;
+    font-size: 1rem !important;
+    border-radius: 16px !important;
+    font-weight: 700 !important;
+    display: block !important;
+    margin: 0 auto !important;
+    text-align: center !important;
+  }
+  
+  body.mobile-view .btn-success:active,
+  body.mobile-view .btn-primary:active {
+    transform: scale(0.98);
+  }
+  
+  /* Компактная подсказка справа от заголовка */
+  body.mobile-view .hint-btn-compact {
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.85rem !important;
+  }
+  
+  body.mobile-view .hint-btn-compact .badge {
+    font-size: 0.7rem;
+  }
+  
+  /* Подсказки */
+  body.mobile-view .alert {
+    padding: 0.75rem !important;
+    border-radius: 12px !important;
+    font-size: 0.9rem !important;
+  }
+  
+  body.mobile-view .hint-shown {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    background: linear-gradient(135deg, rgba(13, 202, 240, 0.1), rgba(13, 110, 253, 0.1)) !important;
+    border: 2px solid #0dcaf0 !important;
+    padding: 0.875rem !important;
+  }
+  
+  body.mobile-view .hint-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+  
+  body.mobile-view .hint-text {
+    flex: 1;
+    font-size: 0.85rem;
+  }
+  
+  /* Сопоставление (matching) для мобильных */
+  body.mobile-view .matching-instruction h5 {
+    font-size: 1rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  body.mobile-view .matching-card {
+    background: white;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+  
+  body.dark-theme .matching-card {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.92) 100%);
+    border-color: #475569;
+  }
+  
+  body.mobile-view .matching-term {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  body.dark-theme .matching-term {
+    border-bottom-color: #475569;
+  }
+  
+  body.mobile-view .term-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+  
+  body.mobile-view .term-text {
+    font-size: 0.95rem;
+    font-weight: 600;
+    flex: 1;
+  }
+  
+  body.mobile-view .matching-select-wrapper .form-label {
+    margin-bottom: 0.5rem;
+    font-size: 0.8rem !important;
+  }
+  
+  body.mobile-view .matching-select-wrapper .form-select {
+    font-size: 0.9rem !important;
+    padding: 0.75rem !important;
+    border-radius: 12px !important;
+    border-width: 2px !important;
+  }
+  
+  /* Сортировка */
+  body.mobile-view .sortable-item {
+    padding: 0.75rem !important;
+    border-radius: 12px !important;
+  }
+  
+  body.mobile-view .sortable-item .form-select {
+    font-size: 0.85rem !important;
+    padding: 0.5rem !important;
+  }
+  
+  /* Расчеты */
+  body.mobile-view .calculation-level h5 {
+    font-size: 1rem !important;
+  }
+  
+  body.mobile-view .calculation-level h6 {
+    font-size: 0.9rem !important;
+  }
+  
+  body.mobile-view .formula-box code {
+    font-size: 0.85rem;
+  }
+  
+  /* Симуляция */
+  body.mobile-view .message {
+    margin-bottom: 1rem !important;
+  }
+  
+  body.mobile-view .speaker {
+    font-size: 0.9rem !important;
+  }
+  
+  body.mobile-view .message-text {
+    font-size: 0.85rem;
+  }
+  
+  /* Сценарии */
+  body.mobile-view .scenario-content h5 {
+    font-size: 1rem !important;
+  }
+  
+  body.mobile-view .situation-info li {
+    font-size: 0.9rem;
+  }
+  
+  /* Общие отступы */
+  body.mobile-view {
+    padding: 0.5rem !important;
+  }
+  
+  body.mobile-view form {
+    margin-bottom: 1rem;
+  }
+}
+
+/* Улучшенные стили для карточек опций */
+.option-card,
+.response-card {
+  transition: all 0.2s ease;
+  cursor: pointer;
+  background: white !important;
+}
+
+body.dark-theme .option-card,
+body.dark-theme .response-card {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.form-check-input:checked ~ .form-check-label .option-card,
+.form-check-input:checked ~ .form-check-label .response-card {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15)) !important;
+  border-color: #667eea !important;
+  border-width: 2px !important;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25) !important;
+}
+
+body.mobile-view .option-card:active,
+body.mobile-view .response-card:active {
+  transform: scale(0.98);
+}
+
+/* Компактная кнопка подсказки справа */
+.hint-btn-compact {
+  padding: 0.4rem 0.75rem !important;
+  border-radius: 12px !important;
+  font-size: 0.9rem !important;
+  border-width: 2px !important;
+}
+
+.hint-btn-compact .badge {
+  font-size: 0.7rem;
+  padding: 0.2rem 0.4rem;
+}
+
+/* Темная тема */
+body.dark-theme .situation-info,
+body.dark-theme .formula-box,
+body.dark-theme .given-data,
+body.dark-theme .steps,
+body.dark-theme .dialogue-box {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: #475569 !important;
+}
+
+body.dark-theme .option-card,
+body.dark-theme .response-card,
+body.dark-theme .matching-item,
+body.dark-theme .sortable-item {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: #475569 !important;
+}
+</style>
+
 {% endblock %}

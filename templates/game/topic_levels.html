@@ -1,157 +1,128 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}{{ topic.name }} — FinQuest{% endblock %}
+{% block page_title %}<i class="fa-solid fa-book-open me-2"></i>{{ topic.name }}{% endblock %}
+
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-  <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-primary">
-    <i class="fa-solid fa-home me-1"></i>Дашборд
-  </a>
-  <h3 class="section-title"><i class="fa-solid fa-book-open"></i> {{ topic.name }}</h3>
-  <div></div>
+<!-- Заголовок темы -->
+<div class="topic-header mb-4 fade-in">
+  <div class="card">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-start">
+        <div>
+          <h5 class="mb-2"><i class="fa-solid fa-book-open me-2"></i>{{ topic.name }}</h5>
+          <p class="text-muted small mb-0">{{ topic.description|default:"Пройдите все уровни темы для получения наград" }}</p>
+        </div>
+        <a href="{% url 'categories' %}" class="btn btn-sm btn-outline-primary desktop-only">
+          <i class="fa-solid fa-arrow-left me-1"></i>Назад
+        </a>
+      </div>
+    </div>
+  </div>
 </div>
 
+<!-- Список уровней -->
 {% if levels %}
+<div class="levels-list mb-4">
   {% for level in levels %}
-    <div class="card mb-3 level-card">
+    <a href="{% url 'level_play' level.id %}" class="card mb-3 level-card-link haptic-light slide-in-up" style="text-decoration: none; color: inherit;">
       <div class="card-body">
-        <div class="d-flex justify-content-between align-items-start">
-          <div class="d-flex align-items-start flex-grow-1">
-            <!-- Мини-иконка уровня -->
-            <div class="level-mini-icon me-3">
+        <div class="d-flex align-items-start mb-2">
+          <!-- Иконка уровня (скрыта на мобильных) -->
+          <div class="level-icon-wrapper desktop-only me-3">
+            <div class="level-mini-icon">
               <img src="{% static 'images/topics/' %}{% if 'Бюджетирование' in topic.name %}budgeting{% elif 'Сбережения' in topic.name or 'Накопления' in topic.name %}savings{% elif 'Кредит' in topic.name or 'займ' in topic.name %}credit{% elif 'Банковские' in topic.name %}banking{% elif 'Акции' in topic.name %}stocks{% elif 'Облигации' in topic.name %}bonds{% elif 'Недвижимость' in topic.name %}realestate{% elif 'Крипто' in topic.name %}crypto{% elif 'Пенсион' in topic.name %}retirement{% elif 'Налог' in topic.name %}taxes{% elif 'Страхова' in topic.name %}insurance{% elif 'цел' in topic.name %}goals{% elif 'Мошенничество' in topic.name %}fraud{% elif 'Защита данных' in topic.name or 'данных' in topic.name %}privacy{% elif 'Юридическая' in topic.name %}legal{% elif 'риск' in topic.name %}risks{% else %}budgeting{% endif %}.svg"
                    alt="{{ topic.name }}" />
             </div>
-            <div class="flex-grow-1">
-              <h5 class="mb-1">{{ level.title }}</h5>
-              <p class="text-muted small mb-2">{{ level.description|truncatewords:15 }}</p>
-
-            <!-- Сложность -->
-            <span class="badge bg-secondary me-2">
-              {% if level.difficulty == 1 %}<i class="fa-solid fa-star me-1"></i>Легко
-              {% elif level.difficulty == 2 %}<i class="fa-solid fa-star me-1"></i><i class="fa-solid fa-star me-1"></i>Средне
-              {% else %}<i class="fa-solid fa-star me-1"></i><i class="fa-solid fa-star me-1"></i><i class="fa-solid fa-star me-1"></i>Сложно{% endif %}
-            </span>
-
-              <!-- Награда -->
-              <span class="badge bg-success"><i class="fa-solid fa-star me-1"></i>+{{ level.reward_points }} очков</span>
-              <span class="badge bg-warning"><i class="fa-solid fa-coins me-1"></i>+{{ level.reward_coins }}</span>
-            </div>
           </div>
-
-          <!-- Статус и кнопка -->
-          <div class="text-end">
-            {% if level.user_progress.completed %}
-              <span class="text-success me-2"><i class="fa-solid fa-check-circle me-1"></i>Пройден</span>
-              <div class="small text-muted"><i class="fa-solid fa-trophy me-1"></i>Лучшая попытка: {{ level.user_progress.best_score }}%</div>
-              <a href="{% url 'level_play' level.id %}" class="btn btn-outline-primary btn-sm">
-                <i class="fa-solid fa-redo me-1"></i>Повторить
-              </a>
-            {% else %}
-              <div class="small text-muted mb-1"><i class="fa-solid fa-trophy me-1"></i>Лучшая попытка: {{ level.user_progress.best_score }}%</div>
-              <a href="{% url 'level_play' level.id %}" class="btn btn-primary btn-sm">
-                <i class="fa-solid fa-play me-1"></i>Начать
-              </a>
-            {% endif %}
+          
+          <div class="flex-grow-1">
+            <div class="d-flex justify-content-between align-items-start mb-1">
+              <h6 class="mb-0">{{ level.title }}</h6>
+              <i class="fa-solid fa-chevron-right ms-2 text-muted" style="font-size: 0.9rem;"></i>
+            </div>
+            <small class="text-muted d-block mb-2">{{ level.description|truncatewords:12 }}</small>
+            
+            <!-- Бейджи -->
+            <div class="d-flex flex-wrap gap-1">
+              <!-- Статус -->
+              {% if level.user_progress.completed %}
+                <span class="badge bg-success">
+                  <i class="fa-solid fa-check-circle me-1"></i>Пройден {{ level.user_progress.best_score }}%
+                </span>
+              {% else %}
+                <span class="badge bg-primary">
+                  <i class="fa-solid fa-play me-1"></i>Начать
+                </span>
+              {% endif %}
+              
+              <!-- Сложность -->
+              <span class="badge bg-secondary">
+                {% if level.difficulty == 1 %}
+                  <i class="fa-solid fa-star me-1"></i>Легко
+                {% elif level.difficulty == 2 %}
+                  <i class="fa-solid fa-star me-1"></i><i class="fa-solid fa-star me-1"></i>Средне
+                {% else %}
+                  <i class="fa-solid fa-star me-1"></i><i class="fa-solid fa-star me-1"></i><i class="fa-solid fa-star me-1"></i>Сложно
+                {% endif %}
+              </span>
+              
+              <!-- Награды -->
+              <span class="badge bg-warning text-dark">
+                <i class="fa-solid fa-coins me-1"></i>{{ level.reward_coins }}
+              </span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </a>
   {% endfor %}
+</div>
 {% else %}
-  <p class="text-muted">В этой теме пока нет уровней.</p>
+  <div class="card">
+    <div class="card-body text-center py-4">
+      <div class="text-muted mb-2">📚</div>
+      <p class="text-muted mb-0">В этой теме пока нет уровней.</p>
+    </div>
+  </div>
 {% endif %}
 
 <style>
-.topic-cover-wrapper {
-  position: relative;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 20px;
-  overflow: hidden;
-  min-height: 250px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+/* Стили для страницы уровней темы */
+.topic-header .card {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-.topic-cover-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(102, 126, 234, 0.85) 0%,
-    rgba(118, 75, 162, 0.85) 100%
-  );
-  z-index: 1;
+body.dark-theme .topic-header .card {
+  background: #1e293b;
+  border: 1px solid #475569;
 }
 
-.topic-cover-image {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 300px;
-  height: 300px;
-  opacity: 0.15;
-  z-index: 1;
-  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
+.levels-list .card {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.topic-cover-content {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  padding: 2rem;
-  color: white;
-}
-
-.topic-cover-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: white;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-  margin-bottom: 1rem;
-}
-
-.topic-cover-description {
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.95);
-  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-@media (max-width: 768px) {
-  .topic-cover-title {
-    font-size: 1.8rem;
-  }
-  
-  .topic-cover-description {
-    font-size: 1rem;
-  }
-  
-  .topic-cover-image {
-    width: 200px;
-    height: 200px;
-  }
-}
-
-/* Стили для карточек уровней */
-.level-card {
-  transition: all 0.3s ease;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.level-card:hover {
+.level-card-link:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
-  border-color: #667eea;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
 }
 
+.level-card-link:active {
+  transform: scale(0.98);
+}
+
+body.dark-theme .levels-list .card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.92) 100%);
+  border: 1px solid #475569;
+}
+
+/* Иконка уровня (только на десктопе) */
 .level-mini-icon {
   width: 60px;
   height: 60px;
@@ -171,16 +142,86 @@
   opacity: 0.9;
 }
 
+/* Бейджи */
+.badge {
+  font-size: 0.75rem;
+  padding: 0.35rem 0.65rem;
+}
+
+/* Анимации */
+.fade-in {
+  animation: fadeIn 0.3s ease;
+}
+
+.slide-in-up {
+  animation: slideInUp 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Мобильные стили */
 @media (max-width: 768px) {
-  .level-mini-icon {
-    width: 50px;
-    height: 50px;
+  /* Скрываем иконки на мобильных */
+  body.mobile-view .level-icon-wrapper {
+    display: none !important;
   }
   
-  .level-mini-icon img {
-    width: 32px;
-    height: 32px;
+  body.mobile-view .desktop-only {
+    display: none !important;
+  }
+  
+  body.mobile-view .topic-header .card,
+  body.mobile-view .levels-list .card {
+    border-radius: 16px;
+  }
+  
+  body.mobile-view .card-body {
+    padding: 1rem;
+  }
+  
+  body.mobile-view h5 {
+    font-size: 1.1rem;
+  }
+  
+  body.mobile-view h6 {
+    font-size: 1rem;
+  }
+  
+  body.mobile-view .badge {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.5rem;
+  }
+  
+  body.mobile-view .level-card-link:hover {
+    transform: none;
+  }
+  
+  body.mobile-view .level-card-link:active {
+    transform: scale(0.98);
   }
 }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Задержка анимации появления карточек
+  document.querySelectorAll('.slide-in-up').forEach((el, index) => {
+    el.style.animationDelay = `${index * 0.05}s`;
+  });
+});
+</script>
 {% endblock %}

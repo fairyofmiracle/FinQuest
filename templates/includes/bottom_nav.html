@@ -1,0 +1,63 @@
+<!-- Нижняя навигационная панель для мобильной версии -->
+{% if user.is_authenticated %}
+<nav class="bottom-nav">
+  <div class="bottom-nav-container">
+    <a href="{% url 'dashboard' %}" class="bottom-nav-item haptic-light" data-page="dashboard">
+      <div class="bottom-nav-icon">
+        <i class="fa-solid fa-home"></i>
+      </div>
+      <span class="bottom-nav-label">Главная</span>
+    </a>
+    
+    <a href="{% url 'categories' %}" class="bottom-nav-item haptic-light" data-page="categories">
+      <div class="bottom-nav-icon">
+        <i class="fa-solid fa-graduation-cap"></i>
+      </div>
+      <span class="bottom-nav-label">Обучение</span>
+    </a>
+    
+    <a href="{% url 'media' %}" class="bottom-nav-item haptic-light" data-page="media">
+      <div class="bottom-nav-icon">
+        <i class="fa-solid fa-newspaper"></i>
+      </div>
+      <span class="bottom-nav-label">Статьи</span>
+    </a>
+    
+    <a href="{% url 'notifications_list' %}" class="bottom-nav-item haptic-light" data-page="notifications">
+      <div class="bottom-nav-icon">
+        <i class="fa-regular fa-bell"></i>
+        {% if unread_notifications_count > 0 %}
+          <span class="bottom-nav-badge">{{ unread_notifications_count }}</span>
+        {% endif %}
+      </div>
+      <span class="bottom-nav-label">Уведомления</span>
+    </a>
+    
+    <a href="{% url 'mobile_achievements' %}" class="bottom-nav-item haptic-light" data-page="mobile-achievements">
+      <div class="bottom-nav-icon">
+        <i class="fa-solid fa-trophy"></i>
+      </div>
+      <span class="bottom-nav-label">Достижения</span>
+    </a>
+  </div>
+</nav>
+
+<script>
+// Подсветка активной вкладки в нижней навигации
+document.addEventListener('DOMContentLoaded', function() {
+  const currentPath = window.location.pathname;
+  const navItems = document.querySelectorAll('.bottom-nav-item');
+  
+  navItems.forEach(item => {
+    const href = item.getAttribute('href');
+    item.classList.remove('active');
+    
+    // Проверяем совпадение пути
+    if (currentPath === href || (href !== '/' && currentPath.startsWith(href))) {
+      item.classList.add('active');
+    }
+  });
+});
+</script>
+{% endif %}
+

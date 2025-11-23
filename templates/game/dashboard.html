@@ -1,149 +1,634 @@
 {% extends 'base.html' %}
 {% block title %}FinQuest — Главная{% endblock %}
+{% block page_title %}<i class="fa-solid fa-money-bill-trend-up me-2"></i>FinQuest{% endblock %}
 
 {% block content %}
 {% if is_first_visit %}
 <div id="first-visit-trigger" style="display: none;"></div>
 {% endif %}
-<!-- Статус пользователя -->
-<div class="user-card mb-4">
-  <div class="card">
-    <div class="card-body">
-      <div class="row align-items-center">
-        <div class="col-auto">
-          {% if user.get_avatar_display %}
-            <img src="{{ user.get_avatar_display }}" class="shadow {{ user.get_avatar_border_class }}" width="80" height="80" alt="Аватар" style="border-radius: 16px; object-fit: cover;">
-          {% else %}
-            <div class="bg-primary text-white d-flex align-items-center justify-content-center shadow {{ user.get_avatar_border_class }}"
-                 style="width:80px; height:80px; font-size:26px; font-weight:bold; border-radius: 16px;">
-              {{ user.username|first|upper }}
-            </div>
-          {% endif %}
+
+<!-- Приветствие пользователя -->
+<div class="welcome-section mb-4 fade-in">
+  <div class="row align-items-center">
+    <div class="col-auto">
+      {% if user.get_avatar_display %}
+        <img src="{{ user.get_avatar_display }}" class="shadow {{ user.get_avatar_border_class }}" width="60" height="60" alt="Аватар" style="border-radius: 50%; object-fit: cover;">
+      {% else %}
+        <div class="bg-primary text-white d-flex align-items-center justify-content-center shadow {{ user.get_avatar_border_class }}"
+             style="width:60px; height:60px; font-size:24px; font-weight:bold; border-radius: 50%;">
+          {{ user.username|first|upper }}
         </div>
-        <div class="col">
-          <h5 class="mb-1">{{ user.get_full_name|default:user.username }}</h5>
-          <div class="d-flex align-items-center mb-2">
-            <span class="text-muted small me-2">{{ user.get_level_title }} • Уровень {{ user.level_number }}</span>
-            <div class="progress flex-grow-1" style="height: 6px; max-width: 100px;">
-              <div class="progress-bar bg-gradient" role="progressbar" style="width: {{ user.level_progress }}%;"></div>
-            </div>
-          </div>
-          <div class="d-flex gap-2">
-            <span class="badge bg-primary"><i class="fa-solid fa-star me-1"></i>{{ user.points }}</span>
-            <span class="badge bg-warning text-white"><i class="fa-solid fa-coins me-1"></i>{{ user.coins }}</span>
-            <span class="badge bg-success"><i class="fa-solid fa-trophy me-1"></i>{{ user.achievements_count }}</span>
-          </div>
-        </div>
-        <div class="col-auto">
-          <a href="{% url 'profile' %}" class="btn btn-outline-primary btn-sm">
-            <i class="fa-solid fa-cog me-1"></i>Настройки
-          </a>
-        </div>
-      </div>
+      {% endif %}
+    </div>
+    <div class="col">
+      <h4 class="mb-0">Привет, {{ user.username }}! 👋</h4>
+      <p class="text-muted mb-0 small">{{ user.get_level_title }} • Уровень {{ user.level_number }}</p>
     </div>
   </div>
 </div>
 
-
-<!-- Основные категории обучения -->
-<h5 class="mb-4 section-title"><i class="fa-solid fa-graduation-cap"></i> Категории обучения</h5>
-
-<!-- 4 основные категории в виде карточек -->
-<div class="row g-4 mb-5">
-  <!-- Основы финансов -->
-  <div class="col-lg-3 col-md-6">
-    <div class="main-category-card" onclick="location.href='{% url 'category_detail' 'basics' %}'">
-      <div class="main-category-icon">
-        <i class="fa-solid fa-piggy-bank"></i>
-      </div>
-      <h3 class="main-category-title">{{ categories.basics.name }}</h3>
-      <p class="main-category-description">Изучите базовые принципы управления деньгами и начните свой путь к финансовой грамотности</p>
-      <div class="main-category-stats">
-        <div class="main-category-progress">
-          <div class="progress">
-            <div class="progress-bar" role="progressbar" style="width: {{ categories.basics.progress_percent }}%;"></div>
-          </div>
-        </div>
-        <div class="main-category-percent">{{ categories.basics.progress_percent }}%</div>
-      </div>
-      <button class="main-category-button">
-        <i class="fa-solid fa-play me-2"></i>Изучать основы
-      </button>
+<!-- Статистика пользователя -->
+<div class="stats-grid mb-4 slide-in-left">
+  <div class="stat-card haptic-light">
+    <div class="stat-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+      🎯
     </div>
+    <div class="stat-content">
+      <div class="stat-value">{{ user.points }}</div>
+      <div class="stat-label">Очки</div>
+    </div>
+  </div>
+  
+  <div class="stat-card haptic-light">
+    <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+      🪙
+    </div>
+    <div class="stat-content">
+      <div class="stat-value">{{ user.coins }}</div>
+      <div class="stat-label">Монеты</div>
+    </div>
+  </div>
+  
+  <div class="stat-card haptic-light">
+    <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+      🔥
+    </div>
+    <div class="stat-content">
+      <div class="stat-value">{{ user.streak_days }}</div>
+      <div class="stat-label">Серия</div>
+    </div>
+  </div>
+  
+  <div class="stat-card haptic-light">
+    <div class="stat-icon" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
+      ⭐
+    </div>
+    <div class="stat-content">
+      <div class="stat-value">{{ user.get_level_number }}</div>
+      <div class="stat-label">Уровень</div>
+    </div>
+  </div>
+</div>
+
+<!-- Быстрые действия -->
+<div class="quick-actions mb-4 slide-in-right">
+  <h5 class="section-title mb-3"><i class="fa-solid fa-bolt"></i> Быстрые действия</h5>
+  <div class="quick-actions-grid">
+    <a href="{% url 'daily_quests' %}" class="quick-action-btn haptic-medium">
+      <i class="fa-solid fa-calendar-day"></i>
+      <span>Задания</span>
+    </a>
+    <a href="{% url 'leaderboard' %}" class="quick-action-btn haptic-medium">
+      <i class="fa-solid fa-ranking-star"></i>
+      <span>Рейтинг</span>
+    </a>
+    <a href="{% url 'mobile_achievements' %}" class="quick-action-btn haptic-medium">
+      <i class="fa-solid fa-award"></i>
+      <span>Награды</span>
+    </a>
+    <a href="{% url 'settings' %}" class="quick-action-btn haptic-medium">
+      <i class="fa-solid fa-cog"></i>
+      <span>Настройки</span>
+    </a>
+  </div>
+</div>
+
+<!-- Прогресс обучения -->
+<div class="progress-section mb-4 fade-in">
+  <a href="{% url 'mobile_skills' %}" class="card progress-card-link haptic-light" style="text-decoration: none; color: inherit;">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h6 class="mb-0"><i class="fa-solid fa-chart-line me-2"></i>Общий прогресс</h6>
+        <div>
+          <span class="badge bg-primary">{{ overall_progress }}%</span>
+          <i class="fa-solid fa-chevron-right ms-2 text-muted" style="font-size: 0.9rem;"></i>
+        </div>
+      </div>
+      <div class="progress" style="height: 10px;">
+        <div class="progress-bar bg-gradient" role="progressbar" style="width: {{ overall_progress }}%;"></div>
+      </div>
+      <p class="text-muted small mt-2 mb-0">Пройдено {{ completed_levels }} из {{ total_levels }} уровней</p>
+    </div>
+  </a>
+</div>
+
+<!-- О проекте -->
+<div class="about-section mb-4 fade-in">
+  <div class="card">
+    <div class="card-body">
+      <h6 class="mb-2"><i class="fa-solid fa-lightbulb me-2"></i>О FinQuest</h6>
+      <p class="text-muted small mb-2">
+        <strong>FinQuest</strong> — это образовательная платформа для изучения финансовой грамотности в игровой форме. 
+        Мы делаем сложные финансовые темы простыми и увлекательными!
+      </p>
+      <p class="text-muted small mb-0">
+        🎯 Зарабатывайте очки • 🏆 Получайте награды • 📚 Учитесь на практике
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Последние достижения -->
+{% if recent_achievements %}
+<div class="recent-achievements mb-4 slide-in-left">
+  <h5 class="section-title mb-3"><i class="fa-solid fa-trophy"></i> Последние награды</h5>
+  <div class="achievements-scroll">
+    {% for user_achievement in recent_achievements %}
+    <div class="achievement-mini haptic-light">
+      <img src="/static/images/achievements/{{ user_achievement.achievement.name|lower|cut:' '|cut:','}}.svg" 
+           alt="{{ user_achievement.achievement.name }}" 
+           style="width: 50px; height: 50px;"
+           onerror="this.onerror=null; this.src='/static/images/achievements/trophy.svg';">
+      <div class="achievement-mini-info">
+        <div class="achievement-mini-name">{{ user_achievement.achievement.name }}</div>
+        <div class="achievement-mini-date">{{ user_achievement.earned_at|date:"d.m.Y" }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<!-- Основные категории обучения (скрываем в мобильной версии) -->
+<div class="categories-section-desktop">
+<h5 class="mb-3 section-title"><i class="fa-solid fa-graduation-cap"></i> Категории обучения</h5>
+
+<div class="categories-grid mb-5">
+  <!-- Основы финансов -->
+  <div class="main-category-card haptic-medium slide-in-up" onclick="location.href='{% url 'category_detail' 'basics' %}'">
+    <div class="main-category-icon">
+      <i class="fa-solid fa-piggy-bank"></i>
+    </div>
+    <h3 class="main-category-title">{{ categories.basics.name }}</h3>
+    <p class="main-category-description">Изучите базовые принципы управления деньгами</p>
+    <div class="main-category-stats">
+      <div class="main-category-progress">
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: {{ categories.basics.progress_percent }}%;"></div>
+        </div>
+      </div>
+      <div class="main-category-percent">{{ categories.basics.progress_percent }}%</div>
+    </div>
+    <button class="main-category-button">
+      <i class="fa-solid fa-play me-2"></i>Начать
+    </button>
   </div>
 
   <!-- Безопасность -->
-  <div class="col-lg-3 col-md-6">
-    <div class="main-category-card" onclick="location.href='{% url 'category_detail' 'security' %}'">
-      <div class="main-category-icon">
-        <i class="fa-solid fa-shield-halved"></i>
-      </div>
-      <h3 class="main-category-title">{{ categories.security.name }}</h3>
-      <p class="main-category-description">Защитите себя от мошенников и финансовых рисков в цифровом мире</p>
-      <div class="main-category-stats">
-        <div class="main-category-progress">
-          <div class="progress">
-            <div class="progress-bar" role="progressbar" style="width: {{ categories.security.progress_percent }}%;"></div>
-          </div>
-        </div>
-        <div class="main-category-percent">{{ categories.security.progress_percent }}%</div>
-      </div>
-      <button class="main-category-button">
-        <i class="fa-solid fa-shield me-2"></i>Защититься
-      </button>
+  <div class="main-category-card haptic-medium slide-in-up" onclick="location.href='{% url 'category_detail' 'security' %}'">
+    <div class="main-category-icon">
+      <i class="fa-solid fa-shield-halved"></i>
     </div>
+    <h3 class="main-category-title">{{ categories.security.name }}</h3>
+    <p class="main-category-description">Защитите себя от мошенников и рисков</p>
+    <div class="main-category-stats">
+      <div class="main-category-progress">
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: {{ categories.security.progress_percent }}%;"></div>
+        </div>
+      </div>
+      <div class="main-category-percent">{{ categories.security.progress_percent }}%</div>
+    </div>
+    <button class="main-category-button">
+      <i class="fa-solid fa-shield me-2"></i>Защититься
+    </button>
   </div>
 
   <!-- Инвестиции -->
-  <div class="col-lg-3 col-md-6">
-    <div class="main-category-card" onclick="location.href='{% url 'category_detail' 'investments' %}'">
-      <div class="main-category-icon">
-        <i class="fa-solid fa-chart-line"></i>
-      </div>
-      <h3 class="main-category-title">{{ categories.investments.name }}</h3>
-      <p class="main-category-description">Научитесь приумножать свои сбережения и строить капитал</p>
-      <div class="main-category-stats">
-        <div class="main-category-progress">
-          <div class="progress">
-            <div class="progress-bar" role="progressbar" style="width: {{ categories.investments.progress_percent }}%;"></div>
-          </div>
-        </div>
-        <div class="main-category-percent">{{ categories.investments.progress_percent }}%</div>
-      </div>
-      <button class="main-category-button">
-        <i class="fa-solid fa-chart-line me-2"></i>Инвестировать
-      </button>
+  <div class="main-category-card haptic-medium slide-in-up" onclick="location.href='{% url 'category_detail' 'investments' %}'">
+    <div class="main-category-icon">
+      <i class="fa-solid fa-chart-line"></i>
     </div>
+    <h3 class="main-category-title">{{ categories.investments.name }}</h3>
+    <p class="main-category-description">Научитесь приумножать сбережения</p>
+    <div class="main-category-stats">
+      <div class="main-category-progress">
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: {{ categories.investments.progress_percent }}%;"></div>
+        </div>
+      </div>
+      <div class="main-category-percent">{{ categories.investments.progress_percent }}%</div>
+    </div>
+    <button class="main-category-button">
+      <i class="fa-solid fa-chart-line me-2"></i>Инвестировать
+    </button>
   </div>
 
   <!-- Планирование -->
-  <div class="col-lg-3 col-md-6">
-    <div class="main-category-card" onclick="location.href='{% url 'category_detail' 'planning' %}'">
-      <div class="main-category-icon">
-        <i class="fa-solid fa-bullseye"></i>
-      </div>
-      <h3 class="main-category-title">{{ categories.planning.name }}</h3>
-      <p class="main-category-description">Достигайте своих финансовых целей с помощью правильного планирования</p>
-      <div class="main-category-stats">
-        <div class="main-category-progress">
-          <div class="progress">
-            <div class="progress-bar" role="progressbar" style="width: {{ categories.planning.progress_percent }}%;"></div>
-          </div>
-        </div>
-        <div class="main-category-percent">{{ categories.planning.progress_percent }}%</div>
-      </div>
-      <button class="main-category-button">
-        <i class="fa-solid fa-bullseye me-2"></i>Планировать
-      </button>
+  <div class="main-category-card haptic-medium slide-in-up" onclick="location.href='{% url 'category_detail' 'planning' %}'">
+    <div class="main-category-icon">
+      <i class="fa-solid fa-bullseye"></i>
     </div>
+    <h3 class="main-category-title">{{ categories.planning.name }}</h3>
+    <p class="main-category-description">Достигайте финансовых целей</p>
+    <div class="main-category-stats">
+      <div class="main-category-progress">
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: {{ categories.planning.progress_percent }}%;"></div>
+        </div>
+      </div>
+      <div class="main-category-percent">{{ categories.planning.progress_percent }}%</div>
+    </div>
+    <button class="main-category-button">
+      <i class="fa-solid fa-bullseye me-2"></i>Планировать
+    </button>
   </div>
 </div>
+</div>
+
+<style>
+/* Скрываем категории на мобильной версии */
+body.mobile-view .categories-section-desktop {
+  display: none;
+}
+
+/* Приветствие */
+.welcome-section {
+  background: white;
+  padding: 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.welcome-section h4 {
+  color: #1f2937 !important;
+}
+
+.welcome-section p {
+  color: #6b7280 !important;
+}
+
+body.mobile-view .welcome-section {
+  margin-bottom: 1rem;
+}
+
+/* Сетка статистики */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.stat-card:active {
+  transform: scale(0.95);
+}
+
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.stat-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1f2937;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+/* Быстрые действия */
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.quick-action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0.5rem;
+  background: white;
+  border-radius: 16px;
+  text-decoration: none;
+  color: #667eea;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  min-height: 80px;
+}
+
+.quick-action-btn:hover,
+.quick-action-btn:focus {
+  text-decoration: none;
+  color: #667eea;
+}
+
+.quick-action-btn:active {
+  transform: scale(0.95);
+}
+
+.quick-action-btn i {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.quick-action-btn span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Последние достижения */
+.achievements-scroll {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.achievements-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+
+.achievements-scroll::-webkit-scrollbar-thumb {
+  background: #667eea;
+  border-radius: 4px;
+}
+
+.achievement-mini {
+  flex-shrink: 0;
+  background: white;
+  border-radius: 12px;
+  padding: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  min-width: 200px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.achievement-mini-info {
+  flex: 1;
+}
+
+.achievement-mini-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+}
+
+.achievement-mini-date {
+  font-size: 0.7rem;
+  color: #6b7280;
+}
+
+/* Категории */
+.categories-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+/* Темная тема */
+body.dark-theme .welcome-section {
+  background: #1e293b;
+  border: 1px solid #475569;
+}
+
+body.dark-theme .welcome-section h4 {
+  color: #f1f5f9;
+}
+
+body.dark-theme .welcome-section p {
+  color: #9ca3af;
+}
+
+body.dark-theme .stat-card,
+body.dark-theme .quick-action-btn,
+body.dark-theme .achievement-mini {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.92) 100%);
+  border-color: #475569;
+}
+
+body.dark-theme .stat-value {
+  color: #f1f5f9;
+}
+
+body.dark-theme .achievement-mini-name {
+  color: #f1f5f9;
+}
+
+body.dark-theme .quick-action-btn {
+  color: #a5b4fc;
+}
+
+body.dark-theme .quick-action-btn:hover,
+body.dark-theme .quick-action-btn:focus {
+  color: #a5b4fc;
+}
+
+/* Анимации */
+.slide-in-up {
+  animation: slideInUp 0.5s ease;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Адаптация под мобильные */
+@media (max-width: 768px) {
+  /* Убираем быстрые действия на мобильных */
+  body.mobile-view .quick-actions {
+    display: none !important;
+  }
+  
+  /* Компактный приветственный блок на мобильных */
+  body.mobile-view .welcome-section {
+    padding: 0.75rem !important;
+  }
+  
+  body.mobile-view .welcome-section .col-auto img,
+  body.mobile-view .welcome-section .col-auto > div {
+    width: 50px !important;
+    height: 50px !important;
+    font-size: 20px !important;
+  }
+  
+  body.mobile-view .welcome-section h4 {
+    font-size: 1.1rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+  
+  body.mobile-view .welcome-section p {
+    font-size: 0.75rem !important;
+  }
+  
+  body.mobile-view .stats-grid {
+    gap: 0.75rem;
+  }
+  
+  body.mobile-view .stat-card {
+    padding: 0.75rem;
+  }
+  
+  body.mobile-view .stat-icon {
+    width: 48px !important;
+    height: 48px !important;
+    font-size: 1.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 12px !important;
+  }
+  
+  body.mobile-view .stat-content {
+    flex: 1 !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+  }
+  
+  body.mobile-view .stat-value {
+    font-size: 1.4rem !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    margin-bottom: 0.25rem !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  body.mobile-view .stat-label {
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    margin-top: 0.25rem !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  /* Блок о проекте */
+  body.mobile-view .about-section .card-body {
+    padding: 1rem !important;
+  }
+  
+  body.mobile-view .about-section h6 {
+    font-size: 0.95rem !important;
+  }
+  
+  body.mobile-view .about-section p {
+    font-size: 0.8rem !important;
+    line-height: 1.4 !important;
+  }
+  
+  /* Исправление текста в темной теме */
+  body.mobile-view h4, 
+  body.mobile-view h5,
+  body.mobile-view h6,
+  body.mobile-view .section-title {
+    color: #1f2937;
+  }
+  
+  body.mobile-view.dark-theme h4,
+  body.mobile-view.dark-theme h5,
+  body.mobile-view.dark-theme h6,
+  body.mobile-view.dark-theme .section-title {
+    color: #f1f5f9;
+  }
+}
+
+/* Резервные стили для всех мобильных (если body.mobile-view не работает) */
+@media (max-width: 768px) {
+  .stat-icon {
+    width: 48px !important;
+    height: 48px !important;
+    font-size: 1.5rem !important;
+  }
+  
+  .stat-content {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  
+  .stat-value {
+    font-size: 1.4rem !important;
+    font-weight: 800 !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  .stat-label {
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
+
+/* Кликабельная карточка прогресса */
+.progress-card-link {
+  display: block;
+  transition: all 0.2s ease;
+}
+
+.progress-card-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+}
+
+.progress-card-link:active {
+  transform: scale(0.98);
+}
+
+body.mobile-view .progress-card-link:hover {
+  transform: none;
+}
+
+body.mobile-view .progress-card-link:active {
+  transform: scale(0.98);
+}
+</style>
 
 {% endblock %}
 
 {% block extra_js %}
 {% load static %}
-<!-- tutorial.js уже подключен в base.html -->
 <script>
 // Инициализация туториала для новых пользователей
 document.addEventListener('DOMContentLoaded', function() {
@@ -157,6 +642,13 @@ document.addEventListener('DOMContentLoaded', function() {
             tutorialInstance.start();
         }
     }
+    
+    // Активация анимаций при загрузке
+    setTimeout(() => {
+        document.querySelectorAll('.slide-in-up').forEach((el, index) => {
+            el.style.animationDelay = `${index * 0.1}s`;
+        });
+    }, 100);
 });
 </script>
 {% endblock %}

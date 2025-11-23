@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}Уведомления — FinQuest{% endblock %}
+{% block page_title %}🔔 Уведомления{% endblock %}
 
 {% block content %}
 <div class="container-fluid">
@@ -16,23 +17,23 @@
               </h2>
               <p class="text-muted mb-0">Все важные события и достижения</p>
             </div>
-            <div class="d-flex gap-2">
-              <form method="post" style="display: inline;">
+            <div class="d-flex gap-2 notification-actions">
+              <form method="post" class="notification-form">
                 {% csrf_token %}
                 <input type="hidden" name="action" value="mark_all_read">
-                <button type="submit" class="btn btn-outline-primary btn-sm">
-                  <i class="fa-solid fa-check-double me-1"></i>Отметить все
+                <button type="submit" class="btn btn-outline-primary btn-sm notification-action-btn">
+                  <i class="fa-solid fa-check-double me-1"></i><span class="action-text">Отметить все</span>
                 </button>
               </form>
-              <form method="post" style="display: inline;">
+              <form method="post" class="notification-form">
                 {% csrf_token %}
                 <input type="hidden" name="action" value="delete_all">
-                <button type="submit" class="btn btn-outline-danger btn-sm" 
+                <button type="submit" class="btn btn-outline-danger btn-sm notification-action-btn" 
                         onclick="return confirm('Удалить все уведомления? Это действие нельзя отменить!')">
-                  <i class="fa-solid fa-trash me-1"></i>Удалить все
+                  <i class="fa-solid fa-trash me-1"></i><span class="action-text">Удалить все</span>
                 </button>
               </form>
-              <a href="{% url 'dashboard' %}" class="btn btn-primary btn-sm">
+              <a href="{% url 'dashboard' %}" class="btn btn-primary btn-sm desktop-only">
                 <i class="fa-solid fa-home me-1"></i>Дашборд
               </a>
             </div>
@@ -191,4 +192,81 @@
 </div>
 {% endblock %}
 
-
+<style>
+/* Мобильная адаптация уведомлений */
+@media (max-width: 768px) {
+  /* Скрываем кнопку дашборд на мобильных */
+  body.mobile-view .desktop-only,
+  .desktop-only {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+  }
+  
+  /* Кнопки действий в стиле мобильных приложений */
+  body.mobile-view .notification-actions,
+  .notification-actions {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    gap: 0.5rem !important;
+  }
+  
+  body.mobile-view .notification-action-btn,
+  .notification-action-btn {
+    flex: 1 !important;
+    padding: 12px 10px !important;
+    font-weight: 700 !important;
+    border-width: 2px !important;
+    border-radius: 12px !important;
+    font-size: 0.9rem !important;
+  }
+  
+  /* Компактная шапка на мобильных */
+  body.mobile-view .gaming-header-card .card-body,
+  .gaming-header-card .card-body {
+    padding: 1rem !important;
+  }
+  
+  body.mobile-view .page-title,
+  .page-title {
+    font-size: 1.3rem !important;
+  }
+  
+  body.mobile-view .notification-actions form,
+  body.mobile-view .notification-form,
+  .notification-actions form,
+  .notification-form {
+    flex: 1 !important;
+    display: flex !important;
+    margin: 0 !important;
+  }
+  
+  body.mobile-view .notification-actions button,
+  body.mobile-view .notification-form button,
+  .notification-actions button,
+  .notification-form button {
+    width: 100% !important;
+  }
+  
+  /* Прячем текст на очень маленьких экранах */
+  @media (max-width: 400px) {
+    .action-text {
+      display: none !important;
+    }
+    
+    .notification-action-btn i {
+      margin: 0 !important;
+    }
+  }
+  
+  /* Иконки в кнопках */
+  body.mobile-view .notification-action-btn i,
+  .notification-action-btn i {
+    font-size: 1rem !important;
+  }
+}
+</style>

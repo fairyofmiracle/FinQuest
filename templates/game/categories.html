@@ -1,0 +1,308 @@
+{% extends 'base.html' %}
+
+{% block title %}Обучение — FinQuest{% endblock %}
+{% block page_title %}<i class="fa-solid fa-graduation-cap me-2"></i>Обучение{% endblock %}
+
+{% block content %}
+<!-- Заголовок -->
+<div class="categories-header mb-4 fade-in">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="mb-2"><i class="fa-solid fa-graduation-cap me-2"></i>Категории обучения</h5>
+      <p class="text-muted small mb-0">Выберите категорию для изучения финансовой грамотности</p>
+    </div>
+  </div>
+</div>
+
+<!-- Список категорий -->
+<div class="categories-list mb-4">
+    <!-- Основы финансов -->
+  <a href="{% url 'category_detail' 'basics' %}" class="card mb-3 category-card-link haptic-light slide-in-up" style="text-decoration: none; color: inherit;">
+    <div class="card-body">
+      <div class="d-flex align-items-center mb-2">
+        <div class="category-icon me-3">
+        <i class="fa-solid fa-piggy-bank"></i>
+      </div>
+        <div class="flex-grow-1">
+          <h6 class="mb-0">{{ categories.basics.name }}</h6>
+          <small class="text-muted">Базовые принципы управления деньгами</small>
+          </div>
+        <div>
+          <span class="badge bg-primary">{{ categories.basics.progress_percent }}%</span>
+          <i class="fa-solid fa-chevron-right ms-2 text-muted" style="font-size: 0.9rem;"></i>
+        </div>
+      </div>
+      <div class="progress mb-2" style="height: 6px;">
+        <div class="progress-bar bg-gradient category-bar" 
+             role="progressbar" 
+             style="width: 0%;"
+             data-percent="{{ categories.basics.progress_percent }}"></div>
+      </div>
+      <div class="d-flex justify-content-between align-items-center">
+        <small class="text-muted">
+          <i class="fa-solid fa-check-circle me-1"></i>
+          {{ categories.basics.completed_levels }} из {{ categories.basics.total_levels }} уровней
+        </small>
+        {% if categories.basics.progress_percent == 100 %}
+        <small class="text-success">
+          <i class="fa-solid fa-trophy me-1"></i>Завершено!
+        </small>
+        {% endif %}
+      </div>
+    </div>
+  </a>
+
+    <!-- Безопасность -->
+  <a href="{% url 'category_detail' 'security' %}" class="card mb-3 category-card-link haptic-light slide-in-up" style="text-decoration: none; color: inherit;">
+    <div class="card-body">
+      <div class="d-flex align-items-center mb-2">
+        <div class="category-icon me-3">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+        <div class="flex-grow-1">
+          <h6 class="mb-0">{{ categories.security.name }}</h6>
+          <small class="text-muted">Защита от мошенников и рисков</small>
+          </div>
+        <div>
+          <span class="badge bg-primary">{{ categories.security.progress_percent }}%</span>
+          <i class="fa-solid fa-chevron-right ms-2 text-muted" style="font-size: 0.9rem;"></i>
+        </div>
+      </div>
+      <div class="progress mb-2" style="height: 6px;">
+        <div class="progress-bar bg-gradient category-bar" 
+             role="progressbar" 
+             style="width: 0%;"
+             data-percent="{{ categories.security.progress_percent }}"></div>
+      </div>
+      <div class="d-flex justify-content-between align-items-center">
+        <small class="text-muted">
+          <i class="fa-solid fa-check-circle me-1"></i>
+          {{ categories.security.completed_levels }} из {{ categories.security.total_levels }} уровней
+        </small>
+        {% if categories.security.progress_percent == 100 %}
+        <small class="text-success">
+          <i class="fa-solid fa-trophy me-1"></i>Завершено!
+        </small>
+        {% endif %}
+      </div>
+    </div>
+  </a>
+
+    <!-- Инвестиции -->
+  <a href="{% url 'category_detail' 'investments' %}" class="card mb-3 category-card-link haptic-light slide-in-up" style="text-decoration: none; color: inherit;">
+    <div class="card-body">
+      <div class="d-flex align-items-center mb-2">
+        <div class="category-icon me-3">
+        <i class="fa-solid fa-chart-line"></i>
+      </div>
+        <div class="flex-grow-1">
+          <h6 class="mb-0">{{ categories.investments.name }}</h6>
+          <small class="text-muted">Приумножение сбережений</small>
+          </div>
+        <div>
+          <span class="badge bg-primary">{{ categories.investments.progress_percent }}%</span>
+          <i class="fa-solid fa-chevron-right ms-2 text-muted" style="font-size: 0.9rem;"></i>
+        </div>
+      </div>
+      <div class="progress mb-2" style="height: 6px;">
+        <div class="progress-bar bg-gradient category-bar" 
+             role="progressbar" 
+             style="width: 0%;"
+             data-percent="{{ categories.investments.progress_percent }}"></div>
+      </div>
+      <div class="d-flex justify-content-between align-items-center">
+        <small class="text-muted">
+          <i class="fa-solid fa-check-circle me-1"></i>
+          {{ categories.investments.completed_levels }} из {{ categories.investments.total_levels }} уровней
+        </small>
+        {% if categories.investments.progress_percent == 100 %}
+        <small class="text-success">
+          <i class="fa-solid fa-trophy me-1"></i>Завершено!
+        </small>
+        {% endif %}
+      </div>
+    </div>
+  </a>
+
+    <!-- Планирование -->
+  <a href="{% url 'category_detail' 'planning' %}" class="card mb-3 category-card-link haptic-light slide-in-up" style="text-decoration: none; color: inherit;">
+    <div class="card-body">
+      <div class="d-flex align-items-center mb-2">
+        <div class="category-icon me-3">
+        <i class="fa-solid fa-bullseye"></i>
+      </div>
+        <div class="flex-grow-1">
+          <h6 class="mb-0">{{ categories.planning.name }}</h6>
+          <small class="text-muted">Достижение финансовых целей</small>
+          </div>
+        <div>
+          <span class="badge bg-primary">{{ categories.planning.progress_percent }}%</span>
+          <i class="fa-solid fa-chevron-right ms-2 text-muted" style="font-size: 0.9rem;"></i>
+        </div>
+      </div>
+      <div class="progress mb-2" style="height: 6px;">
+        <div class="progress-bar bg-gradient category-bar" 
+             role="progressbar" 
+             style="width: 0%;"
+             data-percent="{{ categories.planning.progress_percent }}"></div>
+      </div>
+      <div class="d-flex justify-content-between align-items-center">
+        <small class="text-muted">
+          <i class="fa-solid fa-check-circle me-1"></i>
+          {{ categories.planning.completed_levels }} из {{ categories.planning.total_levels }} уровней
+        </small>
+        {% if categories.planning.progress_percent == 100 %}
+        <small class="text-success">
+          <i class="fa-solid fa-trophy me-1"></i>Завершено!
+        </small>
+        {% endif %}
+      </div>
+    </div>
+  </a>
+</div>
+
+<style>
+/* Стили для страницы категорий */
+.categories-header .card {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+body.dark-theme .categories-header .card {
+  background: #1e293b;
+  border: 1px solid #475569;
+}
+
+.categories-list .card {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.category-card-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+}
+
+.category-card-link:active {
+  transform: scale(0.98);
+}
+
+body.dark-theme .categories-list .card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.92) 100%);
+  border: 1px solid #475569;
+}
+
+/* Иконки категорий */
+.category-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  flex-shrink: 0;
+}
+
+.progress {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+body.dark-theme .progress {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 10px;
+  transition: width 0.8s ease;
+}
+
+/* Анимации */
+.fade-in {
+  animation: fadeIn 0.3s ease;
+}
+
+.slide-in-up {
+  animation: slideInUp 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Мобильные стили */
+@media (max-width: 768px) {
+  body.mobile-view .categories-header .card,
+  body.mobile-view .categories-list .card {
+    border-radius: 16px;
+}
+
+  body.mobile-view .card-body {
+    padding: 1rem;
+}
+
+  body.mobile-view h5 {
+  font-size: 1.1rem;
+  }
+  
+  body.mobile-view h6 {
+    font-size: 1rem;
+}
+
+  body.mobile-view .category-icon {
+    width: 45px;
+    height: 45px;
+    font-size: 1.3rem;
+}
+
+  body.mobile-view .category-card-link:hover {
+    transform: none;
+}
+
+  body.mobile-view .category-card-link:active {
+    transform: scale(0.98);
+  }
+}
+</style>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Анимация прогресс-баров при загрузке
+  const categoryBars = document.querySelectorAll('.category-bar');
+  
+  categoryBars.forEach((bar, index) => {
+    const percent = bar.getAttribute('data-percent');
+  setTimeout(() => {
+      bar.style.width = percent + '%';
+    }, index * 150 + 100);
+  });
+  
+  // Задержка анимации появления карточек
+    document.querySelectorAll('.slide-in-up').forEach((el, index) => {
+      el.style.animationDelay = `${index * 0.1}s`;
+    });
+});
+</script>
+
+{% endblock %}
+

@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% block title %}Навыки — FinQuest{% endblock %}
+{% block page_title %}<i class="fa-solid fa-chart-line me-2"></i>Навыки{% endblock %}
+
+{% block content %}
+<!-- Заголовок -->
+<div class="skills-header mb-4 fade-in">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="mb-2"><i class="fa-solid fa-chart-line me-2"></i>Навыки финансовой грамотности</h5>
+      <p class="text-muted small mb-0">Отслеживайте свой прогресс по каждой категории обучения</p>
+    </div>
+  </div>
+</div>
+
+<!-- Прогресс по навыкам -->
+<div class="skills-list mb-4">
+  {% for category_key, category in categories.items %}
+  <div class="card mb-3 slide-in-up">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h6 class="mb-0">{{ category.name }}</h6>
+        <span class="badge bg-primary">{{ category.progress_percent }}%</span>
+      </div>
+      <div class="progress mb-2" style="height: 10px;">
+        <div class="progress-bar bg-gradient skill-bar" 
+             role="progressbar" 
+             style="width: 0%;"
+             data-percent="{{ category.progress_percent }}"></div>
+      </div>
+      <div class="d-flex justify-content-between align-items-center">
+        <small class="text-muted">
+          <i class="fa-solid fa-check-circle me-1"></i>
+          {{ category.completed_levels }} из {{ category.total_levels }} уровней
+        </small>
+        {% if category.progress_percent == 100 %}
+        <small class="text-success">
+          <i class="fa-solid fa-trophy me-1"></i>Завершено!
+        </small>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="card">
+    <div class="card-body text-center py-4">
+      <div class="text-muted mb-2">📚</div>
+      <p class="text-muted mb-0">Нет данных о навыках. Начни обучение!</p>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<style>
+/* Стили для страницы навыков */
+.skills-header .card {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+body.dark-theme .skills-header .card {
+  background: #1e293b;
+  border: 1px solid #475569;
+}
+
+.skills-list .card {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+}
+
+.skills-list .card:active {
+  transform: scale(0.98);
+}
+
+body.dark-theme .skills-list .card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.92) 100%);
+  border: 1px solid #475569;
+}
+
+.progress {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+body.dark-theme .progress {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 10px;
+  transition: width 0.8s ease;
+}
+
+/* Анимации */
+.fade-in {
+  animation: fadeIn 0.3s ease;
+}
+
+.slide-in-up {
+  animation: slideInUp 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Мобильные стили */
+@media (max-width: 768px) {
+  body.mobile-view .skills-header .card,
+  body.mobile-view .skills-list .card {
+    border-radius: 16px;
+  }
+  
+  body.mobile-view .card-body {
+    padding: 1rem;
+  }
+  
+  body.mobile-view h5 {
+    font-size: 1.1rem;
+  }
+  
+  body.mobile-view h6 {
+    font-size: 1rem;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Анимация прогресс-баров при загрузке
+  const skillBars = document.querySelectorAll('.skill-bar');
+  
+  skillBars.forEach((bar, index) => {
+    const percent = bar.getAttribute('data-percent');
+    setTimeout(() => {
+      bar.style.width = percent + '%';
+    }, index * 150 + 100);
+  });
+});
+</script>
+
+{% endblock %}
+

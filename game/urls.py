@@ -12,5 +12,8 @@ urlpatterns = [
     path('notifications/', views.notifications_list, name='notifications_list'),  # /notifications/
     path('daily-quests/', views.daily_quests, name='daily_quests'),  # /daily-quests/
     path('leaderboard/', views.leaderboard, name='leaderboard'),  # /leaderboard/
+    path('mobile-achievements/', views.mobile_achievements, name='mobile_achievements'),  # /mobile-achievements/
+    path('mobile-skills/', views.mobile_skills, name='mobile_skills'),  # /mobile-skills/
+    path('categories/', views.categories, name='categories'),  # /categories/
     path('toggle-mobile/', views.toggle_mobile_view, name='toggle_mobile_view'),  # /toggle-mobile/
 ]

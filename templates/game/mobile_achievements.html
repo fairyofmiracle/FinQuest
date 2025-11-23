@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+
+{% block title %}Достижения - FinQuest{% endblock %}
+{% block page_title %}🏆 Достижения{% endblock %}
+
+{% block content %}
+<div class="container">
+  <!-- Прогресс достижений -->
+  <div class="text-end mb-3">
+    <span class="badge bg-primary">{{ achievements_count }}/{{ total_achievements }}</span>
+  </div>
+
+  <!-- Прогресс -->
+  <div class="card mb-3 fade-in">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <span class="fw-bold">Общий прогресс</span>
+        <span class="text-muted">{{ achievements_count }} из {{ total_achievements }}</span>
+      </div>
+      <div class="progress" style="height: 12px;">
+        <div class="progress-bar bg-success" role="progressbar" 
+             style="width: {% widthratio achievements_count total_achievements 100 %}%"
+             aria-valuenow="{{ achievements_count }}" 
+             aria-valuemin="0" 
+             aria-valuemax="{{ total_achievements }}">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Полученные достижения -->
+  {% if user_achievements %}
+  <h4 class="section-title">✨ Получено</h4>
+  <div class="row g-3 mb-4">
+    {% for user_achievement in user_achievements %}
+    <div class="col-6 slide-in-left">
+      <div class="card h-100 achievement-card-mobile haptic-light">
+        <div class="card-body text-center p-3">
+          <div class="achievement-icon-mobile mb-2">
+            <img src="/static/images/achievements/{{ user_achievement.achievement.name|lower|cut:' '|cut:','}}.svg" 
+                 alt="{{ user_achievement.achievement.name }}" 
+                 style="width: 60px; height: 60px;"
+                 onerror="this.onerror=null; this.src='/static/images/achievements/trophy.svg';">
+          </div>
+          <h6 class="achievement-name-mobile mb-1">{{ user_achievement.achievement.name }}</h6>
+          <p class="achievement-description-mobile mb-2">{{ user_achievement.achievement.description }}</p>
+          <span class="badge achievement-rarity-{{ user_achievement.achievement.rarity }}">
+            {{ user_achievement.achievement.get_rarity_display }}
+          </span>
+          <p class="achievement-date-mobile mt-2 mb-0">
+            <i class="fa-solid fa-calendar"></i> {{ user_achievement.earned_at|date:"d.m.Y" }}
+          </p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Заблокированные достижения -->
+  {% if locked_achievements %}
+  <h4 class="section-title">🔒 Заблокировано</h4>
+  <div class="row g-3 mb-4">
+    {% for achievement in locked_achievements %}
+    <div class="col-6 slide-in-right">
+      <div class="card h-100 achievement-card-locked">
+        <div class="card-body text-center p-3">
+          <div class="achievement-icon-mobile mb-2" style="opacity: 0.3; filter: grayscale(100%);">
+            <img src="/static/images/achievements/{{ achievement.name|lower|cut:' '|cut:','}}.svg" 
+                 alt="{{ achievement.name }}" 
+                 style="width: 60px; height: 60px;"
+                 onerror="this.onerror=null; this.src='/static/images/achievements/trophy.svg';">
+          </div>
+          <h6 class="achievement-name-mobile mb-1 text-muted">???</h6>
+          <p class="achievement-description-mobile mb-2 text-muted">Выполните условия для разблокировки</p>
+          <span class="badge bg-secondary">
+            {{ achievement.get_rarity_display }}
+          </span>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if not user_achievements and not locked_achievements %}
+  <div class="text-center py-5">
+    <i class="fa-solid fa-trophy text-muted" style="font-size: 4rem;"></i>
+    <p class="text-muted mt-3">Достижения пока не загружены</p>
+  </div>
+  {% endif %}
+</div>
+
+<style>
+  .achievement-card-mobile {
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  }
+  
+  .achievement-card-mobile:active {
+    transform: scale(0.95);
+  }
+  
+  .achievement-card-locked {
+    border-radius: 16px;
+    border: 2px dashed #dee2e6;
+    box-shadow: none;
+    background: #f8f9fa;
+  }
+  
+  .achievement-name-mobile {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #1f2937;
+    line-height: 1.2;
+  }
+  
+  .achievement-description-mobile {
+    font-size: 0.65rem;
+    color: #6b7280;
+    line-height: 1.3;
+  }
+  
+  .achievement-date-mobile {
+    font-size: 0.6rem;
+    color: #9ca3af;
+  }
+  
+  .achievement-rarity-common {
+    background: #6c757d;
+    color: white;
+  }
+  
+  .achievement-rarity-uncommon {
+    background: #28a745;
+    color: white;
+  }
+  
+  .achievement-rarity-rare {
+    background: #007bff;
+    color: white;
+  }
+  
+  .achievement-rarity-legendary {
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: #000;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+  }
+  
+  .section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 1rem;
+    padding: 0 0.5rem;
+  }
+  
+  body.dark-theme .achievement-card-mobile {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.92) 100%);
+    border: 1px solid #475569;
+  }
+  
+  body.dark-theme .achievement-name-mobile {
+    color: #f1f5f9;
+  }
+  
+  body.dark-theme .achievement-description-mobile {
+    color: #9ca3af;
+  }
+  
+  body.dark-theme .section-title {
+    color: #f1f5f9;
+  }
+  
+  body.dark-theme .achievement-card-locked {
+    background: rgba(30, 41, 59, 0.5);
+    border-color: #475569;
+  }
+</style>
+{% endblock %}
+

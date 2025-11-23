@@ -16,11 +16,14 @@ def home(request):
     return render(request, 'game/home.html')
 
 def toggle_mobile_view(request):
-    """Переключение мобильной версии через сессию"""
-    if 'mobile_view' in request.session:
-        request.session['mobile_view'] = not request.session['mobile_view']
+    """Переключение между мобильной и веб версией (для тестирования)"""
+    # Используем force_mobile_view для переопределения автоопределения
+    if 'force_mobile_view' in request.session:
+        # Если уже установлен, переключаем
+        request.session['force_mobile_view'] = not request.session['force_mobile_view']
     else:
-        request.session['mobile_view'] = True
+        # Если не установлен, включаем мобильную версию
+        request.session['force_mobile_view'] = True
     
     # Редирект на предыдущую страницу или на главную
     referer = request.META.get('HTTP_REFERER', '/')
@@ -147,11 +150,25 @@ def dashboard(request):
         else:
             category['progress_percent'] = 0
     
+    # Получаем последние достижения пользователя (последние 3)
+    recent_achievements = UserAchievement.objects.filter(
+        user=user
+    ).select_related('achievement').order_by('-earned_at')[:3]
+    
+    # Считаем общий прогресс
+    total_levels = sum(category['total_levels'] for category in categories.values())
+    completed_levels = sum(category['completed_levels'] for category in categories.values())
+    overall_progress = int(completed_levels / total_levels * 100) if total_levels > 0 else 0
+    
     return render(request, 'game/dashboard.html', {
         'topics': topics, 
         'categories': categories,
         'unread_notifications': unread_notifications,
-        'is_first_visit': is_first_visit
+        'is_first_visit': is_first_visit,
+        'recent_achievements': recent_achievements,
+        'overall_progress': overall_progress,
+        'total_levels': total_levels,
+        'completed_levels': completed_levels,
     })
 
 @login_required
@@ -1203,6 +1220,101 @@ def leaderboard(request):
         'top_players': top_players,
         'current_user_entry': current_user_entry,
         'current_user_rank': current_user_rank
+    })
+
+@login_required
+def mobile_achievements(request):
+    """Страница достижений для мобильной версии"""
+    user = request.user
+    
+    # Получаем все достижения пользователя
+    user_achievements = UserAchievement.objects.filter(user=user).select_related('achievement')
+    achieved_ids = user_achievements.values_list('achievement_id', flat=True)
+    
+    # Получаем все достижения
+    all_achievements = Achievement.objects.all()
+    locked_achievements = all_achievements.exclude(id__in=achieved_ids)
+    
+    return render(request, 'game/mobile_achievements.html', {
+        'user_achievements': user_achievements,
+        'locked_achievements': locked_achievements,
+        'achievements_count': user_achievements.count(),
+        'total_achievements': all_achievements.count(),
+    })
+
+@login_required
+def categories(request):
+    """Страница категорий для мобильной версии"""
+    user = request.user
+    topics = Topic.objects.prefetch_related('level_set').all()
+    
+    # Получаем все прогрессы пользователя одним запросом
+    user_progress = UserLevelProgress.objects.filter(user=user, completed=True).values_list('level__topic_id', flat=True)
+    progress_counts = {}
+    for topic_id in user_progress:
+        progress_counts[topic_id] = progress_counts.get(topic_id, 0) + 1
+    
+    # Группируем темы по категориям и считаем прогресс
+    categories = {
+        'basics': {'name': 'Основы финансов', 'icon': 'fa-piggy-bank', 'topics': [], 'total_levels': 0, 'completed_levels': 0},
+        'security': {'name': 'Безопасность', 'icon': 'fa-shield-halved', 'topics': [], 'total_levels': 0, 'completed_levels': 0},
+        'investments': {'name': 'Инвестиции', 'icon': 'fa-chart-line', 'topics': [], 'total_levels': 0, 'completed_levels': 0},
+        'planning': {'name': 'Планирование', 'icon': 'fa-bullseye', 'topics': [], 'total_levels': 0, 'completed_levels': 0},
+    }
+    
+    for topic in topics:
+        if topic.main_category in categories:
+            categories[topic.main_category]['topics'].append(topic)
+            categories[topic.main_category]['total_levels'] += topic.level_set.count()
+            categories[topic.main_category]['completed_levels'] += progress_counts.get(topic.id, 0)
+    
+    # Вычисляем процент прогресса для каждой категории
+    for category in categories.values():
+        if category['total_levels'] > 0:
+            category['progress_percent'] = int(category['completed_levels'] / category['total_levels'] * 100)
+        else:
+            category['progress_percent'] = 0
+    
+    return render(request, 'game/categories.html', {
+        'categories': categories,
+    })
+
+
+@login_required
+def mobile_skills(request):
+    """Страница навыков для мобильной версии"""
+    user = request.user
+    topics = Topic.objects.prefetch_related('level_set').all()
+    
+    # Получаем все прогрессы пользователя одним запросом
+    user_progress = UserLevelProgress.objects.filter(user=user, completed=True).values_list('level__topic_id', flat=True)
+    progress_counts = {}
+    for topic_id in user_progress:
+        progress_counts[topic_id] = progress_counts.get(topic_id, 0) + 1
+    
+    # Группируем темы по категориям и считаем прогресс
+    categories = {
+        'basics': {'name': 'Основы финансов', 'icon': 'fa-piggy-bank', 'topics': [], 'total_levels': 0, 'completed_levels': 0},
+        'security': {'name': 'Безопасность', 'icon': 'fa-shield-halved', 'topics': [], 'total_levels': 0, 'completed_levels': 0},
+        'investments': {'name': 'Инвестиции', 'icon': 'fa-chart-line', 'topics': [], 'total_levels': 0, 'completed_levels': 0},
+        'planning': {'name': 'Планирование', 'icon': 'fa-bullseye', 'topics': [], 'total_levels': 0, 'completed_levels': 0},
+    }
+    
+    for topic in topics:
+        if topic.main_category in categories:
+            categories[topic.main_category]['topics'].append(topic)
+            categories[topic.main_category]['total_levels'] += topic.level_set.count()
+            categories[topic.main_category]['completed_levels'] += progress_counts.get(topic.id, 0)
+    
+    # Вычисляем процент прогресса для каждой категории
+    for category in categories.values():
+        if category['total_levels'] > 0:
+            category['progress_percent'] = int(category['completed_levels'] / category['total_levels'] * 100)
+        else:
+            category['progress_percent'] = 0
+    
+    return render(request, 'game/mobile_skills.html', {
+        'categories': categories,
     })
 
 

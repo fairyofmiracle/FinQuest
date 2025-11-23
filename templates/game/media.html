@@ -1,38 +1,171 @@
 {% extends 'base.html' %}
-{% block title %}Медиа — FinQuest{% endblock %}
+{% block title %}Статьи — FinQuest{% endblock %}
+{% block page_title %}<i class="fa-solid fa-newspaper me-2"></i>Статьи{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <h4 class="section-title"><i class="fa-solid fa-newspaper"></i> Статьи и советы</h4>
-  <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-primary">
-    <i class="fa-solid fa-home me-1"></i>Дашборд
-  </a>
-</div>
-
-
-{% for article in articles %}
-  <div class="card mb-3">
+<!-- Заголовок -->
+<div class="articles-header mb-4 fade-in">
+  <div class="card">
     <div class="card-body">
-      <div class="d-flex justify-content-between align-items-start mb-2">
-        <h5 class="mb-0">{{ article.title }}</h5>
-        <span class="badge bg-primary">{{ article.topic.name }}</span>
-      </div>
-      <p class="text-muted small mb-2">{{ article.created_at|date:"d.m.Y" }}</p>
-      <p class="text-muted">{{ article.content|striptags|truncatewords:25 }}</p>
-      <div class="d-flex justify-content-between align-items-center">
-        <a href="{% url 'article_detail' article.id %}" class="btn btn-outline-primary btn-sm">
-          <i class="fa-solid fa-book-open me-1"></i>Читать
-        </a>
-        <small class="text-muted">
-          <i class="fa-solid fa-clock me-1"></i>{{ article.created_at|timesince }} назад
-        </small>
-      </div>
+      <h5 class="mb-2"><i class="fa-solid fa-newspaper me-2"></i>Статьи и новости</h5>
+      <p class="text-muted small mb-0">Читайте статьи о финансовой грамотности</p>
     </div>
   </div>
-{% empty %}
-  <div class="text-center py-5">
-    <i class="fa-solid fa-newspaper text-muted" style="font-size: 3rem;"></i>
-    <p class="text-muted mt-3">Статьи скоро появятся!</p>
+</div>
+
+<!-- Список статей -->
+{% if articles %}
+<div class="articles-list mb-4">
+  {% for article in articles %}
+    <a href="{% url 'article_detail' article.id %}" class="card mb-3 article-card-link haptic-light slide-in-up" style="text-decoration: none; color: inherit;">
+      <div class="card-body">
+        <div class="d-flex align-items-start mb-2">
+          <div class="article-icon-wrapper me-3">
+            <i class="fa-solid fa-newspaper"></i>
+          </div>
+          <div class="flex-grow-1">
+            <div class="d-flex justify-content-between align-items-start mb-1">
+              <h6 class="mb-0">{{ article.title }}</h6>
+              <i class="fa-solid fa-chevron-right ms-2 text-muted" style="font-size: 0.9rem;"></i>
+            </div>
+            <small class="text-muted d-block mb-2">{{ article.content|striptags|truncatewords:15 }}</small>
+            
+            <!-- Бейджи -->
+            <div class="d-flex flex-wrap gap-1 align-items-center">
+              <span class="badge bg-primary">{{ article.topic.name }}</span>
+              <small class="text-muted">
+                <i class="fa-solid fa-clock me-1"></i>{{ article.created_at|date:"d.m.Y" }}
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+  {% endfor %}
+</div>
+{% else %}
+  <div class="card">
+    <div class="card-body text-center py-4">
+      <div class="text-muted mb-2">📰</div>
+      <p class="text-muted mb-0">Статьи скоро появятся!</p>
+    </div>
   </div>
-{% endfor %}
+{% endif %}
+
+<style>
+/* Стили для страницы статей */
+.articles-header .card {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+body.dark-theme .articles-header .card {
+  background: #1e293b;
+  border: 1px solid #475569;
+}
+
+.articles-list .card {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.article-card-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+}
+
+.article-card-link:active {
+  transform: scale(0.98);
+}
+
+body.dark-theme .articles-list .card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.92) 100%);
+  border: 1px solid #475569;
+}
+
+/* Иконки статей */
+.article-icon-wrapper {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  flex-shrink: 0;
+}
+
+/* Анимации */
+.fade-in {
+  animation: fadeIn 0.3s ease;
+}
+
+.slide-in-up {
+  animation: slideInUp 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Мобильные стили */
+@media (max-width: 768px) {
+  body.mobile-view .articles-header .card,
+  body.mobile-view .articles-list .card {
+    border-radius: 16px;
+  }
+  
+  body.mobile-view .card-body {
+    padding: 1rem;
+  }
+  
+  body.mobile-view h5 {
+    font-size: 1.1rem;
+  }
+  
+  body.mobile-view h6 {
+    font-size: 1rem;
+  }
+  
+  body.mobile-view .article-icon-wrapper {
+    width: 45px;
+    height: 45px;
+    font-size: 1.3rem;
+  }
+  
+  body.mobile-view .article-card-link:hover {
+    transform: none;
+  }
+  
+  body.mobile-view .article-card-link:active {
+    transform: scale(0.98);
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Задержка анимации появления карточек
+  document.querySelectorAll('.slide-in-up').forEach((el, index) => {
+    el.style.animationDelay = `${index * 0.1}s`;
+  });
+});
+</script>
 {% endblock %}

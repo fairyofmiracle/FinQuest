@@ -12,9 +12,25 @@ def notifications_context(request):
     return {'unread_notifications_count': 0}
 
 def mobile_view_context(request):
-    """Добавляет информацию о мобильной версии в контекст всех шаблонов"""
+    """Автоматически определяет мобильное устройство по User-Agent"""
+    user_agent = request.META.get('HTTP_USER_AGENT', '').lower()
+    
+    # Список ключевых слов для определения мобильных устройств
+    mobile_keywords = [
+        'mobile', 'android', 'iphone', 'ipod', 'ipad', 
+        'blackberry', 'windows phone', 'webos', 'opera mini',
+        'iemobile', 'mobile safari'
+    ]
+    
+    # Проверяем есть ли мобильные ключевые слова в User-Agent
+    is_mobile = any(keyword in user_agent for keyword in mobile_keywords)
+    
+    # Можно переопределить через сессию (для тестирования)
+    if 'force_mobile_view' in request.session:
+        is_mobile = request.session['force_mobile_view']
+    
     return {
-        'mobile_view': request.session.get('mobile_view', False)
+        'mobile_view': is_mobile
     }
 
 def achievements_context(request):
