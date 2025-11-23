@@ -644,12 +644,22 @@ body.mobile-view {
   body.mobile-view .guide-title {
     font-size: 1rem !important;
     margin-bottom: 8px !important;
+    color: #6f42c1 !important; /* Фиолетовый цвет для мобильного */
   }
   
   body.mobile-view .guide-text {
     font-size: 0.85rem !important;
     margin-bottom: 12px !important;
     line-height: 1.4 !important;
+    color: #1f2937 !important; /* Темный цвет текста для мобильного */
+  }
+  
+  body.mobile-view .guide-navigation {
+    color: #1f2937 !important; /* Темный цвет для навигации на мобильном */
+  }
+  
+  body.mobile-view .guide-counter {
+    color: #6b7280 !important; /* Серый цвет для счетчика на мобильном */
   }
   
   body.mobile-view .guide-navigation {
@@ -790,50 +800,59 @@ body.mobile-view {
   }
   
   body.mobile-view .achievement-modal-content {
-    border-radius: 20px !important;
+    border-radius: 16px !important;
+    max-width: 90% !important;
+    margin: 0 auto !important;
+  }
+  
+  body.mobile-view .modal-dialog {
+    max-width: 90% !important;
+    margin: 1rem auto !important;
   }
   
   body.mobile-view .modal-body {
-    padding: 1.5rem !important;
+    padding: 1rem !important;
   }
   
-  /* Иконка достижения */
+  /* Иконка достижения - уменьшена */
   body.mobile-view .achievement-icon-large {
-    width: 80px !important;
-    height: 80px !important;
-    font-size: 3rem !important;
-    margin: 0 auto 1rem !important;
+    width: 60px !important;
+    height: 60px !important;
+    font-size: 2.5rem !important;
+    margin: 0 auto 0.75rem !important;
   }
   
   body.mobile-view .achievement-icon-large img {
-    width: 80px !important;
-    height: 80px !important;
+    width: 60px !important;
+    height: 60px !important;
   }
   
-  /* Заголовок */
+  /* Заголовок - уменьшен */
   body.mobile-view .achievement-title {
-    font-size: 1.3rem !important;
+    font-size: 1.1rem !important;
+    margin-bottom: 0.5rem !important;
+    line-height: 1.3 !important;
+  }
+  
+  /* Описание - уменьшено */
+  body.mobile-view .achievement-description {
+    font-size: 0.85rem !important;
+    margin-bottom: 0.75rem !important;
+    line-height: 1.4 !important;
+  }
+  
+  /* Бейдж редкости - уменьшен */
+  body.mobile-view .achievement-rarity-badge {
+    font-size: 0.75rem !important;
+    padding: 0.3rem 0.6rem !important;
     margin-bottom: 0.75rem !important;
   }
   
-  /* Описание */
-  body.mobile-view .achievement-description {
-    font-size: 0.95rem !important;
-    margin-bottom: 1rem !important;
-  }
-  
-  /* Бейдж редкости */
-  body.mobile-view .achievement-rarity-badge {
-    font-size: 0.85rem !important;
-    padding: 0.4rem 0.8rem !important;
-    margin-bottom: 1rem !important;
-  }
-  
-  /* Кнопка закрытия */
+  /* Кнопка закрытия - уменьшена */
   body.mobile-view .achievement-modal-content .btn {
-    padding: 0.875rem 1.5rem !important;
-    font-size: 1rem !important;
-    border-radius: 16px !important;
+    padding: 0.6rem 1.2rem !important;
+    font-size: 0.875rem !important;
+    border-radius: 12px !important;
     font-weight: 600 !important;
   }
   
@@ -972,6 +991,16 @@ body.mobile-view {
     margin-bottom: 0.5rem !important;
   }
   
+  /* Переопределяем для quiz-status внутри quiz-progress - кнопка должна быть видна */
+  body.mobile-view .quiz-progress .quiz-status {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    margin-bottom: 0 !important;
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
+  
   body.mobile-view .quiz-status .badge {
     font-size: 0.7rem !important;
     padding: 0.25rem 0.5rem !important;
@@ -1011,31 +1040,68 @@ body.mobile-view {
   }
   
   /* Подсказка в прогресс-баре справа от бейджа, одинаковой высоты, на одном уровне */
+  body.mobile-view .quiz-progress {
+    overflow: visible !important;
+  }
+  
   body.mobile-view .quiz-progress .quiz-status {
     flex-wrap: nowrap !important;
     gap: 0.5rem !important;
     align-items: center !important;
     display: flex !important;
     flex-direction: row !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    overflow: visible !important;
+    flex-shrink: 0 !important;
   }
   
   body.mobile-view .quiz-progress .quiz-hint-top {
     margin: 0 !important;
+    margin-left: auto !important;
     flex-shrink: 0 !important;
-    display: inline-block !important;
-    vertical-align: middle !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: auto !important;
+    height: auto !important;
+    position: relative !important;
+    overflow: visible !important;
+    z-index: 10 !important;
   }
   
-  body.mobile-view .quiz-progress .hint-btn {
-    font-size: 0.65rem !important;
-    padding: 0.3rem 0.5rem !important;
+  body.mobile-view .quiz-status .quiz-hint-top {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    flex-shrink: 0 !important;
+    overflow: visible !important;
+    margin-left: auto !important;
+  }
+  
+  body.mobile-view .quiz-progress .hint-btn,
+  body.mobile-view .quiz-progress .hint-btn-disabled {
+    font-size: 0.7rem !important;
+    padding: 0.4rem 0.6rem !important;
     border-radius: 10px !important;
     white-space: nowrap !important;
     height: auto !important;
     line-height: 1.2 !important;
-    display: inline-flex !important;
+    display: flex !important;
     align-items: center !important;
-    vertical-align: middle !important;
+    justify-content: center !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 10 !important;
+    min-width: fit-content !important;
+  }
+  
+  body.mobile-view .quiz-hint-top .hint-btn,
+  body.mobile-view .quiz-hint-top .hint-btn-disabled {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
   }
   
   body.mobile-view .quiz-progress .badge {
@@ -1060,6 +1126,71 @@ body.mobile-view {
     flex-shrink: 0 !important;
     display: inline-block !important;
     vertical-align: middle !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: auto !important;
+    height: auto !important;
+    position: relative !important;
+    z-index: 10 !important;
+  }
+  
+  body.mobile-view .quiz-status .quiz-hint-top {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    flex-shrink: 0 !important;
+    position: relative !important;
+    z-index: 10 !important;
+  }
+  
+  /* Дополнительные стили для гарантии видимости кнопки */
+  body.mobile-view .quiz-progress .quiz-status .quiz-hint-top .hint-btn,
+  body.mobile-view .quiz-progress .quiz-status .quiz-hint-top .hint-btn-disabled {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 10 !important;
+    width: auto !important;
+    height: auto !important;
+    min-width: fit-content !important;
+  }
+  
+  /* Гарантируем видимость кнопки подсказки на мобильных */
+  @media (max-width: 768px) {
+    body.mobile-view .quiz-progress .quiz-hint-top,
+    body.mobile-view .quiz-status .quiz-hint-top {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      width: auto !important;
+      height: auto !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    
+    body.mobile-view .quiz-progress .quiz-hint-top .hint-btn,
+    body.mobile-view .quiz-progress .quiz-hint-top .hint-btn-disabled,
+    body.mobile-view .quiz-status .quiz-hint-top .hint-btn,
+    body.mobile-view .quiz-status .quiz-hint-top .hint-btn-disabled {
+      display: flex !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      width: auto !important;
+      height: auto !important;
+      min-width: fit-content !important;
+      margin: 0 !important;
+      padding: 0.4rem 0.6rem !important;
+    }
+    
+    /* Убеждаемся, что родительский контейнер не скрывает кнопку */
+    body.mobile-view .quiz-progress .d-flex {
+      overflow: visible !important;
+    }
+    
+    body.mobile-view .quiz-progress .quiz-status {
+      overflow: visible !important;
+    }
   }
   
   body.mobile-view .quiz-progress .hint-container {
@@ -1185,6 +1316,14 @@ body.mobile-view {
     font-size: 0.65rem !important;
     padding: 0.35rem 0.5rem !important;
     border-radius: 10px !important;
+  }
+  
+  body.mobile-view .hint-btn-disabled {
+    font-size: 0.65rem !important;
+    padding: 0.35rem 0.5rem !important;
+    border-radius: 10px !important;
+    opacity: 0.6 !important;
+    cursor: pointer !important;
   }
   
   body.mobile-view .hint-card {

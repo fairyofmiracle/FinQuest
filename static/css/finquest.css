@@ -873,16 +873,25 @@ body::before {
 }
 
 .guide-title {
-  color: var(--game-primary);
+  color: #6f42c1 !important; /* Фиолетовый цвет, не зависит от переменных */
   font-weight: 700;
   margin-bottom: 12px;
   font-size: 1.2rem;
 }
 
 .guide-text {
-  color: var(--game-dark);
+  color: #1f2937 !important; /* Темный цвет текста, не зависит от переменных */
   margin-bottom: 20px;
   line-height: 1.5;
+}
+
+/* Отдельные стили для навигации tutorial - не зависят от общих стилей */
+.guide-navigation {
+  color: #1f2937 !important; /* Темный цвет для навигации */
+}
+
+.guide-counter {
+  color: #6b7280 !important; /* Серый цвет для счетчика */
 }
 
 .guide-navigation {
@@ -2418,6 +2427,20 @@ body::before {
 .quiz-container {
   max-width: 800px;
   margin: 0 auto;
+}
+
+/* Стили для кнопки подсказки в прогресс-баре */
+.quiz-hint-top {
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.quiz-hint-top .hint-btn,
+.quiz-hint-top .hint-btn-disabled {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .quiz-progress {

@@ -34,17 +34,19 @@
                   Вопрос {{ quiz_data.current_question_number }} из {{ quiz_data.total_questions }}
                 </span>
                 <!-- Подсказка справа -->
+                {% if hint %}
                 <div class="quiz-hint-top">
-                  {% if request.user.coins >= 3 %}
+                  {% if request.user.coins >= hint.cost_coins %}
                     <button type="button" class="btn btn-outline-warning btn-sm hint-btn" onclick="showHint()">
-                      <i class="fa-solid fa-lightbulb me-1"></i>Подсказка (<span class="hint-coins">3🪙</span>)
+                      <i class="fa-solid fa-lightbulb me-1"></i>Подсказка (<span class="hint-coins">{{ hint.cost_coins }}🪙</span>)
                     </button>
                   {% else %}
-                    <button type="button" class="btn btn-outline-secondary btn-sm" disabled>
-                      <i class="fa-solid fa-lightbulb me-1"></i>Подсказка (<span class="hint-coins">3🪙</span>) - Недостаточно монет
+                    <button type="button" class="btn btn-outline-secondary btn-sm hint-btn-disabled" onclick="showInsufficientCoinsMessage('{{ hint.cost_coins }}')" title="Недостаточно монет">
+                      <i class="fa-solid fa-lightbulb me-1"></i>Подсказка (<span class="hint-coins">{{ hint.cost_coins }}🪙</span>)
                     </button>
                   {% endif %}
                 </div>
+                {% endif %}
           </div>
         </div>
             
@@ -57,6 +59,7 @@
                      data-answered="{{ quiz_data.current_question }}"
                      data-total="{{ quiz_data.total_questions }}">
                   <span class="progress-text">{{ quiz_data.current_question }}/{{ quiz_data.total_questions }}</span>
+                </div>
                 </div>
               </div>
             </div>
@@ -1469,6 +1472,11 @@ function hideHint() {
         hintBtn.classList.add('btn-outline-warning');
         hintBtn.setAttribute('onclick', 'showHint()');
     }
+}
+
+// Показываем сообщение о недостатке монет
+function showInsufficientCoinsMessage(cost) {
+    alert('Недостаточно монет для подсказки. Нужно: ' + cost + ' 🪙');
 }
 </script>
 
