@@ -9,20 +9,42 @@
 
 <!-- Приветствие пользователя -->
 <div class="welcome-section mb-4 fade-in">
-  <div class="row align-items-center">
-    <div class="col-auto">
-      {% if user.get_avatar_display %}
-        <img src="{{ user.get_avatar_display }}" class="shadow {{ user.get_avatar_border_class }}" width="60" height="60" alt="Аватар" style="border-radius: 50%; object-fit: cover;">
-      {% else %}
-        <div class="bg-primary text-white d-flex align-items-center justify-content-center shadow {{ user.get_avatar_border_class }}"
-             style="width:60px; height:60px; font-size:24px; font-weight:bold; border-radius: 50%;">
-          {{ user.username|first|upper }}
-        </div>
-      {% endif %}
+  <!-- Мобильная версия - большой баннер -->
+  <div class="mobile-welcome-banner">
+    <div class="mobile-welcome-content">
+      <div class="mobile-welcome-avatar">
+        {% if user.get_avatar_display %}
+          <img src="{{ user.get_avatar_display }}" class="shadow {{ user.get_avatar_border_class }}" alt="Аватар">
+        {% else %}
+          <div class="mobile-avatar-placeholder {{ user.get_avatar_border_class }}">
+            {{ user.username|first|upper }}
+          </div>
+        {% endif %}
+      </div>
+      <div class="mobile-welcome-text">
+        <h2 class="mobile-welcome-title">Привет, {{ user.username }}! 👋</h2>
+        <p class="mobile-welcome-subtitle">{{ user.get_level_title }} • Уровень {{ user.level_number }}</p>
+      </div>
     </div>
-    <div class="col">
-      <h4 class="mb-0">Привет, {{ user.username }}! 👋</h4>
-      <p class="text-muted mb-0 small">{{ user.get_level_title }} • Уровень {{ user.level_number }}</p>
+  </div>
+  
+  <!-- Десктопная версия -->
+  <div class="desktop-welcome-content">
+    <div class="row align-items-center">
+      <div class="col-auto">
+        {% if user.get_avatar_display %}
+          <img src="{{ user.get_avatar_display }}" class="shadow {{ user.get_avatar_border_class }}" width="60" height="60" alt="Аватар" style="border-radius: 50%; object-fit: cover;">
+        {% else %}
+          <div class="bg-primary text-white d-flex align-items-center justify-content-center shadow {{ user.get_avatar_border_class }}"
+               style="width:60px; height:60px; font-size:24px; font-weight:bold; border-radius: 50%;">
+            {{ user.username|first|upper }}
+          </div>
+        {% endif %}
+      </div>
+      <div class="col">
+        <h4 class="mb-0">, {{ user.username }}! 👋</h4>
+        <p class="text-muted mb-0 small">{{ user.get_level_title }} • Уровень {{ user.level_number }}</p>
+      </div>
     </div>
   </div>
 </div>
@@ -149,6 +171,92 @@
 </div>
 {% endif %}
 
+<!-- Категории обучения для мобильной версии -->
+<div class="mobile-categories-section">
+  <h3 class="mobile-section-title">Категории обучения</h3>
+  <div class="mobile-categories-grid">
+    <!-- Основы финансов -->
+    <a href="{% url 'category_detail' 'basics' %}" class="mobile-category-card haptic-medium">
+      <div class="mobile-category-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <i class="fa-solid fa-piggy-bank"></i>
+      </div>
+      <div class="mobile-category-content">
+        <h4 class="mobile-category-title">{{ categories.basics.name }}</h4>
+        <p class="mobile-category-description">Изучите базовые принципы управления деньгами</p>
+        <div class="mobile-category-progress">
+          <div class="mobile-category-progress-bar">
+            <div class="mobile-category-progress-fill" style="width: {{ categories.basics.progress_percent }}%;"></div>
+          </div>
+          <span class="mobile-category-progress-text">{{ categories.basics.progress_percent }}%</span>
+        </div>
+      </div>
+      <div class="mobile-category-arrow">
+        <i class="fa-solid fa-chevron-right"></i>
+      </div>
+    </a>
+
+    <!-- Безопасность -->
+    <a href="{% url 'category_detail' 'security' %}" class="mobile-category-card haptic-medium">
+      <div class="mobile-category-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+      <div class="mobile-category-content">
+        <h4 class="mobile-category-title">{{ categories.security.name }}</h4>
+        <p class="mobile-category-description">Защитите себя от мошенников и рисков</p>
+        <div class="mobile-category-progress">
+          <div class="mobile-category-progress-bar">
+            <div class="mobile-category-progress-fill" style="width: {{ categories.security.progress_percent }}%;"></div>
+          </div>
+          <span class="mobile-category-progress-text">{{ categories.security.progress_percent }}%</span>
+        </div>
+      </div>
+      <div class="mobile-category-arrow">
+        <i class="fa-solid fa-chevron-right"></i>
+      </div>
+    </a>
+
+    <!-- Инвестиции -->
+    <a href="{% url 'category_detail' 'investments' %}" class="mobile-category-card haptic-medium">
+      <div class="mobile-category-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+        <i class="fa-solid fa-chart-line"></i>
+      </div>
+      <div class="mobile-category-content">
+        <h4 class="mobile-category-title">{{ categories.investments.name }}</h4>
+        <p class="mobile-category-description">Научитесь приумножать сбережения</p>
+        <div class="mobile-category-progress">
+          <div class="mobile-category-progress-bar">
+            <div class="mobile-category-progress-fill" style="width: {{ categories.investments.progress_percent }}%;"></div>
+          </div>
+          <span class="mobile-category-progress-text">{{ categories.investments.progress_percent }}%</span>
+        </div>
+      </div>
+      <div class="mobile-category-arrow">
+        <i class="fa-solid fa-chevron-right"></i>
+      </div>
+    </a>
+
+    <!-- Планирование -->
+    <a href="{% url 'category_detail' 'planning' %}" class="mobile-category-card haptic-medium">
+      <div class="mobile-category-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+        <i class="fa-solid fa-bullseye"></i>
+      </div>
+      <div class="mobile-category-content">
+        <h4 class="mobile-category-title">{{ categories.planning.name }}</h4>
+        <p class="mobile-category-description">Достигайте финансовых целей</p>
+        <div class="mobile-category-progress">
+          <div class="mobile-category-progress-bar">
+            <div class="mobile-category-progress-fill" style="width: {{ categories.planning.progress_percent }}%;"></div>
+          </div>
+          <span class="mobile-category-progress-text">{{ categories.planning.progress_percent }}%</span>
+        </div>
+      </div>
+      <div class="mobile-category-arrow">
+        <i class="fa-solid fa-chevron-right"></i>
+      </div>
+    </a>
+  </div>
+</div>
+
 <!-- Основные категории обучения (скрываем в мобильной версии) -->
 <div class="categories-section-desktop">
 <h5 class="mb-3 section-title"><i class="fa-solid fa-graduation-cap"></i> Категории обучения</h5>
@@ -240,6 +348,23 @@
 /* Скрываем категории на мобильной версии */
 body.mobile-view .categories-section-desktop {
   display: none;
+}
+
+/* Скрываем десктопную версию приветствия на мобильных */
+body.mobile-view .desktop-welcome-content {
+  display: none !important;
+}
+
+/* Скрываем мобильную версию на десктопе */
+body:not(.mobile-view) .mobile-welcome-banner,
+body:not(.mobile-view) .mobile-categories-section {
+  display: none !important;
+}
+
+/* Скрываем кнопку переключения мобильной версии на десктопной версии дашборда */
+body:not(.mobile-view) .btn-mobile-view,
+body:not(.mobile-view) a[href*='toggle_mobile_view'] {
+  display: none !important;
 }
 
 /* Приветствие */
@@ -621,6 +746,392 @@ body.mobile-view .progress-card-link:hover {
 
 body.mobile-view .progress-card-link:active {
   transform: scale(0.98);
+}
+
+/* ============================================
+   МОБИЛЬНАЯ ВЕРСИЯ - СТАРТОВЫЙ ЭКРАН ПРИЛОЖЕНИЯ
+   ============================================ */
+
+/* Мобильный приветственный баннер */
+body.mobile-view .mobile-welcome-banner {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 24px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+body.mobile-view .mobile-welcome-banner::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 200px;
+  height: 200px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+body.mobile-view .mobile-welcome-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  position: relative;
+  z-index: 1;
+}
+
+body.mobile-view .mobile-welcome-avatar {
+  flex-shrink: 0;
+}
+
+body.mobile-view .mobile-welcome-avatar img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+body.mobile-view .mobile-avatar-placeholder {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: bold;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+body.mobile-view .mobile-welcome-text {
+  flex: 1;
+  min-width: 0;
+}
+
+body.mobile-view .mobile-welcome-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: white;
+  margin: 0 0 0.25rem 0;
+  line-height: 1.2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+body.mobile-view .mobile-welcome-subtitle {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  font-weight: 500;
+}
+
+body.mobile-view .mobile-welcome-stats {
+  display: flex;
+  gap: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+body.mobile-view .mobile-stat-mini {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 0.75rem;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+body.mobile-view .mobile-stat-mini-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: white;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+body.mobile-view .mobile-stat-mini-label {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+}
+
+/* Мобильные карточки статистики */
+body.mobile-view .stats-grid {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+body.mobile-view .stat-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 1.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+body.mobile-view .stat-card:active {
+  transform: scale(0.96);
+}
+
+body.mobile-view .stat-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  font-size: 1.75rem;
+}
+
+body.mobile-view .stat-value {
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: #1f2937;
+}
+
+body.mobile-view .stat-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+/* Мобильные категории обучения */
+body.mobile-view .mobile-categories-section {
+  margin-bottom: 1.5rem;
+}
+
+body.mobile-view .mobile-section-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1f2937;
+  margin: 0 0 1.25rem 0;
+  padding: 0 0.5rem;
+}
+
+body.mobile-view.dark-theme .mobile-section-title {
+  color: #f1f5f9;
+}
+
+body.mobile-view .mobile-categories-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+body.mobile-view .mobile-category-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 1.25rem;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+body.mobile-view .mobile-category-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+body.mobile-view .mobile-category-card:active {
+  transform: scale(0.98);
+}
+
+body.mobile-view .mobile-category-card:active::before {
+  opacity: 1;
+}
+
+body.mobile-view .mobile-category-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+body.mobile-view .mobile-category-icon i {
+  font-size: 1.75rem;
+  color: white;
+}
+
+body.mobile-view .mobile-category-content {
+  flex: 1;
+  min-width: 0;
+}
+
+body.mobile-view .mobile-category-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #1f2937;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.2;
+}
+
+body.mobile-view.dark-theme .mobile-category-title {
+  color: #f1f5f9;
+}
+
+body.mobile-view .mobile-category-description {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin: 0 0 0.75rem 0;
+  line-height: 1.4;
+}
+
+body.mobile-view.dark-theme .mobile-category-description {
+  color: #9ca3af;
+}
+
+body.mobile-view .mobile-category-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+body.mobile-view .mobile-category-progress-bar {
+  flex: 1;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+body.mobile-view.dark-theme .mobile-category-progress-bar {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+body.mobile-view .mobile-category-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+body.mobile-view .mobile-category-progress-text {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #667eea;
+  min-width: 40px;
+  text-align: right;
+}
+
+body.mobile-view.dark-theme .mobile-category-progress-text {
+  color: #a5b4fc;
+}
+
+body.mobile-view .mobile-category-arrow {
+  flex-shrink: 0;
+  color: #9ca3af;
+  font-size: 1.1rem;
+}
+
+body.mobile-view.dark-theme .mobile-category-arrow {
+  color: #64748b;
+}
+
+/* Темная тема для мобильной версии */
+body.mobile-view.dark-theme .mobile-welcome-banner {
+  background: linear-gradient(135deg, #475569 0%, #334155 100%);
+}
+
+body.mobile-view.dark-theme .stat-card,
+body.mobile-view.dark-theme .mobile-category-card {
+  background: rgba(30, 41, 59, 0.95);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.mobile-view.dark-theme .stat-value {
+  color: #f1f5f9;
+}
+
+body.mobile-view.dark-theme .stat-label {
+  color: #94a3b8;
+}
+
+/* Адаптация прогресса обучения для мобильной версии */
+body.mobile-view .progress-section {
+  margin-bottom: 1.5rem;
+}
+
+body.mobile-view .progress-section .card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+body.mobile-view.dark-theme .progress-section .card {
+  background: rgba(30, 41, 59, 0.95);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Адаптация последних достижений для мобильной версии */
+body.mobile-view .recent-achievements {
+  margin-bottom: 1.5rem;
+}
+
+body.mobile-view .mobile-section-title {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+body.mobile-view .achievement-mini {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+body.mobile-view.dark-theme .achievement-mini {
+  background: rgba(30, 41, 59, 0.95);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Адаптация блока "О проекте" для мобильной версии */
+body.mobile-view .about-section {
+  margin-bottom: 1.5rem;
+}
+
+body.mobile-view .about-section .card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+body.mobile-view.dark-theme .about-section .card {
+  background: rgba(30, 41, 59, 0.95);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 </style>
 

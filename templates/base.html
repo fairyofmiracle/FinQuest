@@ -186,6 +186,12 @@
       100% { transform: translateY(-20px); }
     }
     
+    /* Скрываем кнопку переключения мобильной версии на десктопной версии дашборда */
+    body:not(.mobile-view) .btn-mobile-view,
+    body:not(.mobile-view) a[href*='toggle_mobile_view'] {
+      display: none !important;
+    }
+    
     /* Конфетти */
     #confetti-container {
       position: fixed;

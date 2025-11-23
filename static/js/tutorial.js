@@ -151,10 +151,6 @@ class FinQuestTutorial {
                             <i class="fa-solid fa-trophy"></i>
                             <span>Награды</span>
                         </div>
-                        <div class="feature-item">
-                            <i class="fa-solid fa-chart-line"></i>
-                            <span>Прогресс</span>
-                        </div>
                     </div>
                     <p class="mt-3">Покажу, как пользоваться!</p>
                 </div>

@@ -663,16 +663,21 @@ body.mobile-view {
   }
   
   body.mobile-view .guide-navigation {
-    flex-wrap: wrap !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
     gap: 8px !important;
     margin-bottom: 10px !important;
   }
   
   body.mobile-view .guide-counter {
     font-size: 0.75rem !important;
-    width: 100% !important;
+    width: auto !important;
     text-align: center !important;
-    margin-bottom: 8px !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
   }
   
   body.mobile-view .guide-navigation .btn {
@@ -680,9 +685,66 @@ body.mobile-view {
     padding: 6px 12px !important;
   }
   
+  /* Кнопка "Назад" - темный текст */
+  body.mobile-view .guide-navigation .btn-outline-secondary,
+  body.mobile-view .guide-navigation #prevBtn {
+    color: #1f2937 !important;
+    border-color: #1f2937 !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+  }
+  
+  body.mobile-view .guide-navigation .btn-outline-secondary:hover,
+  body.mobile-view .guide-navigation #prevBtn:hover {
+    color: #1f2937 !important;
+    background: rgba(31, 41, 55, 0.1) !important;
+  }
+  
   body.mobile-view .guide-actions .btn {
     font-size: 0.8rem !important;
     padding: 6px 16px !important;
+  }
+  
+  /* Кнопка "Пропустить" - темный текст, без обводки */
+  body.mobile-view .guide-actions .btn-outline-secondary,
+  body.mobile-view .guide-actions #skipBtn {
+    color: #1f2937 !important;
+    border: none !important;
+    background: transparent !important;
+  }
+  
+  body.mobile-view .guide-actions .btn-outline-secondary:hover,
+  body.mobile-view .guide-actions #skipBtn:hover {
+    color: #1f2937 !important;
+    background: rgba(31, 41, 55, 0.1) !important;
+    border: none !important;
+  }
+  
+  /* Темная тема для кнопок туториала */
+  body.mobile-view.dark-theme .guide-navigation .btn-outline-secondary,
+  body.mobile-view.dark-theme .guide-navigation #prevBtn {
+    color: #f1f5f9 !important;
+    border-color: #475569 !important;
+    background: rgba(30, 41, 59, 0.9) !important;
+  }
+  
+  body.mobile-view.dark-theme .guide-navigation .btn-outline-secondary:hover,
+  body.mobile-view.dark-theme .guide-navigation #prevBtn:hover {
+    color: #f1f5f9 !important;
+    background: rgba(71, 85, 105, 0.3) !important;
+  }
+  
+  body.mobile-view.dark-theme .guide-actions .btn-outline-secondary,
+  body.mobile-view.dark-theme .guide-actions #skipBtn {
+    color: #f1f5f9 !important;
+    border: none !important;
+    background: transparent !important;
+  }
+  
+  body.mobile-view.dark-theme .guide-actions .btn-outline-secondary:hover,
+  body.mobile-view.dark-theme .guide-actions #skipBtn:hover {
+    color: #f1f5f9 !important;
+    background: rgba(71, 85, 105, 0.3) !important;
+    border: none !important;
   }
   
   /* Модальное окно приветствия туториала */
