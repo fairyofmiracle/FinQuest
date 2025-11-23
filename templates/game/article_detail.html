@@ -5,12 +5,12 @@
 {% block page_title %}{{ article.title }}{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <a href="{% url 'articles' %}" class="btn btn-sm btn-outline-secondary">
+<div class="d-flex justify-content-between align-items-center mb-3 article-header-nav">
+  <a href="{% url 'articles' %}" class="btn btn-sm btn-outline-secondary article-nav-btn">
     <i class="fa-solid fa-arrow-left me-1"></i>К статьям
   </a>
   <h4 class="section-title">{{ article.title }}</h4>
-  <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-primary">
+  <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-primary article-nav-btn">
     <i class="fa-solid fa-home me-1"></i>Дашборд
   </a>
 </div>
@@ -414,6 +414,16 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 700;
+}
+
+/* Скрываем кнопки навигации на мобилке */
+body.mobile-view .article-header-nav {
+  display: none !important;
+}
+
+/* Скрываем плашки метаданных на мобилке */
+body.mobile-view .article-meta {
+  display: none !important;
 }
 </style>
 
