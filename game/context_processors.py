@@ -2,13 +2,17 @@ from .models import Notification, Achievement, UserAchievement
 
 def notifications_context(request):
     """Добавляет количество непрочитанных уведомлений в контекст всех шаблонов"""
-    if request.user.is_authenticated:
-        return {
-            'unread_notifications_count': Notification.objects.filter(
-                user=request.user, 
-                is_read=False
-            ).count()
-        }
+    try:
+        if request.user.is_authenticated:
+            return {
+                'unread_notifications_count': Notification.objects.filter(
+                    user=request.user, 
+                    is_read=False
+                ).count()
+            }
+    except Exception:
+        # В случае ошибки возвращаем 0, чтобы не ломать шаблоны
+        pass
     return {'unread_notifications_count': 0}
 
 def mobile_view_context(request):

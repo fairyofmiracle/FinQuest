@@ -384,7 +384,7 @@
             <button class="btn btn-sm btn-outline-light" onclick="toggleTheme()" title="Переключить тему">
               <i class="fa-solid fa-moon" id="theme-icon"></i>
             </button>
-            <a href="{% url 'media' %}" class="btn btn-outline-light">
+            <a href="{% url 'articles' %}" class="btn btn-outline-light" title="Статьи">
               <i class="fa-solid fa-newspaper me-2"></i>Статьи
             </a>
             <div class="position-relative" style="display: inline-block;">
@@ -440,7 +440,7 @@
       </button>
     </div>
     <div class="mobile-menu-body">
-      <a href="{% url 'media' %}" class="mobile-menu-item" onclick="toggleMobileMenu()">
+      <a href="{% url 'articles' %}" class="mobile-menu-item" onclick="toggleMobileMenu()" title="Статьи">
         <i class="fa-solid fa-newspaper"></i>
         <span>Статьи</span>
       </a>

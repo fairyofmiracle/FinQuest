@@ -173,7 +173,12 @@ def dashboard(request):
 
 @login_required
 def media(request):
-    articles = Article.objects.select_related('topic').order_by('-created_at')
+    """Страница со статьями"""
+    try:
+        articles = Article.objects.select_related('topic').order_by('-created_at')
+    except Exception as e:
+        # В случае ошибки возвращаем пустой список статей
+        articles = []
     return render(request, 'game/media.html', {'articles': articles})
 
 @login_required
