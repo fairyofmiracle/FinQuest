@@ -381,9 +381,6 @@
         <!-- Обычное меню для десктопа -->
         {% if user.is_authenticated %}
           <div class="d-flex align-items-center gap-2">
-            <a href="{% url 'toggle_mobile_view' %}" class="btn btn-sm btn-outline-light" title="{% if mobile_view %}Отключить мобильную версию{% else %}Включить мобильную версию{% endif %}">
-              <i class="fa-solid {% if mobile_view %}fa-desktop{% else %}fa-mobile-screen-button{% endif %}"></i>
-            </a>
             <button class="btn btn-sm btn-outline-light" onclick="toggleTheme()" title="Переключить тему">
               <i class="fa-solid fa-moon" id="theme-icon"></i>
             </button>
@@ -467,9 +464,6 @@
       <a href="{% url 'mobile_achievements' %}" class="mobile-menu-item" onclick="toggleMobileMenu()">
         <i class="fa-solid fa-trophy"></i>
         <span>Достижения</span>
-        {% if mobile_achievements_count > 0 %}
-          <span class="mobile-menu-badge">{{ mobile_achievements_count }}</span>
-        {% endif %}
       </a>
       <!-- Переключатель темы -->
       <div class="mobile-menu-item mobile-menu-theme-toggle" onclick="toggleTheme(); updateMobileThemeToggle();">
@@ -485,10 +479,6 @@
         <i class="fa-solid fa-download"></i>
         <span>Установить приложение</span>
       </button>
-      <a href="{% url 'toggle_mobile_view' %}" class="mobile-menu-item" onclick="toggleMobileMenu()">
-        <i class="fa-solid fa-desktop"></i>
-        <span>Перейти на Desktop</span>
-      </a>
       <form method="post" action="{% url 'logout' %}" style="margin: 0;">
         {% csrf_token %}
         <button type="submit" class="mobile-menu-item mobile-menu-logout">

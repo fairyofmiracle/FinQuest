@@ -5,61 +5,133 @@
 <div class="row justify-content-center">
   <div class="col-md-8">
     <div class="hero text-center">
-      <h2 class="section-title mb-3 text-center" style="text-align: center !important; color: #000 !important; text-shadow: none !important;">
-        <i class="fa-solid fa-hand-wave" style="color: #6f42c1 !important; text-shadow: none !important;"></i> До свидания!
+      <h2 class="auth-page-title mb-3 text-center">
+        <i class="fa-solid fa-hand-wave"></i> До свидания!
       </h2>
       
-      <p class="lead mb-4">Спасибо, что изучали финансы вместе с нами!</p>
+      <p class="lead mb-4 logged-out-text">Спасибо, что изучали финансы вместе с нами!</p>
       
       <div class="row text-center mb-4">
         <div class="col-md-4">
           <div class="card h-100">
-            <div class="card-body">
+            <div class="card-body logged-out-card-body">
               <i class="fa-solid fa-trophy text-warning mb-3" style="font-size: 2rem;"></i>
-              <h5>Ваш прогресс сохранён</h5>
-              <p class="text-muted small">Все достижения и очки ждут вашего возвращения</p>
+              <h5 class="logged-out-heading">Ваш прогресс сохранён</h5>
+              <p class="logged-out-small">Все достижения и очки ждут вашего возвращения</p>
             </div>
           </div>
         </div>
         <div class="col-md-4">
           <div class="card h-100">
-            <div class="card-body">
+            <div class="card-body logged-out-card-body">
               <i class="fa-solid fa-graduation-cap text-primary mb-3" style="font-size: 2rem;"></i>
-              <h5>Продолжайте учиться</h5>
-              <p class="text-muted small">Финансовая грамотность — путь к успеху</p>
+              <h5 class="logged-out-heading">Продолжайте учиться</h5>
+              <p class="logged-out-small">Финансовая грамотность — путь к успеху</p>
             </div>
           </div>
         </div>
         <div class="col-md-4">
           <div class="card h-100">
-            <div class="card-body">
+            <div class="card-body logged-out-card-body">
               <i class="fa-solid fa-star text-success mb-3" style="font-size: 2rem;"></i>
-              <h5>Возвращайтесь скорее!</h5>
-              <p class="text-muted small">Новые уровни и достижения ждут вас</p>
+              <h5 class="logged-out-heading">Возвращайтесь скорее!</h5>
+              <p class="logged-out-small">Новые уровни и достижения ждут вас</p>
             </div>
           </div>
         </div>
       </div>
       
-      <div class="mt-4">
+      <div class="mt-4 mobile-hidden-login-btn">
         <a href="{% url 'login' %}" class="btn btn-primary btn-lg">
           <i class="fa-solid fa-sign-in-alt me-2"></i>Войти снова
         </a>
       </div>
       
       <div class="mt-5">
-        <p class="text-muted">
+        <p class="logged-out-quote">
           <i class="fa-solid fa-quote-left me-2"></i>
           "Инвестируйте в себя — это лучшая инвестиция, которую вы можете сделать"
           <i class="fa-solid fa-quote-right ms-2"></i>
         </p>
-        <small class="text-muted">— FinQuest Team</small>
+        <small class="logged-out-small">— FinQuest Team</small>
       </div>
     </div>
   </div>
 </div>
 
 <style>
+/* Стили для заголовков страниц входа/выхода - отдельный класс, чтобы не сломать другие стили */
+.auth-page-title {
+  text-align: center !important;
+  width: 100%;
+  display: block;
+  color: #1f2937 !important;
+  text-shadow: none !important;
+  font-weight: 700 !important;
+}
+
+.auth-page-title i {
+  color: #6f42c1 !important;
+  text-shadow: none !important;
+}
+
+body.dark-theme .auth-page-title {
+  color: #f1f5f9 !important;
+}
+
+body.dark-theme .auth-page-title i {
+  color: #a5b4fc !important;
+}
+
+/* Специфичные стили для страницы выхода - только здесь, не влияют на другие страницы */
+.logged-out-text {
+  color: #1f2937 !important;
+  text-shadow: none !important;
+}
+
+body.dark-theme .logged-out-text {
+  color: #f1f5f9 !important;
+  text-shadow: none !important;
+}
+
+.logged-out-heading {
+  color: #1f2937 !important;
+  text-shadow: none !important;
+}
+
+body.dark-theme .logged-out-heading {
+  color: #f1f5f9 !important;
+  text-shadow: none !important;
+}
+
+.logged-out-small {
+  color: #6b7280 !important;
+  text-shadow: none !important;
+}
+
+body.dark-theme .logged-out-small {
+  color: #94a3b8 !important;
+  text-shadow: none !important;
+}
+
+.logged-out-quote {
+  color: #1f2937 !important;
+  text-shadow: none !important;
+}
+
+body.dark-theme .logged-out-quote {
+  color: #f1f5f9 !important;
+  text-shadow: none !important;
+}
+
+.logged-out-card-body {
+  color: #1f2937 !important;
+}
+
+body.dark-theme .logged-out-card-body {
+  color: #f1f5f9 !important;
+}
+
 .hand-wave {
   animation: wave 2s ease-in-out infinite;
 }
@@ -70,10 +142,77 @@
   75% { transform: rotate(-10deg); }
 }
 
-.section-title {
-  text-align: center !important;
-  width: 100%;
-  display: block;
+/* Мобильные стили для прощальной страницы */
+@media (max-width: 768px) {
+  body.mobile-view .auth-page-title {
+    font-size: 1.25rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  body.mobile-view .hero {
+    padding: 1rem !important;
+  }
+  
+  body.mobile-view .lead {
+    font-size: 0.9rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  body.mobile-view .card {
+    border-radius: 16px !important;
+    margin-bottom: 0.75rem !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  }
+  
+  body.dark-theme .card {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.92) 100%) !important;
+    border-color: #475569 !important;
+  }
+  
+  body.mobile-view .card-body {
+    padding: 0.75rem !important;
+  }
+  
+  body.mobile-view .card-body i {
+    font-size: 1.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  body.mobile-view .card-body h5 {
+    font-size: 0.9rem !important;
+    margin-bottom: 0.5rem !important;
+    color: #1f2937 !important;
+  }
+  
+  body.dark-theme .card-body h5 {
+    color: #f1f5f9 !important;
+  }
+  
+  body.mobile-view .card-body .text-muted {
+    font-size: 0.75rem !important;
+    line-height: 1.4 !important;
+  }
+  
+  body.mobile-view .btn-lg {
+    font-size: 0.9rem !important;
+    padding: 0.6rem 1rem !important;
+    width: 100% !important;
+    border-radius: 12px !important;
+  }
+  
+  body.mobile-view .text-muted {
+    font-size: 0.8rem !important;
+  }
+  
+  body.mobile-view .text-muted small {
+    font-size: 0.7rem !important;
+  }
+  
+  /* Скрываем кнопку "Войти снова" на мобильной версии */
+  body.mobile-view .mobile-hidden-login-btn {
+    display: none !important;
+  }
 }
 </style>
 {% endblock %}

@@ -26,7 +26,7 @@
 <!-- Landing Page -->
 <div class="landing-container" style="position: relative; z-index: 1;">
   <!-- Simple Header -->
-  <nav class="landing-navbar">
+  <nav class="landing-navbar mobile-hidden-header">
     <div class="container">
       <div class="d-flex justify-content-between align-items-center py-3">
         <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;" class="landing-logo">
@@ -64,7 +64,7 @@
           <a href="{% url 'register' %}" class="btn btn-outline-light btn-lg px-5 py-3">
             <i class="fa-solid fa-user-plus me-2"></i>Регистрация
           </a>
-          <a href="{% url 'toggle_mobile_view' %}" class="btn btn-mobile-view btn-lg mt-2 px-5 py-3">
+          <a href="{% url 'toggle_mobile_view' %}" class="btn btn-mobile-view btn-lg mt-2 px-5 py-3 mobile-hidden-btn">
             <i class="fa-solid fa-mobile-screen-button me-2"></i>Мобильная версия
           </a>
         </div>
@@ -177,7 +177,7 @@
       </div>
 
       <!-- Stats Section -->
-      <div class="stats-section mb-5">
+      <div class="stats-section mb-5 mobile-hidden-stats">
         <div class="row g-4 text-center">
           <div class="col-md-4">
             <div class="stat-card">
@@ -201,7 +201,7 @@
       </div>
 
       <!-- CTA Section -->
-      <div class="cta-section text-center mb-5 p-5" style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border-radius: 20px; border: 2px solid rgba(255, 255, 255, 0.2);">
+      <div class="cta-section text-center mb-5 p-5 mobile-hidden-cta" style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border-radius: 20px; border: 2px solid rgba(255, 255, 255, 0.2);">
         <h2 class="cta-title mb-3">Готовы начать?</h2>
         <p class="cta-text mb-4">Зарегистрируйтесь прямо сейчас и начните своё путешествие к финансовой грамотности!</p>
         <a href="{% url 'register' %}" class="btn btn-lg btn-light px-5 py-3">
@@ -216,13 +216,13 @@
   <footer class="landing-footer">
     <div class="container">
       <div class="row g-4">
-        <div class="col-md-3">
+        <div class="col-md-3 mobile-hidden-footer-col">
           <h5 class="footer-title">О проекте</h5>
           <p class="footer-text">
             FinQuest — образовательная платформа для изучения финансовой грамотности в увлекательной игровой форме.
           </p>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 mobile-hidden-footer-col">
           <h5 class="footer-title">Возможности</h5>
           <ul class="footer-list">
             <li><i class="fa-solid fa-chevron-right me-2" style="color: #d174f6;"></i>Интерактивные уроки</li>
@@ -239,7 +239,7 @@
             Кейс от компании <strong style="color: #d174f6;">"Пятый элемент"</strong>
           </p>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 mobile-hidden-footer-col">
           <h5 class="footer-title">Контакты</h5>
           <ul class="footer-list">
             <li><i class="fa-solid fa-envelope me-2" style="color: #d174f6;"></i>info@finquest.ru</li>
@@ -250,8 +250,8 @@
           </div>
         </div>
       </div>
-      <hr style="border-color: rgba(255, 255, 255, 0.2); margin: 2rem 0 1rem;">
-      <div class="text-center">
+      <hr class="mobile-hidden-footer-col" style="border-color: rgba(255, 255, 255, 0.2); margin: 2rem 0 1rem;">
+      <div class="text-center mobile-hidden-footer-col">
         <p class="footer-text mb-0">&copy; 2025 FinQuest. Все права защищены.</p>
       </div>
     </div>
@@ -810,34 +810,242 @@ body::before {
 
 /* Responsive */
 @media (max-width: 768px) {
+  /* Скрываем хэдер на мобильной версии */
+  .mobile-hidden-header {
+    display: none !important;
+  }
+  
+  /* Фон для всего контейнера - фиолетовый градиент */
+  .landing-container {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    min-height: 100vh !important;
+    padding: 1rem !important;
+  }
+  
+  body.dark-theme .landing-container {
+    background: linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%) !important;
+  }
+  
+  /* Скрываем кнопку мобильной версии на мобильных устройствах */
+  .mobile-hidden-btn {
+    display: none !important;
+  }
+  
+  /* Фон для hero-section - фиолетовый градиент */
+  .hero-section {
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px) !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    padding: 1.5rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  body.dark-theme .hero-section {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+  }
+  
+  /* Компактные размеры для мобильной версии */
   .brand-name-large {
-    font-size: 3rem;
+    font-size: 2rem !important;
   }
   
   .hero-title {
-    font-size: 2rem;
+    font-size: 1.5rem !important;
+    color: white !important;
+    text-shadow: none !important;
+  }
+  
+  body.dark-theme .hero-title {
+    color: white !important;
   }
   
   .hero-subtitle {
-    font-size: 1.1rem;
+    font-size: 0.9rem !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    text-shadow: none !important;
+  }
+  
+  body.dark-theme .hero-subtitle {
+    color: rgba(255, 255, 255, 0.9) !important;
+  }
+  
+  .brand-name-large {
+    color: white !important;
+    text-shadow: none !important;
+  }
+  
+  .brand-subtitle {
+    color: rgba(255, 255, 255, 0.8) !important;
+    text-shadow: none !important;
   }
   
   .hero-actions .btn {
     display: block;
     width: 100%;
     margin: 0.5rem 0 !important;
+    font-size: 0.9rem !important;
+    padding: 0.6rem 1rem !important;
+    border-radius: 12px !important;
   }
   
   .section-heading {
-    font-size: 1.75rem;
+    font-size: 1.25rem !important;
+    color: #1f2937 !important;
+    text-shadow: none !important;
+  }
+  
+  body.dark-theme .section-heading {
+    color: #f1f5f9 !important;
   }
   
   .cta-title {
-    font-size: 1.75rem;
+    font-size: 1.25rem !important;
   }
   
   .cta-text {
-    font-size: 1rem;
+    font-size: 0.9rem !important;
+  }
+  
+  /* Карточки функций - компактные */
+  .feature-card {
+    border-radius: 16px !important;
+    padding: 0.75rem !important;
+    margin-bottom: 0.75rem !important;
+    background: white !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  }
+  
+  body.dark-theme .feature-card {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.92) 100%) !important;
+    border-color: #475569 !important;
+  }
+  
+  .feature-title {
+    font-size: 0.95rem !important;
+    color: #1f2937 !important;
+    text-shadow: none !important;
+  }
+  
+  body.dark-theme .feature-title {
+    color: #f1f5f9 !important;
+  }
+  
+  .feature-text {
+    font-size: 0.8rem !important;
+    color: #6b7280 !important;
+    text-shadow: none !important;
+  }
+  
+  body.dark-theme .feature-text {
+    color: #94a3b8 !important;
+  }
+  
+  .feature-icon {
+    font-size: 1.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  /* Секция обучения - компактная */
+  .learning-section {
+    padding: 1rem !important;
+    border-radius: 16px !important;
+    background: white !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  }
+  
+  body.dark-theme .learning-section {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.92) 100%) !important;
+    border-color: #475569 !important;
+  }
+  
+  .learning-item {
+    font-size: 0.8rem !important;
+    padding: 0.5rem !important;
+  }
+  
+  .learning-item span {
+    color: #1f2937 !important;
+    text-shadow: none !important;
+  }
+  
+  body.dark-theme .learning-item span {
+    color: #f1f5f9 !important;
+  }
+  
+  /* Статистика - компактная */
+  .stat-card {
+    padding: 0.75rem !important;
+    border-radius: 16px !important;
+    background: white !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  body.dark-theme .stat-card {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.92) 100%) !important;
+    border-color: #475569 !important;
+  }
+  
+  .stat-number {
+    font-size: 1.5rem !important;
+    color: #667eea !important;
+    text-shadow: none !important;
+  }
+  
+  .stat-label {
+    font-size: 0.75rem !important;
+    color: #6b7280 !important;
+    text-shadow: none !important;
+  }
+  
+  body.dark-theme .stat-label {
+    color: #94a3b8 !important;
+  }
+  
+  /* Скрываем CTA секцию "Готовы начать?" на мобильной версии */
+  .mobile-hidden-cta {
+    display: none !important;
+  }
+  
+  /* Скрываем секцию статистики на мобильной версии */
+  .mobile-hidden-stats {
+    display: none !important;
+  }
+  
+  /* Скрываем все колонки футера кроме "Команда" на мобильной версии */
+  .mobile-hidden-footer-col {
+    display: none !important;
+  }
+  
+  /* Футер - компактный, только команда */
+  .landing-footer {
+    padding: 1.5rem 1rem !important;
+    margin-top: 2rem !important;
+  }
+  
+  .landing-footer .col-md-3:not(.mobile-hidden-footer-col) {
+    width: 100% !important;
+    text-align: center !important;
+  }
+  
+  .landing-footer .footer-title {
+    font-size: 1rem !important;
+    margin-bottom: 0.75rem !important;
+    color: white !important;
+    text-shadow: none !important;
+  }
+  
+  .landing-footer .footer-text {
+    font-size: 0.85rem !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    text-shadow: none !important;
+    line-height: 1.5 !important;
   }
 }
 </style>

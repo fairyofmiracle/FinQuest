@@ -8,24 +8,24 @@
   <div class="row g-3">
     {% for quest_data in user_quests %}
       <div class="col-12 col-md-6 col-lg-4">
-        <div class="card h-100 {% if quest_data.is_completed %}border-success{% endif %}">
+        <div class="card h-100 quest-card {% if quest_data.is_completed %}border-success{% endif %}">
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-start mb-2">
-              <h6 class="card-title mb-0">{{ quest_data.quest.title }}</h6>
+              <h6 class="card-title mb-0 quest-title">{{ quest_data.quest.title }}</h6>
               {% if quest_data.is_completed %}
-                <span class="badge bg-success"><i class="fa-solid fa-check me-1"></i>Выполнено</span>
+                <span class="badge bg-success quest-badge"><i class="fa-solid fa-check me-1"></i>Выполнено</span>
               {% endif %}
             </div>
             
-            <p class="text-muted small mb-3">{{ quest_data.quest.description }}</p>
+            <p class="text-muted small mb-3 quest-description">{{ quest_data.quest.description }}</p>
             
             <!-- Прогресс -->
             <div class="mb-3">
-              <div class="d-flex justify-content-between small mb-1">
+              <div class="d-flex justify-content-between small mb-1 quest-progress-text">
                 <span>Прогресс</span>
                 <span>{{ quest_data.progress.current_progress|default:0 }} / {{ quest_data.quest.target_value }}</span>
               </div>
-              <div class="progress" style="height: 8px;">
+              <div class="progress quest-progress" style="height: 8px;">
                 <div class="progress-bar {% if quest_data.is_completed %}bg-success{% else %}bg-primary{% endif %}" 
                      role="progressbar" 
                      style="width: {{ quest_data.progress_percent }}%;">
@@ -34,26 +34,26 @@
             </div>
             
             <!-- Награды -->
-            <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-between align-items-center quest-rewards">
               <div class="d-flex gap-2">
                 {% if quest_data.quest.reward_coins > 0 %}
-                  <span class="badge bg-warning text-white">
+                  <span class="badge bg-warning text-white quest-reward-badge">
                     <i class="fa-solid fa-coins me-1"></i>{{ quest_data.quest.reward_coins }}
                   </span>
                 {% endif %}
                 {% if quest_data.quest.reward_points > 0 %}
-                  <span class="badge bg-primary">
+                  <span class="badge bg-primary quest-reward-badge">
                     <i class="fa-solid fa-star me-1"></i>{{ quest_data.quest.reward_points }}
                   </span>
                 {% endif %}
               </div>
               
               {% if quest_data.is_completed %}
-                <small class="text-success">
+                <small class="text-success quest-status">
                   <i class="fa-solid fa-check-circle me-1"></i>Награда получена
                 </small>
               {% else %}
-                <small class="text-muted">
+                <small class="text-muted quest-status">
                   {{ quest_data.progress_percent }}% выполнено
                 </small>
               {% endif %}
@@ -65,16 +65,85 @@
   </div>
 {% else %}
   <div class="text-center py-5">
-    <i class="fa-solid fa-calendar-day text-muted" style="font-size: 3rem;"></i>
-    <p class="text-muted mt-3">Ежедневные задания скоро появятся!</p>
+    <i class="fa-solid fa-calendar-day text-muted quest-empty-icon"></i>
+    <p class="text-muted mt-3 quest-empty-text">Ежедневные задания скоро появятся!</p>
   </div>
 {% endif %}
 
 <div class="mt-4">
-  <div class="alert alert-info">
+  <div class="alert alert-info quest-info">
     <i class="fa-solid fa-info-circle me-2"></i>
     <strong>Информация:</strong> Ежедневные задания обновляются каждый день в полночь. 
     Выполняйте их, чтобы получить дополнительные монеты и очки!
   </div>
 </div>
+
+<style>
+/* Мобильные стили для страницы заданий */
+@media (max-width: 768px) {
+  body.mobile-view .quest-card {
+    border-radius: 16px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  body.mobile-view .quest-card .card-body {
+    padding: 0.875rem !important;
+  }
+  
+  body.mobile-view .quest-title {
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    line-height: 1.3 !important;
+  }
+  
+  body.mobile-view .quest-badge {
+    font-size: 0.7rem !important;
+    padding: 0.25rem 0.5rem !important;
+  }
+  
+  body.mobile-view .quest-description {
+    font-size: 0.8rem !important;
+    line-height: 1.4 !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  body.mobile-view .quest-progress-text {
+    font-size: 0.75rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  body.mobile-view .quest-progress {
+    height: 6px !important;
+    border-radius: 3px !important;
+  }
+  
+  body.mobile-view .quest-reward-badge {
+    font-size: 0.7rem !important;
+    padding: 0.25rem 0.5rem !important;
+  }
+  
+  body.mobile-view .quest-status {
+    font-size: 0.7rem !important;
+  }
+  
+  body.mobile-view .quest-info {
+    padding: 0.75rem !important;
+    font-size: 0.85rem !important;
+    border-radius: 12px !important;
+  }
+  
+  body.mobile-view .quest-empty-icon {
+    font-size: 2rem !important;
+  }
+  
+  body.mobile-view .quest-empty-text {
+    font-size: 0.9rem !important;
+  }
+  
+  body.mobile-view .row.g-3 {
+    gap: 0.75rem !important;
+  }
+}
+</style>
 {% endblock %}

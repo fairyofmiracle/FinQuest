@@ -9,10 +9,10 @@
 <div class="row justify-content-center">
   <div class="col-md-6">
     <div class="hero text-center">
-      <h2 class="section-title mb-3 text-center" style="text-align: center !important; color: #000 !important; text-shadow: none !important;">
-        <i class="fa-solid fa-sign-in-alt" style="color: #6f42c1 !important; text-shadow: none !important;"></i> Вход в FinQuest
+      <h2 class="auth-page-title mb-3 text-center">
+        <i class="fa-solid fa-sign-in-alt"></i> Вход в FinQuest
       </h2>
-      <p class="text-muted mb-4">Войдите в свой аккаунт, чтобы продолжить обучение</p>
+      <p class="login-page-text mb-4">Войдите в свой аккаунт, чтобы продолжить обучение</p>
       
       {% if form.errors %}
         <div class="alert alert-danger">
@@ -23,14 +23,14 @@
       <form method="post">
         {% csrf_token %}
         <div class="mb-3">
-          <label for="{{ form.username.id_for_label }}" class="form-label">
+          <label for="{{ form.username.id_for_label }}" class="form-label login-page-label">
             <i class="fa-solid fa-user me-1"></i>Имя пользователя
           </label>
           <input type="text" name="username" class="form-control form-control-lg" id="{{ form.username.id_for_label }}" required>
         </div>
 
         <div class="mb-4">
-          <label for="{{ form.password.id_for_label }}" class="form-label">
+          <label for="{{ form.password.id_for_label }}" class="form-label login-page-label">
             <i class="fa-solid fa-lock me-1"></i>Пароль
           </label>
           <input type="password" name="password" class="form-control form-control-lg" id="{{ form.password.id_for_label }}" required>
@@ -42,8 +42,8 @@
       </form>
 
       <div class="mt-4">
-        <p class="text-muted">Нет аккаунта? 
-          <a href="{% url 'register' %}" class="text-decoration-none">
+        <p class="login-page-text">Нет аккаунта? 
+          <a href="{% url 'register' %}" class="login-page-link">
             <i class="fa-solid fa-user-plus me-1"></i>Зарегистрироваться
           </a>
         </p>
@@ -53,10 +53,27 @@
 </div>
 
 <style>
-.section-title {
+/* Стили для заголовков страниц входа/выхода - отдельный класс, чтобы не сломать другие стили */
+.auth-page-title {
   text-align: center !important;
   width: 100%;
   display: block;
+  color: #1f2937 !important;
+  text-shadow: none !important;
+  font-weight: 700 !important;
+}
+
+.auth-page-title i {
+  color: #6f42c1 !important;
+  text-shadow: none !important;
+}
+
+body.dark-theme .auth-page-title {
+  color: #f1f5f9 !important;
+}
+
+body.dark-theme .auth-page-title i {
+  color: #a5b4fc !important;
 }
 
 /* Видимая обводка для полей ввода */
@@ -74,6 +91,97 @@
   border-color: #6f42c1 !important;
   box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.25) !important;
   background-color: #fff !important;
+}
+
+/* Специфичные стили для страницы входа - только здесь, не влияют на другие страницы */
+.login-page-text {
+  color: #1f2937 !important;
+  text-shadow: none !important;
+}
+
+body.dark-theme .login-page-text {
+  color: #f1f5f9 !important;
+  text-shadow: none !important;
+}
+
+.login-page-label {
+  color: #1f2937 !important;
+  text-shadow: none !important;
+}
+
+body.dark-theme .login-page-label {
+  color: #f1f5f9 !important;
+  text-shadow: none !important;
+}
+
+.login-page-link {
+  color: #667eea !important;
+  text-decoration: none !important;
+  text-shadow: none !important;
+  font-weight: 600 !important;
+}
+
+body.dark-theme .login-page-link {
+  color: #a5b4fc !important;
+  text-shadow: none !important;
+}
+
+.login-page-link:hover {
+  color: #5568d3 !important;
+  text-decoration: underline !important;
+}
+
+body.dark-theme .login-page-link:hover {
+  color: #818cf8 !important;
+}
+
+/* Мобильные стили для страницы входа */
+@media (max-width: 768px) {
+  body.mobile-view .auth-page-title {
+    font-size: 1.25rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  body.mobile-view .hero {
+    padding: 1rem !important;
+    background: white !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  }
+  
+  body.dark-theme .hero {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.92) 100%) !important;
+    border-color: #475569 !important;
+  }
+  
+  body.mobile-view .form-control-lg {
+    font-size: 0.9rem !important;
+    padding: 0.6rem 0.75rem !important;
+    border-radius: 12px !important;
+  }
+  
+  body.mobile-view .form-label {
+    font-size: 0.85rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  body.mobile-view .btn-lg {
+    font-size: 0.9rem !important;
+    padding: 0.6rem 1rem !important;
+    border-radius: 12px !important;
+  }
+  
+  body.mobile-view .login-page-text {
+    font-size: 0.85rem !important;
+    color: #1f2937 !important;
+    text-shadow: none !important;
+  }
+  
+  body.dark-theme .login-page-text {
+    color: #f1f5f9 !important;
+    text-shadow: none !important;
+  }
 }
 </style>
 {% endblock %}

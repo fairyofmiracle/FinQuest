@@ -190,35 +190,8 @@ body.dark-theme .bottom-nav-item.active .bottom-nav-label {
   color: #a5b4fc !important;
 }
 
-/* Хедер - фиолетовый текст как у активных */
-.mobile-page-title {
-  color: #667eea !important;
-  text-shadow: none !important;
-  font-weight: 700 !important;
-}
-
-body.dark-theme .mobile-page-title {
-  color: #ffffff !important;
-}
-
-/* Гамбургер меню */
-.mobile-menu-toggle {
-  color: #667eea !important;
-  border-color: #667eea !important;
-}
-
-.mobile-menu-toggle i {
-  color: #667eea !important;
-}
-
-body.dark-theme .mobile-menu-toggle {
-  color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.3) !important;
-}
-
-body.dark-theme .mobile-menu-toggle i {
-  color: #ffffff !important;
-}
+/* Хедер - стили перенесены в mobile-fixes.css для лучшей организации */
+/* Эти стили переопределяются в mobile-fixes.css с более высоким приоритетом */
 
 /* ============================================
    HEADER ДЛЯ ПРИЛОЖЕНИЯ (упрощенный)
@@ -666,7 +639,6 @@ body.mobile-view {
     max-width: calc(100% - 20px) !important;
     padding: 16px !important;
     border-radius: 20px !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
   }
   
   body.mobile-view .guide-title {
@@ -791,14 +763,9 @@ body.mobile-view {
   body.mobile-view h6,
   body.mobile-view .section-title {
     color: #ffffff !important;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8) !important;
+   
   }
   
-  body.mobile-view p,
-  body.mobile-view .text-muted {
-    color: #e5e7eb !important;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6) !important;
-  }
   
   /* Стили для статистики */
   body.mobile-view .stat-value {
@@ -879,6 +846,591 @@ body.mobile-view {
   /* Уменьшаем анимацию конфетти */
   body.mobile-view #confetti-container {
     pointer-events: none;
+  }
+}
+
+/* ============================================
+   УМЕНЬШЕНИЕ РАЗМЕРОВ ДЛЯ МОБИЛЬНОГО ПРИЛОЖЕНИЯ
+   ============================================ */
+
+@media (max-width: 768px) {
+  /* Уменьшаем размеры заголовков */
+  body.mobile-view h1 {
+    font-size: 1.25rem !important;
+  }
+  
+  body.mobile-view h2 {
+    font-size: 1.1rem !important;
+  }
+  
+  body.mobile-view h3 {
+    font-size: 1rem !important;
+  }
+  
+  body.mobile-view h4 {
+    font-size: 0.95rem !important;
+  }
+  
+  body.mobile-view h5 {
+    font-size: 0.85rem !important;
+  }
+  
+  body.mobile-view h6 {
+    font-size: 0.8rem !important;
+  }
+  
+  /* Уменьшаем размеры карточек */
+  body.mobile-view .card {
+    border-radius: 12px !important;
+    padding: 0.625rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  body.mobile-view .card-body {
+    padding: 0.625rem !important;
+  }
+  
+  body.mobile-view .card-header {
+    padding: 0.625rem !important;
+    font-size: 0.85rem !important;
+  }
+  
+  /* Уменьшаем размеры кнопок */
+  body.mobile-view .btn-lg {
+    font-size: 0.9rem !important;
+    padding: 0.625rem 1rem !important;
+  }
+  
+  body.mobile-view .btn {
+    font-size: 0.8rem !important;
+    padding: 0.45rem 0.875rem !important;
+  }
+  
+  body.mobile-view .btn-sm {
+    font-size: 0.7rem !important;
+    padding: 0.3rem 0.625rem !important;
+  }
+  
+  /* Уменьшаем размеры текста */
+  body.mobile-view p {
+    font-size: 0.8rem !important;
+    line-height: 1.4 !important;
+  }
+  
+  body.mobile-view .lead {
+    font-size: 0.9rem !important;
+  }
+  
+  body.mobile-view small {
+    font-size: 0.65rem !important;
+  }
+  
+  /* Уменьшаем размеры бейджей */
+  body.mobile-view .badge {
+    font-size: 0.65rem !important;
+    padding: 0.2rem 0.4rem !important;
+  }
+  
+  /* Уменьшаем размеры форм */
+  body.mobile-view .form-control {
+    font-size: 0.85rem !important;
+    padding: 0.5rem 0.625rem !important;
+  }
+  
+  body.mobile-view .form-select {
+    font-size: 0.85rem !important;
+    padding: 0.5rem 0.625rem !important;
+  }
+  
+  body.mobile-view .form-label {
+    font-size: 0.8rem !important;
+    margin-bottom: 0.4rem !important;
+  }
+  
+  /* Уменьшаем размеры прогресс-баров */
+  body.mobile-view .progress {
+    height: 5px !important;
+  }
+  
+  /* Прогресс-бар викторины в стиле категорий обучения */
+  body.mobile-view .quiz-progress {
+    margin-bottom: 0.75rem !important;
+    padding: 0.75rem !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  }
+  
+  body.dark-theme .quiz-progress {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.92) 100%) !important;
+    border-color: #475569 !important;
+  }
+  
+  body.mobile-view .quiz-status {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.4rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  body.mobile-view .quiz-status .badge {
+    font-size: 0.7rem !important;
+    padding: 0.25rem 0.5rem !important;
+  }
+  
+  body.mobile-view .quiz-status .text-muted {
+    font-size: 0.65rem !important;
+    margin-left: 0 !important;
+  }
+  
+  body.mobile-view .quiz-progress-bar {
+    height: 6px !important;
+    border-radius: 10px !important;
+    background: rgba(0, 0, 0, 0.1) !important;
+    overflow: hidden !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  body.dark-theme .quiz-progress-bar {
+    background: rgba(255, 255, 255, 0.1) !important;
+  }
+  
+  body.mobile-view .quiz-progress-bar .progress-bar {
+    background: linear-gradient(90deg, #667eea, #764ba2) !important;
+    border-radius: 10px !important;
+    height: 100% !important;
+    transition: width 0.8s ease !important;
+    background-image: none !important; /* Убираем полосы (striped) */
+  }
+  
+  body.mobile-view .quiz-progress-bar .progress-text {
+    display: none !important;
+  }
+  
+  body.mobile-view .quiz-progress small {
+    font-size: 0.65rem !important;
+  }
+  
+  /* Подсказка в прогресс-баре справа от бейджа, одинаковой высоты, на одном уровне */
+  body.mobile-view .quiz-progress .quiz-status {
+    flex-wrap: nowrap !important;
+    gap: 0.5rem !important;
+    align-items: center !important;
+    display: flex !important;
+    flex-direction: row !important;
+  }
+  
+  body.mobile-view .quiz-progress .quiz-hint-top {
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+  }
+  
+  body.mobile-view .quiz-progress .hint-btn {
+    font-size: 0.65rem !important;
+    padding: 0.3rem 0.5rem !important;
+    border-radius: 10px !important;
+    white-space: nowrap !important;
+    height: auto !important;
+    line-height: 1.2 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    vertical-align: middle !important;
+  }
+  
+  body.mobile-view .quiz-progress .badge {
+    flex-shrink: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 0.35rem 0.65rem !important;
+    line-height: 1.2 !important;
+    vertical-align: middle !important;
+  }
+  
+  /* Выравниваем высоту бейджа и кнопки подсказки */
+  body.mobile-view .quiz-progress .quiz-status .badge,
+  body.mobile-view .quiz-progress .quiz-status .hint-btn {
+    min-height: 28px !important;
+    box-sizing: border-box !important;
+    vertical-align: middle !important;
+  }
+  
+  body.mobile-view .quiz-progress .quiz-hint-top {
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+  }
+  
+  body.mobile-view .quiz-progress .hint-container {
+    position: relative !important;
+    z-index: 10 !important;
+    margin-top: 0.75rem !important;
+    width: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+  }
+  
+  body.mobile-view .quiz-progress .hint-card {
+    padding: 0.6rem !important;
+    border-radius: 12px !important;
+  }
+  
+  body.mobile-view .quiz-progress .hint-icon {
+    font-size: 1.2rem !important;
+    margin-bottom: 0.4rem !important;
+  }
+  
+  body.mobile-view .quiz-progress .hint-text {
+    font-size: 0.7rem !important;
+    line-height: 1.35 !important;
+  }
+  
+  /* Уменьшаем размеры алертов */
+  body.mobile-view .alert {
+    padding: 0.625rem !important;
+    font-size: 0.8rem !important;
+    border-radius: 10px !important;
+  }
+  
+  /* Уменьшаем отступы */
+  body.mobile-view .mb-4 {
+    margin-bottom: 0.75rem !important;
+  }
+  
+  body.mobile-view .mb-3 {
+    margin-bottom: 0.625rem !important;
+  }
+  
+  body.mobile-view .mb-2 {
+    margin-bottom: 0.4rem !important;
+  }
+  
+  body.mobile-view .mt-4 {
+    margin-top: 0.75rem !important;
+  }
+  
+  body.mobile-view .mt-3 {
+    margin-top: 0.625rem !important;
+  }
+  
+  /* Уменьшаем размеры иконок */
+  body.mobile-view .fa-solid,
+  body.mobile-view .fa-regular,
+  body.mobile-view .fa-brands {
+    font-size: 0.85em !important;
+  }
+  
+  /* Улучшенные стили для викторины в стиле категорий обучения - компактные размеры */
+  body.mobile-view .quiz-card {
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  body.dark-theme .quiz-card {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.92) 100%) !important;
+    border-color: #475569 !important;
+  }
+  
+  body.mobile-view .quiz-header {
+    padding: 0.6rem 0.75rem !important;
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+  }
+  
+  body.mobile-view .quiz-header h5 {
+    font-size: 0.8rem !important;
+    margin: 0 !important;
+  }
+  
+  body.mobile-view .question-difficulty .badge {
+    font-size: 0.55rem !important;
+    padding: 0.15rem 0.35rem !important;
+  }
+  
+  body.mobile-view .quiz-body {
+    padding: 0.75rem !important;
+  }
+  
+  body.mobile-view .question-text {
+    margin-bottom: 0.75rem !important;
+  }
+  
+  body.mobile-view .question-icon {
+    font-size: 1.5rem !important;
+    margin-bottom: 0.5rem !important;
+    color: #667eea !important;
+  }
+  
+  body.mobile-view .question-content {
+    font-size: 0.85rem !important;
+    line-height: 1.35 !important;
+    font-weight: 600 !important;
+    text-align: left !important;
+    color: white !important;
+    margin: 0 !important;
+  }
+  
+  body.dark-theme .question-content {
+    color: white !important;
+  }
+  
+  /* Подсказка вверху */
+  body.mobile-view .quiz-hint-top {
+    margin-bottom: 0.75rem !important;
+    text-align: center !important;
+  }
+  
+  body.mobile-view .hint-btn {
+    font-size: 0.65rem !important;
+    padding: 0.35rem 0.5rem !important;
+    border-radius: 10px !important;
+  }
+  
+  body.mobile-view .hint-card {
+    padding: 0.6rem !important;
+    border-radius: 12px !important;
+  }
+  
+  body.mobile-view .hint-icon {
+    font-size: 1.2rem !important;
+    margin-bottom: 0.4rem !important;
+  }
+  
+  body.mobile-view .hint-text {
+    font-size: 0.7rem !important;
+    line-height: 1.35 !important;
+  }
+  
+  /* Варианты ответов - компактные карточки */
+  body.mobile-view .quiz-options {
+    margin-top: 0.75rem !important;
+  }
+  
+  body.mobile-view .quiz-option {
+    margin-bottom: 0.6rem !important;
+  }
+  
+  body.mobile-view .quiz-label {
+    font-size: 0 !important; /* Скрываем размер шрифта, так как используем option-text */
+  }
+  
+  body.mobile-view .option-content {
+    padding: 0.6rem 0.75rem !important;
+    border-radius: 12px !important;
+    border: 1.5px solid rgba(102, 126, 234, 0.2) !important;
+    background: white !important;
+    transition: all 0.2s ease !important;
+  }
+  
+  body.dark-theme .option-content {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.92) 100%) !important;
+    border-color: #475569 !important;
+  }
+  
+  body.mobile-view .option-letter {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 0.75rem !important;
+    margin-right: 0.6rem !important;
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+  }
+  
+  body.mobile-view .option-text {
+    font-size: 0.8rem !important;
+    line-height: 1.35 !important;
+    color: #1f2937 !important;
+  }
+  
+  body.dark-theme .option-text {
+    color: #f1f5f9 !important;
+  }
+  
+  body.mobile-view .quiz-radio:checked + .quiz-label .option-content {
+    border-color: #667eea !important;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    transform: scale(1) !important;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2) !important;
+  }
+  
+  body.mobile-view .quiz-radio:checked + .quiz-label .option-text {
+    color: white !important;
+  }
+  
+  body.dark-theme .quiz-radio:checked + .quiz-label .option-content {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    border-color: #667eea !important;
+  }
+  
+  body.dark-theme .quiz-radio:checked + .quiz-label .option-text {
+    color: white !important;
+  }
+  
+  body.mobile-view .quiz-radio:checked + .quiz-label .option-letter {
+    background: rgba(255, 255, 255, 0.3) !important;
+    color: white !important;
+    transform: scale(1.05) !important;
+  }
+  
+  /* Кнопка отправки */
+  body.mobile-view .quiz-footer {
+    padding: 0.6rem 0.75rem !important;
+    background: transparent !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
+  }
+  
+  body.dark-theme .quiz-footer {
+    border-top-color: #475569 !important;
+  }
+  
+  body.mobile-view .quiz-submit {
+    font-size: 0.85rem !important;
+    padding: 0.6rem 1.25rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+    border: none !important;
+  }
+  
+  body.mobile-view .quiz-submit:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+  }
+  
+  /* Alert для множественного выбора */
+  body.mobile-view .alert {
+    font-size: 0.7rem !important;
+    padding: 0.5rem 0.6rem !important;
+    border-radius: 10px !important;
+    margin-bottom: 0.6rem !important;
+  }
+  
+  body.mobile-view .alert i {
+    font-size: 0.65rem !important;
+  }
+  
+  /* Выпадающий список для matching - красивая стилизация */
+  body.mobile-view .matching-select-wrapper-mobile {
+    margin-top: 0.5rem !important;
+  }
+  
+  body.mobile-view .matching-select-wrapper-mobile .form-label {
+    font-size: 0.7rem !important;
+    margin-bottom: 0.4rem !important;
+    color: #6b7280 !important;
+    font-weight: 500 !important;
+  }
+  
+  body.dark-theme .matching-select-wrapper-mobile .form-label {
+    color: #94a3b8 !important;
+  }
+  
+  body.mobile-view .matching-select-mobile {
+    font-size: 0.8rem !important;
+    padding: 0.6rem 0.75rem !important;
+    border-radius: 12px !important;
+    border: 1.5px solid rgba(102, 126, 234, 0.3) !important;
+    background: white !important;
+    color: #1f2937 !important;
+    font-weight: 500 !important;
+    transition: all 0.2s ease !important;
+    appearance: none !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23667eea' d='M6 9L1 4h10z'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.75rem center !important;
+    background-size: 12px !important;
+    padding-right: 2.5rem !important;
+  }
+  
+  body.dark-theme .matching-select-mobile {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.92) 100%) !important;
+    border-color: #475569 !important;
+    color: #f1f5f9 !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23a5b4fc' d='M6 9L1 4h10z'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.75rem center !important;
+    background-size: 12px !important;
+  }
+  
+  body.mobile-view .matching-select-mobile:focus {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+    outline: none !important;
+  }
+  
+  body.mobile-view .matching-select-mobile option {
+    padding: 0.5rem !important;
+    font-size: 0.8rem !important;
+  }
+  
+  /* Дополнительные улучшения для викторины */
+  body.mobile-view .quiz-card:hover {
+    transform: none !important;
+  }
+  
+  body.mobile-view .quiz-card:active {
+    transform: scale(0.99) !important;
+  }
+  
+  /* Улучшаем отступы между элементами */
+  body.mobile-view .quiz-body > * {
+    margin-bottom: 0.75rem !important;
+  }
+  
+  body.mobile-view .quiz-body > *:last-child {
+    margin-bottom: 0 !important;
+  }
+  
+  /* Компактные стили для sorting на мобильной */
+  body.mobile-view .sorting-container .list-group-item {
+    padding: 0.75rem !important;
+    font-size: 0.85rem !important;
+    border-radius: 12px !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  body.mobile-view .sorting-container .list-group-item .handle {
+    font-size: 0.8rem !important;
+  }
+  
+  /* Уменьшаем статистику */
+  body.mobile-view .stat-card {
+    padding: 0.625rem !important;
+  }
+  
+  body.mobile-view .stat-icon {
+    width: 40px !important;
+    height: 40px !important;
+    font-size: 1.2rem !important;
+  }
+  
+  body.mobile-view .stat-value {
+    font-size: 1.2rem !important;
+  }
+  
+  body.mobile-view .stat-label {
+    font-size: 0.7rem !important;
+  }
+  
+  /* Уменьшаем приветствие */
+  body.mobile-view .welcome-section {
+    padding: 0.75rem !important;
+  }
+  
+  body.mobile-view .welcome-section h4 {
+    font-size: 1rem !important;
+  }
+  
+  body.mobile-view .welcome-section p {
+    font-size: 0.75rem !important;
+  }
+  
+  /* Уменьшаем секции */
+  body.mobile-view .section-title {
+    font-size: 0.9rem !important;
+    margin-bottom: 0.625rem !important;
   }
 }
 

@@ -6,6 +6,22 @@
 /* === ВАЖНО: Все стили применяются только для мобильных устройств === */
 /* Ничего не затрагивает десктопную версию (> 992px) */
 
+/* Скрываем десктопные элементы на мобильной версии */
+@media (max-width: 768px) {
+    .desktop-nav-level,
+    .desktop-nav-level *,
+    .desktop-nav-level a,
+    .desktop-nav-level button {
+        display: none !important;
+        visibility: hidden !important;
+    }
+    
+    .desktop-only {
+        display: none !important;
+        visibility: hidden !important;
+    }
+}
+
 /* === CSS ПЕРЕМЕННЫЕ ДЛЯ МОБИЛЬНОЙ ВЕРСИИ === */
 @media (max-width: 991.98px) {
     :root {
@@ -49,7 +65,7 @@
         --mobile-spacing-xl: 24px;
         
         /* Цвета текста */
-        --mobile-text-primary: #0f172a;
+        --mobile-text-primary: #ffffff;
         --mobile-text-secondary: #64748b;
         --mobile-text-tertiary: #94a3b8;
         
@@ -153,57 +169,84 @@
 /* === 1. ХЭДЕР И НАВИГАЦИЯ === */
 
 @media (max-width: 991.98px) {
-    /* Navbar - СВЕТЛАЯ ТЕМА (полупрозрачный светлый на темном фоне) */
+    /* Navbar - СВЕТЛЫЙ ФОН с фиолетовым текстом */
     .gaming-navbar {
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 250, 252, 0.88) 100%) !important;
-        border-bottom: 2px solid rgba(102, 126, 234, 0.3);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15) !important;
-        transition: background 0.3s ease, border-color 0.3s ease;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.92) 100%) !important;
+        border-bottom: 2px solid rgba(102, 126, 234, 0.2) !important;
+        box-shadow: none !important;
+        transition: background 0.3s ease;
         padding: 0.5rem 0 !important;
     }
     
-    /* Контейнер внутри navbar */
+    /* Контейнер внутри navbar - разделяем элементы */
     .gaming-navbar .container {
         display: flex !important;
         align-items: center !important;
         justify-content: space-between !important;
-        padding-left: 12px !important;
-        padding-right: 12px !important;
+        padding-left: 16px !important;
+        padding-right: 16px !important;
         width: 100% !important;
+        gap: 12px !important;
+    }
+    
+    /* Убираем все тени у текста и иконок в хэдере */
+    .gaming-navbar * {
+        text-shadow: none !important;
+    }
+    
+    .gaming-navbar .mobile-page-title,
+    .gaming-navbar .mobile-menu-toggle,
+    .gaming-navbar .mobile-menu-toggle *,
+    .gaming-navbar .mobile-menu-toggle i {
+        text-shadow: none !important;
     }
 
-    /* Мобильный заголовок - СВЕТЛАЯ ТЕМА */
-    .mobile-page-title {
-        font-size: 1.1rem;
+    /* Мобильный заголовок - ФИОЛЕТОВЫЙ ТЕКСТ (только в хэдере, не применяется к другим элементам) */
+    .gaming-navbar .mobile-page-title {
+        font-size: 0.95rem;
         font-weight: 700;
-        color: var(--mobile-primary) !important;
-        margin: 0;
+        color: #667eea !important;
+        margin: 0 !important;
         flex: 1;
         text-align: left;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        padding: 0 0.5rem;
+        padding: 0;
         transition: color 0.3s ease;
-        min-width: 0; /* Важно для правильного ellipsis */
+        min-width: 0;
+        text-shadow: none !important;
     }
 
-    /* Кнопка меню - СВЕТЛАЯ ТЕМА */
-    .mobile-menu-toggle {
-        color: var(--mobile-primary) !important;
+    /* Кнопка меню - ФИОЛЕТОВЫЕ ИКОНКИ (только в хэдере, не применяется к другим элементам) */
+    .gaming-navbar .mobile-menu-toggle {
+        color: #667eea !important;
         border-color: rgba(102, 126, 234, 0.3) !important;
         background: rgba(102, 126, 234, 0.1) !important;
         transition: all 0.2s ease;
         -webkit-tap-highlight-color: transparent;
-        flex-shrink: 0; /* Не сжимать */
-        min-width: 44px; /* Минимальная ширина для тапа */
-        padding: 0.5rem !important;
+        flex-shrink: 0;
+        min-width: 40px;
+        padding: 0.4rem 0.6rem !important;
+        border-radius: 8px;
+        font-size: 0.85rem !important;
+        text-shadow: none !important;
     }
 
-    .mobile-menu-toggle:hover,
-    .mobile-menu-toggle:active {
+    .gaming-navbar .mobile-menu-toggle i {
+        color: #667eea !important;
+        font-size: 0.9rem !important;
+        text-shadow: none !important;
+    }
+    
+    .gaming-navbar .mobile-menu-toggle * {
+        text-shadow: none !important;
+    }
+
+    .gaming-navbar .mobile-menu-toggle:hover,
+    .gaming-navbar .mobile-menu-toggle:active {
         background: rgba(102, 126, 234, 0.2) !important;
         border-color: rgba(102, 126, 234, 0.5) !important;
         transform: scale(0.95);
@@ -211,33 +254,38 @@
 
     /* === ТЕМНАЯ ТЕМА === */
     
-    /* Navbar темный */
+    /* Navbar темный - темный фон с фиолетовым текстом */
     [data-bs-theme="dark"] .gaming-navbar,
     body.dark-theme .gaming-navbar {
-        background: linear-gradient(135deg, rgba(10, 10, 25, 0.98) 0%, rgba(15, 15, 40, 0.98) 50%, rgba(30, 20, 70, 0.98) 100%) !important;
-        border-bottom: 2px solid rgba(159, 122, 234, 0.5);
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.95) 100%) !important;
+        border-bottom: 2px solid rgba(102, 126, 234, 0.3) !important;
     }
 
-    /* Текст белый */
-    [data-bs-theme="dark"] .mobile-page-title,
-    body.dark-theme .mobile-page-title {
-        color: #ffffff !important;
+    /* Текст фиолетовый в темной теме */
+    [data-bs-theme="dark"] .gaming-navbar .mobile-page-title,
+    body.dark-theme .gaming-navbar .mobile-page-title {
+        color: #a5b4fc !important;
     }
 
-    /* Кнопка меню белая */
-    [data-bs-theme="dark"] .mobile-menu-toggle,
-    body.dark-theme .mobile-menu-toggle {
-        color: #ffffff !important;
-        border-color: rgba(255, 255, 255, 0.3) !important;
-        background: rgba(255, 255, 255, 0.1) !important;
+    /* Кнопка меню фиолетовая в темной теме */
+    [data-bs-theme="dark"] .gaming-navbar .mobile-menu-toggle,
+    body.dark-theme .gaming-navbar .mobile-menu-toggle {
+        color: #a5b4fc !important;
+        border-color: rgba(165, 180, 252, 0.3) !important;
+        background: rgba(102, 126, 234, 0.15) !important;
     }
 
-    [data-bs-theme="dark"] .mobile-menu-toggle:hover,
-    [data-bs-theme="dark"] .mobile-menu-toggle:active,
-    body.dark-theme .mobile-menu-toggle:hover,
-    body.dark-theme .mobile-menu-toggle:active {
-        background: rgba(255, 255, 255, 0.2) !important;
-        border-color: rgba(255, 255, 255, 0.5) !important;
+    [data-bs-theme="dark"] .gaming-navbar .mobile-menu-toggle i,
+    body.dark-theme .gaming-navbar .mobile-menu-toggle i {
+        color: #a5b4fc !important;
+    }
+
+    [data-bs-theme="dark"] .gaming-navbar .mobile-menu-toggle:hover,
+    [data-bs-theme="dark"] .gaming-navbar .mobile-menu-toggle:active,
+    body.dark-theme .gaming-navbar .mobile-menu-toggle:hover,
+    body.dark-theme .gaming-navbar .mobile-menu-toggle:active {
+        background: rgba(102, 126, 234, 0.25) !important;
+        border-color: rgba(165, 180, 252, 0.5) !important;
     }
 }
 
@@ -1320,37 +1368,37 @@
     /* Приветствие */
     .welcome-section {
         background: var(--mobile-gradient-primary);
-        padding: 20px;
-        border-radius: var(--mobile-radius-xl);
-        box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
-        margin-bottom: var(--mobile-spacing-md);
+        padding: 0.75rem;
+        border-radius: var(--mobile-radius-lg);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        margin-bottom: var(--mobile-spacing-sm);
     }
 
     [data-bs-theme="dark"] .welcome-section,
     body.dark-theme .welcome-section {
         background: linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%);
-        box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
     }
 
     /* Статистика */
     .stats-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: var(--mobile-spacing-sm);
-        margin-bottom: var(--mobile-spacing-md);
+        gap: 0.5rem;
+        margin-bottom: var(--mobile-spacing-sm);
     }
 
     .stat-card {
         background: var(--mobile-card-bg-light);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        border-radius: var(--mobile-radius-lg);
-        padding: var(--mobile-spacing-md);
-        box-shadow: var(--mobile-shadow-md);
+        border-radius: var(--mobile-radius-md);
+        padding: 0.625rem;
+        box-shadow: var(--mobile-shadow-sm);
         border: none;
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 0.625rem;
         transition: all 0.2s ease, background 0.3s ease;
         -webkit-tap-highlight-color: transparent;
     }
@@ -1366,19 +1414,19 @@
     }
 
     .stat-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: var(--mobile-radius-md);
+        width: 36px;
+        height: 36px;
+        border-radius: var(--mobile-radius-sm);
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-        box-shadow: var(--mobile-shadow-sm);
+        box-shadow: var(--mobile-shadow-xs);
     }
 
     .stat-icon i {
         color: #ffffff;
-        font-size: 20px;
+        font-size: 16px;
     }
 
     .stat-content {
@@ -1386,12 +1434,12 @@
     }
 
     .stat-value {
-        font-size: 24px;
+        font-size: 18px;
         font-weight: 700;
         color: var(--mobile-text-primary);
         display: block;
         line-height: 1;
-        margin-bottom: 4px;
+        margin-bottom: 2px;
         transition: color 0.3s ease;
     }
 
@@ -1401,10 +1449,10 @@
     }
 
     .stat-label {
-        font-size: 11px;
+        font-size: 10px;
         color: var(--mobile-text-secondary);
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.3px;
         font-weight: 600;
         transition: color 0.3s ease;
     }
@@ -1416,30 +1464,30 @@
 
     /* Быстрые действия */
     .quick-actions {
-        margin-bottom: var(--mobile-spacing-md);
+        margin-bottom: var(--mobile-spacing-sm);
     }
 
     .quick-actions-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 10px;
+        gap: 0.5rem;
     }
 
     .quick-action-btn {
         background: var(--mobile-card-bg-light);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        border-radius: var(--mobile-radius-md);
-        padding: 14px 8px;
+        border-radius: var(--mobile-radius-sm);
+        padding: 0.625rem 0.5rem;
         text-align: center;
         text-decoration: none;
-        box-shadow: var(--mobile-shadow-sm);
+        box-shadow: var(--mobile-shadow-xs);
         border: none;
         transition: all 0.15s ease, background 0.3s ease;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 6px;
+        gap: 0.4rem;
         -webkit-tap-highlight-color: transparent;
     }
 
@@ -1450,7 +1498,7 @@
     }
 
     .quick-action-btn i {
-        font-size: 20px;
+        font-size: 16px;
         color: var(--mobile-primary);
         transition: color 0.3s ease;
     }
@@ -1461,7 +1509,7 @@
     }
 
     .quick-action-btn span {
-        font-size: 11px;
+        font-size: 0.7rem;
         font-weight: 600;
         color: var(--mobile-text-primary);
         transition: color 0.3s ease;
@@ -1478,17 +1526,17 @@
 
     /* Секция прогресса */
     .progress-section .card {
-        margin-bottom: var(--mobile-spacing-md);
+        margin-bottom: var(--mobile-spacing-sm);
     }
 
     .section-title {
-        font-size: 16px;
+        font-size: 0.9rem;
         font-weight: 700;
-        margin-bottom: var(--mobile-spacing-sm);
+        margin-bottom: 0.5rem;
         color: var(--mobile-text-primary);
         display: flex;
         align-items: center;
-        gap: var(--mobile-spacing-xs);
+        gap: 0.4rem;
         transition: color 0.3s ease;
     }
 
@@ -1499,6 +1547,7 @@
 
     .section-title i {
         color: var(--mobile-primary);
+        font-size: 0.85rem;
     }
 }
 

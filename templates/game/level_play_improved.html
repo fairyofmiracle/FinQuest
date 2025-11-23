@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="d-flex justify-content-between align-items-center mb-3 desktop-nav-level">
   <a href="{% url 'topic_levels' level.topic.id %}" class="btn btn-sm btn-outline-secondary">
     <i class="fa-solid fa-arrow-left me-1"></i>К теме
   </a>
@@ -26,18 +26,27 @@
         <div class="quiz-container">
           <!-- Прогресс-бар викторины -->
           <div class="quiz-progress mb-4">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <div class="quiz-status">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <div class="quiz-status d-flex align-items-center gap-2">
+                <!-- Бейдж с вопросом -->
                 <span class="badge bg-primary fs-6">
                   <i class="fa-solid fa-question-circle me-2"></i>
                   Вопрос {{ quiz_data.current_question_number }} из {{ quiz_data.total_questions }}
                 </span>
-                <span class="ms-3 text-muted">
-                  <i class="fa-solid fa-chart-line me-1"></i>
-                  Прогресс: {{ quiz_data.answered_questions }}/{{ quiz_data.total_questions }}
-            </span>
-          </div>
-        </div>
+                <!-- Подсказка справа -->
+                <div class="quiz-hint-top">
+                  {% if request.user.coins >= 3 %}
+                    <button type="button" class="btn btn-outline-warning btn-sm hint-btn" onclick="showHint()">
+                      <i class="fa-solid fa-lightbulb me-1"></i>Подсказка (<span class="hint-coins">3🪙</span>)
+                    </button>
+                  {% else %}
+                    <button type="button" class="btn btn-outline-secondary btn-sm" disabled>
+                      <i class="fa-solid fa-lightbulb me-1"></i>Подсказка (<span class="hint-coins">3🪙</span>) - Недостаточно монет
+                    </button>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
             
             <!-- Анимированный прогресс-бар -->
             <div class="container-fluid px-0">
@@ -48,6 +57,18 @@
                      data-answered="{{ quiz_data.current_question }}"
                      data-total="{{ quiz_data.total_questions }}">
                   <span class="progress-text">{{ quiz_data.current_question }}/{{ quiz_data.total_questions }}</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Контейнер подсказки внизу -->
+            <div id="hintContent" class="mt-2 hint-container" style="display: none;">
+              <div class="hint-card">
+                <div class="hint-icon">
+                  <i class="fa-solid fa-lightbulb"></i>
+                </div>
+                <div class="hint-text">
+                  {{ quiz_data.current_question_data.hint|default:"Подумайте внимательно над каждым вариантом ответа!" }}
                 </div>
               </div>
             </div>
@@ -77,8 +98,8 @@
 </div>
 
                   <div class="card-body quiz-body">
-                    <div class="question-text mb-4">
-                      <div class="question-icon mb-3">
+                    <div class="question-text mb-3">
+                      <div class="question-icon mb-2">
                         <i class="fa-solid fa-lightbulb"></i>
                       </div>
                       <p class="lead question-content">{{ quiz_data.current_question_data.question }}</p>
@@ -104,6 +125,8 @@
                       {% elif quiz_data.current_question_data.type == 'matching' %}
                         <!-- Сопоставление -->
                         <div class="matching-container">
+                          <!-- Десктопная версия: drag and drop -->
+                          <div class="matching-desktop">
                           <div class="alert alert-info mb-3">
                             <i class="fa-solid fa-link me-2"></i>
                             <strong>Сопоставление:</strong> Перетащите термины к соответствующим описаниям
@@ -145,6 +168,34 @@
                                   </div>
                                 {% endfor %}
                               </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <!-- Мобильная версия: выпадающие списки -->
+                          <div class="matching-mobile">
+                            <div class="alert alert-info mb-3">
+                              <i class="fa-solid fa-link me-2"></i>
+                              <strong>Сопоставление:</strong> Выберите подходящее описание для каждого термина
+                            </div>
+                            <div class="matching-cards-mobile">
+                              {% for left_item in quiz_data.current_question_data.left_items %}
+                                <div class="matching-card-mobile mb-3">
+                                  <div class="matching-term-mobile">
+                                    <span class="term-number-mobile">{{ forloop.counter }}</span>
+                                    <span class="term-text-mobile">{{ left_item }}</span>
+                                  </div>
+                                  <div class="matching-select-wrapper-mobile">
+                                    <label class="form-label small text-muted">Выберите описание:</label>
+                                    <select name="match_{{ forloop.counter0 }}" class="form-select matching-select-mobile" required>
+                                      <option value="">Выберите...</option>
+                                      {% for right_item in quiz_data.current_question_data.right_items %}
+                                        <option value="{{ forloop.counter0 }}">{{ right_item }}</option>
+                                      {% endfor %}
+                                    </select>
+                                  </div>
+                                </div>
+                              {% endfor %}
                             </div>
                           </div>
                         </div>
@@ -190,28 +241,7 @@
                   </div>
                   
                   <div class="card-footer quiz-footer">
-                    <div class="d-flex justify-content-between align-items-center">
-                         <div class="quiz-hint">
-                           {% if request.user.coins >= 3 %}
-                            <button type="button" class="btn btn-outline-warning btn-sm hint-btn" onclick="showHint()">
-                              <i class="fa-solid fa-lightbulb me-1"></i>Подсказка (<span class="hint-coins">3🪙</span>)
-                            </button>
-                            <div id="hintContent" class="mt-3 hint-container" style="display: none;">
-                              <div class="hint-card">
-                                <div class="hint-icon">
-                                  <i class="fa-solid fa-lightbulb"></i>
-                                </div>
-                                <div class="hint-text">
-                                  {{ quiz_data.current_question_data.hint|default:"Подумайте внимательно над каждым вариантом ответа!" }}
-                                </div>
-                              </div>
-                            </div>
-                          {% else %}
-                            <button type="button" class="btn btn-outline-secondary btn-sm" disabled>
-                              <i class="fa-solid fa-lightbulb me-1"></i>Подсказка (<span class="hint-coins">3🪙</span>) - Недостаточно монет
-                            </button>
-                          {% endif %}
-                         </div>
+                    <div class="d-flex justify-content-center align-items-center">
                       <div class="quiz-actions">
                         <button type="button" class="btn btn-primary btn-lg quiz-submit" id="quizSubmitBtn">
                           <i class="fa-solid fa-check me-2"></i>
@@ -942,6 +972,214 @@ document.addEventListener('DOMContentLoaded', function() {
     font-weight: 500;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
 }
+
+/* Мобильные стили */
+@media (max-width: 768px) {
+  /* Скрываем кнопки навигации в мобильной версии */
+  body.mobile-view .desktop-nav-level {
+    display: none !important;
+  }
+  
+  /* Прогресс-бар в стиле категорий обучения для мобильной версии */
+  body.mobile-view .quiz-progress {
+    margin-bottom: 0.75rem !important;
+    padding: 0.75rem !important;
+    background: white !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  }
+  
+  body.dark-theme .quiz-progress {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.92) 100%) !important;
+    border-color: #475569 !important;
+  }
+  
+  body.mobile-view .quiz-status {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.4rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  body.mobile-view .quiz-status .badge {
+    font-size: 0.7rem !important;
+    padding: 0.25rem 0.5rem !important;
+  }
+  
+  body.mobile-view .quiz-status .text-muted {
+    font-size: 0.65rem !important;
+    margin-left: 0 !important;
+  }
+  
+  body.mobile-view .quiz-progress-bar {
+    height: 6px !important;
+    border-radius: 10px !important;
+    background: rgba(0, 0, 0, 0.1) !important;
+    overflow: hidden !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  body.dark-theme .quiz-progress-bar {
+    background: rgba(255, 255, 255, 0.1) !important;
+  }
+  
+  body.mobile-view .quiz-progress-bar .progress-bar {
+    background: linear-gradient(90deg, #667eea, #764ba2) !important;
+    border-radius: 10px !important;
+    height: 100% !important;
+    transition: width 0.8s ease !important;
+    background-image: none !important; /* Убираем полосы (striped) */
+  }
+  
+  body.mobile-view .quiz-progress-bar .progress-text {
+    display: none !important;
+  }
+  
+  body.mobile-view .quiz-progress small {
+    font-size: 0.65rem !important;
+  }
+  
+  body.mobile-view .quiz-footer {
+    padding: 0.75rem !important;
+  }
+  
+  body.mobile-view .quiz-actions {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+  
+  body.mobile-view .quiz-submit {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+  }
+  
+  body.mobile-view .quiz-hint-top {
+    margin-bottom: 1rem !important;
+  }
+  
+  body.mobile-view .hint-btn {
+    font-size: 0.8rem !important;
+    padding: 0.5rem 0.75rem !important;
+  }
+  
+  /* Скрываем десктопную версию сопоставления */
+  body.mobile-view .matching-desktop {
+    display: none !important;
+  }
+  
+  /* Показываем мобильную версию сопоставления */
+  body.mobile-view .matching-mobile {
+    display: block !important;
+  }
+  
+  /* Стили для мобильной версии сопоставления */
+  body.mobile-view .matching-card-mobile {
+    background: white;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+  
+  body.dark-theme .matching-card-mobile {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.92) 100%);
+    border-color: #475569;
+  }
+  
+  body.mobile-view .matching-term-mobile {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  body.dark-theme .matching-term-mobile {
+    border-bottom-color: #475569;
+  }
+  
+  body.mobile-view .term-number-mobile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+  
+  body.mobile-view .term-text-mobile {
+    font-size: 0.95rem;
+    font-weight: 600;
+    flex: 1;
+  }
+  
+  body.mobile-view .matching-select-wrapper-mobile {
+    margin-top: 0.5rem !important;
+  }
+  
+  body.mobile-view .matching-select-wrapper-mobile .form-label {
+    font-size: 0.7rem !important;
+    margin-bottom: 0.4rem !important;
+    color: #6b7280 !important;
+    font-weight: 500 !important;
+  }
+  
+  body.dark-theme .matching-select-wrapper-mobile .form-label {
+    color: #94a3b8 !important;
+  }
+  
+  body.mobile-view .matching-select-mobile {
+    font-size: 0.8rem !important;
+    padding: 0.6rem 0.75rem !important;
+    border-radius: 12px !important;
+    border: 1.5px solid rgba(102, 126, 234, 0.3) !important;
+    background: white !important;
+    color: #1f2937 !important;
+    font-weight: 500 !important;
+    transition: all 0.2s ease !important;
+    appearance: none !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23667eea' d='M6 9L1 4h10z'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.75rem center !important;
+    background-size: 12px !important;
+    padding-right: 2.5rem !important;
+  }
+  
+  body.dark-theme .matching-select-mobile {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.92) 100%) !important;
+    border-color: #475569 !important;
+    color: #f1f5f9 !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23a5b4fc' d='M6 9L1 4h10z'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.75rem center !important;
+    background-size: 12px !important;
+  }
+  
+  body.mobile-view .matching-select-mobile:focus {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+    outline: none !important;
+  }
+  
+  body.mobile-view .matching-select-mobile option {
+    padding: 0.5rem !important;
+    font-size: 0.8rem !important;
+  }
+}
+
+/* Десктопная версия: скрываем мобильную */
+.matching-mobile {
+  display: none;
+}
 </style>
 {% endblock %}
 
@@ -1026,7 +1264,9 @@ document.addEventListener('DOMContentLoaded', function() {
                       e.preventDefault();
                       e.stopPropagation();
                       
-                      // Проверка matching
+                      // Проверка matching (только для десктопной версии)
+                      const matchingDesktop = document.querySelector('.matching-desktop');
+                      if (matchingDesktop && matchingDesktop.offsetParent !== null) {
                       const matchingContainer = document.querySelector('.matching-container');
                       if (matchingContainer) {
                           const totalDropZones = matchingContainer.querySelectorAll('.matching-drop-zone').length;
@@ -1034,6 +1274,23 @@ document.addEventListener('DOMContentLoaded', function() {
                           
                           if (matchedDropZones < totalDropZones) {
                               alert(`Пожалуйста, сопоставьте все термины! (${matchedDropZones}/${totalDropZones})`);
+                                  return;
+                              }
+                          }
+                      }
+                      
+                      // Проверка мобильной версии matching
+                      const matchingMobile = document.querySelector('.matching-mobile');
+                      if (matchingMobile && matchingMobile.offsetParent !== null) {
+                          const selects = matchingMobile.querySelectorAll('.matching-select-mobile');
+                          let allSelected = true;
+                          selects.forEach(select => {
+                              if (!select.value || select.value === '') {
+                                  allSelected = false;
+                              }
+                          });
+                          if (!allSelected) {
+                              alert('Пожалуйста, выберите описание для всех терминов!');
                               return;
                           }
                       }
@@ -1070,9 +1327,10 @@ document.addEventListener('DOMContentLoaded', function() {
                    const matchingActive = document.querySelector('.matching-drop-zone.matched');
                    const sortingList = document.querySelector('.list-group');
                    
-                   // Для matching проверяем, что все элементы сопоставлены
+                   // Для matching проверяем, что все элементы сопоставлены (только для десктопной версии)
+                   const matchingDesktop = document.querySelector('.matching-desktop');
+                   if (matchingDesktop && matchingDesktop.offsetParent !== null) {
                    const matchingContainer = document.querySelector('.matching-container');
-                   
                    if (matchingContainer) {
                        const totalDropZones = matchingContainer.querySelectorAll('.matching-drop-zone').length;
                        const matchedDropZones = matchingContainer.querySelectorAll('.matching-drop-zone.matched').length;
@@ -1080,6 +1338,24 @@ document.addEventListener('DOMContentLoaded', function() {
                        if (matchedDropZones < totalDropZones) {
                            e.preventDefault();
                            alert(`Пожалуйста, сопоставьте все термины! (${matchedDropZones}/${totalDropZones})`);
+                               return false;
+                           }
+                       }
+                   }
+                   
+                   // Проверка мобильной версии matching
+                   const matchingMobile = document.querySelector('.matching-mobile');
+                   if (matchingMobile && matchingMobile.offsetParent !== null) {
+                       const selects = matchingMobile.querySelectorAll('.matching-select-mobile');
+                       let allSelected = true;
+                       selects.forEach(select => {
+                           if (!select.value || select.value === '') {
+                               allSelected = false;
+                           }
+                       });
+                       if (!allSelected) {
+                           e.preventDefault();
+                           alert('Пожалуйста, выберите описание для всех терминов!');
                            return false;
                        }
                    }
@@ -1114,11 +1390,21 @@ document.addEventListener('DOMContentLoaded', function() {
         const total = parseInt(progressBar.dataset.total);
         const percentage = total > 0 ? (answered / total) * 100 : 0;
         
+        // Проверяем, мобильная ли версия
+        const isMobileView = window.matchMedia("(max-width: 768px)").matches;
+        
         progressBar.style.width = percentage + '%';
-        progressBar.style.background = 'linear-gradient(45deg, #6366f1, #8b5cf6)';
+        
+        if (isMobileView) {
+            // Для мобильной версии используем градиент как в категориях обучения
+            progressBar.style.background = 'linear-gradient(90deg, #667eea, #764ba2)';
+        } else {
+            // Для десктопной версии используем другой градиент
+            progressBar.style.background = 'linear-gradient(45deg, #6366f1, #8b5cf6)';
+        }
         
         setTimeout(() => {
-            progressBar.style.transition = 'width 0.5s ease';
+            progressBar.style.transition = 'width 0.8s ease';
         }, 100);
     }
 });
@@ -1242,11 +1528,17 @@ document.addEventListener('DOMContentLoaded', function() {
         // Основной обработчик на строке 843 уже обрабатывает это
     }
     
-    // Обработка сопоставления (drag and drop для matching)
+    // Обработка сопоставления (drag and drop для matching) - только для десктопной версии
     const matchingContainers = document.querySelectorAll('.matching-container');
     
     if (matchingContainers.length === 0) {
         return; // Выходим, если нет matching контейнеров
+    }
+    
+    // Проверяем, используется ли мобильная версия
+    const matchingMobile = document.querySelector('.matching-mobile');
+    if (matchingMobile && matchingMobile.offsetParent !== null) {
+        return; // Выходим, если используется мобильная версия с выпадающими списками
     }
     
     let draggedMatchingElement = null;

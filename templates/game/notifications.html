@@ -33,9 +33,6 @@
                   <i class="fa-solid fa-trash me-1"></i><span class="action-text">Удалить все</span>
                 </button>
               </form>
-              <a href="{% url 'dashboard' %}" class="btn btn-primary btn-sm desktop-only">
-                <i class="fa-solid fa-home me-1"></i>Дашборд
-              </a>
             </div>
           </div>
         </div>
@@ -92,37 +89,35 @@
           </div>
         {% endif %}
         
-        <div class="notifications-container">
+        <div class="notifications-list">
           {% for notification in notifications %}
-            <div class="notification-item {% if not notification.is_read %}notification-unread{% endif %}">
-              <div class="notification-content">
-                <div class="notification-header">
-                  <div class="notification-icon">
+            <div class="card mb-3 notification-card-link haptic-light slide-in-up {% if not notification.is_read %}notification-unread{% endif %}">
+              <div class="card-body">
+                <div class="d-flex align-items-center mb-2">
+                  <div class="notification-icon-wrapper me-3">
                     {% if 'достижение' in notification.text.lower %}
-                      <i class="fa-solid fa-trophy text-warning"></i>
+                      <i class="fa-solid fa-trophy"></i>
                     {% elif 'уровень' in notification.text.lower %}
-                      <i class="fa-solid fa-star text-primary"></i>
+                      <i class="fa-solid fa-star"></i>
                     {% elif 'монеты' in notification.text.lower or 'очки' in notification.text.lower %}
-                      <i class="fa-solid fa-coins text-success"></i>
+                      <i class="fa-solid fa-coins"></i>
                     {% elif 'серия' in notification.text.lower %}
-                      <i class="fa-solid fa-fire text-danger"></i>
+                      <i class="fa-solid fa-fire"></i>
                     {% else %}
-                      <i class="fa-solid fa-info-circle text-info"></i>
+                      <i class="fa-solid fa-info-circle"></i>
                     {% endif %}
                   </div>
-                  <div class="notification-status">
+                  <div class="flex-grow-1">
+                    <h6 class="mb-0 notification-text-title">{{ notification.text }}</h6>
+                    <small class="text-muted notification-time">
+                      <i class="fa-solid fa-clock me-1"></i>
+                      {{ notification.created_at|date:'d.m.Y в H:i' }}
+                    </small>
+                  </div>
+                  <div>
                     {% if not notification.is_read %}
                       <span class="badge bg-danger pulse-badge">Новое</span>
                     {% endif %}
-                  </div>
-                </div>
-                <div class="notification-body">
-                  <p class="notification-text">{{ notification.text }}</p>
-                  <div class="notification-meta">
-                    <span class="notification-time">
-                      <i class="fa-solid fa-clock me-1"></i>
-                      {{ notification.created_at|date:'d.m.Y в H:i' }}
-                    </span>
                   </div>
                 </div>
               </div>
@@ -193,80 +188,222 @@
 {% endblock %}
 
 <style>
-/* Мобильная адаптация уведомлений */
+/* Стили для уведомлений в стиле категорий обучения */
+.notifications-list .card {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.notification-card-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+}
+
+.notification-card-link:active {
+  transform: scale(0.98);
+}
+
+body.dark-theme .notifications-list .card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.98) 0%, rgba(51, 65, 85, 0.92) 100%);
+  border: 1px solid #475569;
+}
+
+/* Иконки уведомлений */
+.notification-icon-wrapper {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  flex-shrink: 0;
+}
+
+/* Непрочитанное уведомление */
+.notification-unread {
+  border-color: #667eea !important;
+  border-width: 2px !important;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.05) 100%) !important;
+}
+
+body.dark-theme .notification-unread {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.15) 100%) !important;
+  border-color: #667eea !important;
+}
+
+.notification-text-title {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin-bottom: 0.25rem;
+}
+
+.notification-time {
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.notification-time i {
+  font-size: 0.7rem;
+}
+
+/* Анимации */
+.slide-in-up {
+  animation: slideInUp 0.3s ease;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Мобильные стили */
 @media (max-width: 768px) {
   /* Скрываем кнопку дашборд на мобильных */
-  body.mobile-view .desktop-only,
-  .desktop-only {
+  body.mobile-view .desktop-only {
     display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    width: 0 !important;
-    height: 0 !important;
-    overflow: hidden !important;
   }
   
-  /* Кнопки действий в стиле мобильных приложений */
-  body.mobile-view .notification-actions,
-  .notification-actions {
-    width: 100% !important;
-    display: flex !important;
-    justify-content: space-between !important;
+  /* Скрываем заголовок страницы на мобильных (есть в хэдере) */
+  body.mobile-view .gaming-header-card {
+    display: none !important;
+  }
+  
+  /* Кнопки действий - компактные для мобильных */
+  body.mobile-view .notification-actions {
+    flex-direction: row !important;
     gap: 0.5rem !important;
-  }
-  
-  body.mobile-view .notification-action-btn,
-  .notification-action-btn {
-    flex: 1 !important;
-    padding: 12px 10px !important;
-    font-weight: 700 !important;
-    border-width: 2px !important;
-    border-radius: 12px !important;
-    font-size: 0.9rem !important;
-  }
-  
-  /* Компактная шапка на мобильных */
-  body.mobile-view .gaming-header-card .card-body,
-  .gaming-header-card .card-body {
-    padding: 1rem !important;
-  }
-  
-  body.mobile-view .page-title,
-  .page-title {
-    font-size: 1.3rem !important;
-  }
-  
-  body.mobile-view .notification-actions form,
-  body.mobile-view .notification-form,
-  .notification-actions form,
-  .notification-form {
-    flex: 1 !important;
-    display: flex !important;
-    margin: 0 !important;
-  }
-  
-  body.mobile-view .notification-actions button,
-  body.mobile-view .notification-form button,
-  .notification-actions button,
-  .notification-form button {
     width: 100% !important;
+    justify-content: space-between;
   }
   
-  /* Прячем текст на очень маленьких экранах */
+  body.mobile-view .notification-action-btn {
+    flex: 1 !important;
+    padding: 0.5rem 0.6rem !important;
+    font-size: 0.7rem !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+  }
+  
+  body.mobile-view .notification-action-btn .action-text {
+    display: inline;
+  }
+  
   @media (max-width: 400px) {
-    .action-text {
-      display: none !important;
-    }
-    
-    .notification-action-btn i {
-      margin: 0 !important;
+    body.mobile-view .notification-action-btn .action-text {
+      display: none;
     }
   }
   
-  /* Иконки в кнопках */
-  body.mobile-view .notification-action-btn i,
-  .notification-action-btn i {
+  /* Карточки уведомлений - стиль как категории */
+  body.mobile-view .notifications-list .card {
+    border-radius: 16px !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  body.mobile-view .card-body {
+    padding: 0.75rem !important;
+  }
+  
+  body.mobile-view .notification-icon-wrapper {
+    width: 40px !important;
+    height: 40px !important;
+    font-size: 1.2rem !important;
+    border-radius: 10px !important;
+  }
+  
+  body.mobile-view .notification-text-title {
+    font-size: 0.85rem !important;
+    line-height: 1.3 !important;
+  }
+  
+  body.mobile-view .notification-time {
+    font-size: 0.65rem !important;
+    margin-top: 0.25rem;
+  }
+  
+  body.mobile-view .notification-time i {
+    font-size: 0.6rem !important;
+  }
+  
+  body.mobile-view .notification-card-link:hover {
+    transform: none;
+  }
+  
+  body.mobile-view .notification-card-link:active {
+    transform: scale(0.98);
+  }
+  
+  body.mobile-view .badge {
+    font-size: 0.6rem !important;
+    padding: 0.15rem 0.3rem !important;
+  }
+  
+  /* Пагинация - компактная */
+  body.mobile-view .pagination {
+    font-size: 0.75rem !important;
+  }
+  
+  body.mobile-view .pagination .page-link {
+    padding: 0.3rem 0.5rem !important;
+    font-size: 0.75rem !important;
+  }
+  
+  body.mobile-view .pagination-info {
+    font-size: 0.7rem !important;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Пустое состояние */
+  body.mobile-view .empty-notifications {
+    margin-top: 1.5rem;
+  }
+  
+  body.mobile-view .gaming-empty-card {
+    border-radius: 16px !important;
+    padding: 1.5rem 1rem !important;
+  }
+  
+  body.mobile-view .empty-icon {
+    font-size: 2.5rem !important;
+    color: #9ca3af !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  body.mobile-view .empty-title {
     font-size: 1rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  body.mobile-view .empty-text {
+    font-size: 0.8rem !important;
+    line-height: 1.4 !important;
+  }
+  
+  body.mobile-view .empty-notifications .btn {
+    font-size: 0.8rem !important;
+    padding: 0.6rem 1rem !important;
   }
 }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Задержка анимации появления карточек
+  document.querySelectorAll('.slide-in-up').forEach((el, index) => {
+    el.style.animationDelay = `${index * 0.05}s`;
+  });
+});
+</script>
