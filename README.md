@@ -1,256 +1,43 @@
-# 💰 FinQuest - Финансовая грамотность в игровой форме
+# FinQuest — финансовая грамотность в игровой форме
 
 <div align="center">
 
 ![FinQuest Logo](static/images/topics/basics.svg)
 
-**Образовательная платформа по финансовой грамотности с элементами геймификации**
+**Образовательная платформа с геймификацией** · Django · PWA  
+Команда **«Джунцы»** · IT-Sprint 2025
 
 [![Django](https://img.shields.io/badge/Django-5.2-green.svg)](https://www.djangoproject.com/)
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
 [![PWA](https://img.shields.io/badge/PWA-Ready-purple.svg)](https://web.dev/progressive-web-apps/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-[🌐 Демо](https://finquests.ru) • [📖 Документация](SETUP.md) • [📱 Мобильная версия](MOBILE_CHECKLIST.md)
-
 </div>
 
 ---
 
-## ✨ Особенности
+## Возможности
 
-### 🎮 Геймификация
-- **Система опыта (XP)** и уровней
-- **Достижения** за выполнение заданий
-- **Рейтинг** пользователей
-- **Монеты** и награды
-- **Ежедневные задания**
-
-### 📚 Обучение
-- Интерактивные статьи по финансовой грамотности
-- Тесты и задания разной сложности
-- Прогресс по темам и категориям
-- Адаптивная система сложности
-
-### 📱 Мобильная версия
-- **PWA** - работает как приложение
-- Автоматическое определение устройства
-- Адаптивный дизайн
-- Нижняя навигация для удобства
-- Офлайн режим (Service Worker)
-
-### 🎨 Интерфейс
-- Современный дизайн с градиентами
-- Светлая и темная тема
-- Плавные анимации
-- Адаптивная верстка
+- XP, уровни, достижения, рейтинг, ежедневные задания
+- Статьи, тесты, прогресс по темам
+- PWA: мобильная вёрстка, тёмная тема, офлайн (Service Worker)
+- Светлая / тёмная тема
 
 ---
 
-## 🚀 Быстрый старт
+## Быстрый старт
 
 ```bash
-# Клонировать репозиторий
-git clone https://github.com/ваш-username/fin_project.git
-cd fin_project
+git clone https://github.com/fairyofmiracle/FinQuest.git
+cd FinQuest
 
-# Создать виртуальное окружение
 python -m venv venv
-source venv/bin/activate  # Linux/Mac
-venv\Scripts\activate     # Windows
+# Windows: venv\Scripts\activate
+# Linux/macOS: source venv/bin/activate
 
-# Установить зависимости
 pip install -r requirements.txt
-
-# Применить миграции
 python manage.py migrate
-
-# Загрузить данные
 python manage.py create_new_structure
 python manage.py create_daily_quests
-
-# Создать суперпользователя
 python manage.py createsuperuser
-
-# Запустить сервер
 python manage.py runserver
-```
-
-Откройте: `http://127.0.0.1:8000` 🎉
-
-Подробнее: [SETUP.md](SETUP.md)
-
----
-
-## 📱 Мобильная версия
-
-Приложение автоматически адаптируется под мобильные устройства.
-
-### Установка PWA:
-- **Android**: Chrome → "Установить приложение"
-- **iOS**: Safari → Поделиться → "На экран Домой"
-
-### Особенности мобильной версии:
-- ✅ Темный градиентный фон
-- ✅ Нижняя навигация (6 вкладок)
-- ✅ Бесшовный дизайн без рамок
-- ✅ Оптимизированная скорость
-- ✅ Работает офлайн
-
-Подробнее: [MOBILE_AUTO_DETECTION.md](MOBILE_AUTO_DETECTION.md)
-
----
-
-## 🏗️ Архитектура
-
-```
-fin_project/
-├── accounts/          # Пользователи и аутентификация
-├── game/              # Основное приложение
-│   ├── models.py      # Модели (Topic, Level, Achievement, etc.)
-│   ├── views.py       # Представления
-│   ├── fixtures/      # Начальные данные
-│   └── management/    # Команды управления
-├── static/            # Статические файлы (CSS, JS, изображения)
-├── templates/         # HTML шаблоны
-├── finquest/          # Настройки проекта
-└── media/             # Загружаемые файлы
-```
-
----
-
-## 🛠️ Технологии
-
-### Backend
-- **Django 5.2** - веб-фреймворк
-- **Python 3.10+** - язык программирования
-- **SQLite** - база данных (разработка)
-- **PostgreSQL** - база данных (продакшн)
-
-### Frontend
-- **Bootstrap 5** - CSS фреймворк
-- **JavaScript (Vanilla)** - интерактивность
-- **Service Worker** - офлайн режим
-- **PWA Manifest** - установка приложения
-
-### Деплой
-- **Nginx** - веб-сервер
-- **Gunicorn** - WSGI сервер
-- **Let's Encrypt** - SSL сертификат
-- **Ubuntu 20.04+** - операционная система
-
----
-
-## 📊 Модели данных
-
-### Основные модели:
-- **User** - пользователи (кастомная модель)
-- **Topic** - темы обучения
-- **Level** - уровни/статьи
-- **UserLevelProgress** - прогресс пользователя
-- **Achievement** - достижения
-- **UserAchievement** - полученные достижения
-- **DailyQuest** - ежедневные задания
-- **Leaderboard** - рейтинг пользователей
-- **Notification** - уведомления
-
----
-
-## 🌐 Деплой
-
-Полная инструкция по развертыванию на VPS: [SSH_CONNECTION.md](SSH_CONNECTION.md)
-
-### Требования:
-- VPS сервер (Ubuntu 20.04+)
-- Домен с SSL сертификатом
-- 1GB RAM минимум
-- 10GB дискового пространства
-
-### Кратко:
-1. Настроить VPS
-2. Установить Nginx + Gunicorn
-3. Настроить домен (DNS A-запись)
-4. Получить SSL (Let's Encrypt)
-5. Настроить автозапуск (systemd)
-
----
-
-## 📝 Документация
-
-| Файл | Описание |
-|------|----------|
-| [SETUP.md](SETUP.md) | Быстрый старт и установка |
-| [SSH_CONNECTION.md](SSH_CONNECTION.md) | Деплой на сервер |
-| [MOBILE_AUTO_DETECTION.md](MOBILE_AUTO_DETECTION.md) | Автоопределение устройств |
-| [MOBILE_CHECKLIST.md](MOBILE_CHECKLIST.md) | Чеклист тестирования |
-| [INSTALL.md](INSTALL.md) | Детальная установка |
-| [QUICKSTART.md](QUICKSTART.md) | Краткое руководство |
-
----
-
-## 🎯 Roadmap
-
-- [x] Базовая система обучения
-- [x] Геймификация (XP, уровни, достижения)
-- [x] Мобильная версия
-- [x] PWA поддержка
-- [x] Темная тема
-- [x] Ежедневные задания
-- [ ] Интеграция с платежными системами
-- [ ] Сертификаты о прохождении
-- [ ] Социальные функции (друзья, группы)
-- [ ] Мобильное приложение (React Native)
-
----
-
-## 🤝 Вклад в проект
-
-Мы приветствуем ваш вклад в проект!
-
-1. Fork репозиторий
-2. Создайте ветку (`git checkout -b feature/amazing-feature`)
-3. Commit изменения (`git commit -m 'Add amazing feature'`)
-4. Push в ветку (`git push origin feature/amazing-feature`)
-5. Откройте Pull Request
-
----
-
-## 📄 Лицензия
-
-Этот проект разработан командой **"Джунцы"** для **IT-Sprint 2025**.
-
-Распространяется под лицензией MIT. См. файл `LICENSE` для деталей.
-
----
-
-## 👥 Команда
-
-**Команда "Джунцы"** - IT-Sprint 2025
-
----
-
-## 🌐 Ссылки
-
-- **Демо**: [https://finquests.ru](https://finquests.ru)
-- **Репозиторий**: [GitHub](https://github.com/ваш-username/fin_project)
-- **Баг-трекер**: [Issues](https://github.com/ваш-username/fin_project/issues)
-
----
-
-## 📞 Контакты
-
-Если у вас есть вопросы или предложения:
-
-- **Email**: support@finquests.ru
-- **Telegram**: @finquest_support
-- **GitHub Issues**: [Создать issue](https://github.com/ваш-username/fin_project/issues)
-
----
-
-<div align="center">
-
-**Сделано с ❤️ командой "Джунцы"**
-
-⭐ Поставьте звезду, если проект вам понравился!
-
-</div>
