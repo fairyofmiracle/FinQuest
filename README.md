@@ -41,3 +41,6 @@ python manage.py create_new_structure
 python manage.py create_daily_quests
 python manage.py createsuperuser
 python manage.py runserver
+```
+
+### Подробный запуск: [SETUP.md](SETUP.md)
